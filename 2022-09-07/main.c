@@ -7,7 +7,7 @@ int main()
     int vec1_size = sizeof(vec1)/sizeof(int);
     int max, min, sum;
     
-    // Min, max, sum z użyciem pętli for
+    // Min, max, sum using for loop
     max = min = sum = vec1[0];
     for( int i = 1; i < vec1_size; i++) {
         if (max < vec1[i]) {
@@ -19,9 +19,9 @@ int main()
         sum += vec1[i];
     }
     
-    printf("\nFOR: \n- maksimum: %d \n- minimum: %d \n- suma: %d", max, min, sum);
+    printf("FOR LOOP: \n- maksimum: %d \n- minimum: %d \n- suma: %d \n", max, min, sum);
     
-    // Min, max, sum z użyciem pętli while
+    // Min, max, sum using while loop
     max = min = sum = vec1[0];
     int i = 1;
     while( i < vec1_size) {
@@ -35,7 +35,7 @@ int main()
         i++;
     }
     
-    printf("\nWHILE: \n- maksimum: %d \n- minimum: %d \n- suma: %d", max, min, sum);
+    printf("WHILE LOOP: \n- maksimum: %d \n- minimum: %d \n- suma: %d \n", max, min, sum);
 
     return 0;
 }
