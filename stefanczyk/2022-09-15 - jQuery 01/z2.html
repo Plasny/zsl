@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2022-09-15</title>
+
+    <link rel="stylesheet" href="z2.css">
+    <script src="../lib/jquery.js"></script>
+
+    <script>
+        let counter = 0
+        $(document).ready(function () {
+            $("#bt1").on("click", function () {
+                if (counter % 2 == 0) {
+                    $("#h1")
+                        .text("osługa zdarzeń dodana")
+
+                    $("#bt1")
+                        .css("background-color", "red")
+                        .css("border", "2px black solid")
+                        .css("border-radius", 10)
+
+                    $("#d1").on("mouseover", function () {
+                        $("#d1")
+                            .css("background-color", "red")
+                            .html("<p><b>text bold</b><br><i>text italics</i></p>")
+                        $("#d1").on("mouseleave", function () {
+                            $("#d1")
+                                .css("background-color", "grey")
+                                .html("")
+
+                        })
+                    })
+
+                } else {
+                    $("#h1")
+                        .text("osługa zdarzeń usunięta")
+
+                    $("#bt1")
+                        .css("background-color", "grey")
+
+                    $("#d1")
+                        .off("mouseover")
+
+                }
+
+                //console.log(counter)
+                counter++
+            })
+        })
+    </script>
+</head>
+
+<body>
+    <h1 id="h1" class="center">T: jQuery - zdarzenia</h1>
+    <br>
+
+    <div class="center">
+        <button id="bt1">DODAJ / USUŃ</button>
+        <div id="d1"></div>
+
+    </div>
+
+</body>
+
+</html>

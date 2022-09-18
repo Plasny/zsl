@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2022-09-15</title>
+
+    <style>
+        div#d1 {
+            width: 100px;
+            height: 100px;
+            background: yellowgreen;
+        }
+    </style>
+
+    <script src="../lib/jquery.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            console.log('xxx')
+
+            //* działanie przycisków
+            $("#bt1").on("click", function () {
+                alert("OK")
+            })
+            $("#bt2").on("click", function () {
+                let co = confirm("ok?")
+                console.log(co)
+                co ? console.log("OKK") : console.log("NOT OKK")
+            })
+            //*/
+
+            //* różnokolorowe divy
+            $("#bt3").on("click", function () {
+                $("#d1")
+                    .css("background", "blue")
+                    .width(150)
+                    .height(150)
+                    .html("<b>text</b>")
+            })
+            $("#bt4").on("click", function () {
+                $("#bt3").off("click")
+            })
+            //*/
+        })
+    </script>
+</head>
+
+<body>
+    <button id="bt1">alert</button>
+    <button id="bt2">confirm</button>
+
+    <hr>
+
+    <div id="d1"></div>
+    <button id="bt3">zmiana css</button>
+    <button id="bt4">wyłączenie przycisku obok</button>
+</body>
+
+</html>
