@@ -1,0 +1,38 @@
+<!-- https://getbootstrap.com/docs/ -->
+
+{% extends "bootstrap/base.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+<!-- https://getbootstrap.com/docs/5.2/components/navbar/ -->
+{% block navbar %}
+    <div class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a href="/" class="navbar-brand">Home</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Menu-1</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Menu-2</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2>Witaj Flask!!!</h2>
+        {% if name %}
+            <h2>Witaj {{ name }}!!!</h2>
+        {% else %}
+            <h2>Witaj nieznajomy!!!</h2>
+        {% endif %}
+    </div>
+{% endblock %}
