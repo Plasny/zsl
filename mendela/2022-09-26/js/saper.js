@@ -23,7 +23,7 @@ document.getElementsByName("submit")[0].onclick = function () {
         // console.log(`h: ${height}\nw: ${width}\nm: ${mines}`);
         displayBoard = boardGen(height, width);
         time = 0;
-        mines_left = mines;
+        flags = mines;
 
         if(width*height <= mines)
             alert("Za dużo min ;)");
@@ -39,5 +39,4 @@ document.getElementsByName("submit")[0].onclick = function () {
 }
 
 // ------------------------------------------------------------ 
-
-// TODO: flagi, oznaczone bomby, zwycięstwo
+// TODO: code clean up
