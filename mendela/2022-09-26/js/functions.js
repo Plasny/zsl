@@ -3,7 +3,7 @@
 const formFields = ["Height", "Width", "Mines", "submit"];
 
 /**
- * Creates form
+ * Creates form with 3 text inputs and a submit button
  */
 function createForm() {
     let form = document.createElement("form");
@@ -47,11 +47,54 @@ function checkForm() {
 
 // ---------- Game functions ----------
 
+/**
+ * Variable which tells if game is running. If false then game hasn't began or has ended.
+ * @type {Boolean}
+ */
 var run;
-var displayBoard;
+
+/**
+ * Variable which stores how many seconds the game lasts.
+ * @type {Number} (seconds)
+ */
 var time;
-var timerInterval;
+
+/** 
+ * Table/Gameboard height.
+ * @type {Number} 
+ */
+var height;
+
+/**
+ * Table/Gameboard width.
+ * @type {Number}
+ */
+var width;
+
+/**
+ * Amount of mines in the game.
+ * @type {Number}
+ */
+var mines;
+
+/**
+ * Amount of flags placed.
+ * @type {Number}
+ */
 var flags;
+
+/** 
+ * Variable which stores id of setInterval method. Needed for timer clearing.
+ * @type {Number} (setInterval Id)
+ */
+var timerInterval;
+
+/**
+ * Table of displayed objects. Available variables in table: 
+ * 0 - covered tile, U - uncovered tile, [1-8] - uncovered tyile with number of mines attach to it, F - flagged tile, ? - Question mark on tile
+ * @type {Array[]}
+ */
+var displayBoard;
 
 /**
  * Generates board full of zeros.
@@ -74,12 +117,9 @@ function boardGen(height, width) {
 
 /**
  * Creates board with location of mines and adds numbers to cells next to a bombs
- * @param {Number} height - table height
- * @param {Number} width  - table width
- * @param {Number} mines  - number of mines
  * @returns {Array[]} - array with X (mines)
  */
-function minesBoard(height, width, mines) {
+function minesBoard() {
     let board = boardGen(height, width);
 
     let i = 0;
@@ -123,7 +163,7 @@ function minesBoard(height, width, mines) {
  * @param {String} id - coordinates of checked element
  * @param {Array[]} mines - board to which coordinates are compared
  */
-function cellCheck(id, height, width, mines) {
+function cellCheck(id, mines) {
     if (run) {
         let item = document.getElementById(id);
         item.classList.remove("button");
@@ -138,7 +178,7 @@ function cellCheck(id, height, width, mines) {
             return true;
             // console.log("mine")
         } else {
-            uncover(parseInt(coo[1]), parseInt(coo[0]), height, width, mines);
+            uncover(parseInt(coo[1]), parseInt(coo[0]), mines);
             console.table(displayBoard);
         }
     }
@@ -146,8 +186,11 @@ function cellCheck(id, height, width, mines) {
 
 /**
  * Uncover attached cells
+ * @param {Number} y - y coordinate of the cell
+ * @param {Number} x - x coordinate of the cell
+ * @param {Array[]} board -
  */
-function uncover(y, x, height, width, board) {
+function uncover(y, x, board) {
     if(displayBoard[y][x] == "F") {
         document.getElementById(`${y}:${x}`).innerHTML = "";
         flags++;
@@ -171,7 +214,7 @@ function uncover(y, x, height, width, board) {
             if (board[y+j][x+k] == "X")
                 continue;
             if (board[y+j][x+k] == 0) {
-                uncover(y+j, x+k, height, width, board);
+                uncover(y+j, x+k, board);
                 document.getElementById(id).classList.remove("button");
             } else {
                 let item = document.getElementById(id);
@@ -185,7 +228,7 @@ function uncover(y, x, height, width, board) {
 }
 /**
  * Function that returns coordinates of given id
- * @param {*} id 
+ * @param {String} id 
  * @returns {[Number, Number]} - [0] = x, [1] = y
  */
 function idToCoordinates(id) {
@@ -230,12 +273,10 @@ function cellFlag(id) {
 
 /**
  * Checks if you flag all the bombs and if so you win
- * @param {Number} height 
- * @param {Number} width 
- * @param {Number[][]} board - board with location of mines
+ * @param {Array[]} board - board with location of mines
  * @param {Number} mines - number of mines in the game
  */
-function checkIfWin(height, width, board, mines) {
+function checkIfWin(board, mines) {
     if(run) {
         let correct = 0;
 
@@ -246,6 +287,7 @@ function checkIfWin(height, width, board, mines) {
 
         if (correct == mines) {
             console.log("WIN");
+            document.getElementById("flagsAmount").innerText = "Wygrałeś :D";
             run = false;
             alert("Wygrałeś :D")
         }
@@ -255,11 +297,9 @@ function checkIfWin(height, width, board, mines) {
 /**
  * check if the bomb is under the tile you clicked -> EXPLODE!
  * @param {String} explosion - cell coordinates (cellId)
- * @param {Number} height 
- * @param {Number} width 
- * @param {number[][]} mines - table with location of mines
+ * @param {Array[]} mines - table with location of mines
  */
-function gameOver(explosion, height, width, mines) {
+function gameOver(explosion, mines) {
     run = false;
 
     for (let i = 0; i < height; i++)
@@ -280,12 +320,10 @@ function gameOver(explosion, height, width, mines) {
 
 /**
  * Create board, button, etc. and display it
- * @param {Number} height 
- * @param {Number} width 
  * @param {Array[]} displayBoard 
  * @param {Array[]} board 
  */
-function gameBoard(height, width, displayBoard, board, mines) {
+function gameBoard(displayBoard, board) {
     let div = document.createElement("div");
     div.classList.add("saper");
 
@@ -295,7 +333,7 @@ function gameBoard(height, width, displayBoard, board, mines) {
 
     let flagsAmount = document.createElement("div");
     flagsAmount.setAttribute("id", "flagsAmount");
-    flagsAmount.innerText = `Pozostałe flag: ${mines}`
+    flagsAmount.innerText = `Pozostało flag: ${mines}`
     div.appendChild(flagsAmount);
 
     let table = document.createElement("table");
@@ -310,14 +348,14 @@ function gameBoard(height, width, displayBoard, board, mines) {
             cell.setAttribute("id", cellId);
             cell.classList.add("button");
             cell.onclick = function () {
-                if (cellCheck(cellId, height, width, board))
-                    gameOver(cellId, height, width, board);
+                if (cellCheck(cellId, board))
+                    gameOver(cellId, board);
             }
             cell.oncontextmenu = function (event) {
                 event.preventDefault();
                 cellFlag(cellId, displayBoard);
-                checkIfWin(height, width, board, mines);
                 document.getElementById("flagsAmount").innerText = `Pozostało flag: ${flags}`;
+                checkIfWin(board, mines);
             }
 
             row.appendChild(cell);

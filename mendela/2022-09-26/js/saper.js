@@ -1,3 +1,5 @@
+// Variable and function declarations and discriptions are stored in ./functions.js 
+
 let container = document.createElement("div");  // utworzenie elementu
 container.classList.add("container");           // dodanie klasy
 document.body.appendChild(container);           // dodanie elementu do html-a
@@ -6,9 +8,9 @@ createForm();
 setInterval(checkForm, 1000);
 
 document.getElementsByName("submit")[0].onclick = function () {
-    let height = document.getElementsByName("Height")[0].value;
-    let width = document.getElementsByName("Width")[0].value;
-    let mines = document.getElementsByName("Mines")[0].value;
+    height = document.getElementsByName("Height")[0].value;
+    width = document.getElementsByName("Width")[0].value;
+    mines = document.getElementsByName("Mines")[0].value;
 
 
     if (!(height.length&&width.length&&mines.length)) {
@@ -30,13 +32,10 @@ document.getElementsByName("submit")[0].onclick = function () {
         else {
             run = true;
 
-            let board = minesBoard(height, width, mines);
-            gameBoard(height, width, displayBoard, board, mines);
+            let board = minesBoard();
+            gameBoard(displayBoard, board);
             timerInterval = setInterval( function () {timer()}, 1000);
         }
 
     }
 }
-
-// ------------------------------------------------------------ 
-// TODO: code clean up
