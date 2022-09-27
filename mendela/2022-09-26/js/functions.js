@@ -82,34 +82,33 @@ function boardGen(height, width) {
 function minesBoard(height, width, mines) {
     let board = boardGen(height, width);
 
-    for (let i = 0; i < mines; i++){
+    let i = 0;
+    while(i < mines) {
         let x = parseInt(Math.random() * width);
         let y = parseInt(Math.random() * height);
         // console.log(`x:${x} y:${y}`)
-        if (board[y][x] != "X")
+        if (board[y][x] != "X") {
             board[y][x] = "X";
-        else {
-            i--;
-            continue;
-        }
+            i++;
 
-        /*
-            --> --> -->
-            --> "X" -->
-            --> --> -->
-        */
-        for(let j = -1; j <= 1; j++) {
-            // check if it's not out of range
-            if ((y+j < 0) || (y+j >= height))
-                continue;
-            for (let k = -1; k <= 1; k++) {
-                // console.log(`${i}: x:${x} k:${k} y:${y} j:${j}`);
-                if ((x+k < 0) || (x+k >= width))
+            /* How tile uncovering works:
+                --> --> -->
+                --> "X" -->
+                --> --> --> 
+            */
+            for(let j = -1; j <= 1; j++) {
+                // check if it's not out of range
+                if ((y+j < 0) || (y+j >= height))
                     continue;
-                if (board[y+j][x+k] == "X")
-                    continue;
+                for (let k = -1; k <= 1; k++) {
+                    // console.log(`${i}: x:${x} k:${k} y:${y} j:${j}`);
+                    if ((x+k < 0) || (x+k >= width))
+                        continue;
+                    if (board[y+j][x+k] == "X")
+                        continue;
                 
-                    board[y+j][x+k] += 1;
+                        board[y+j][x+k] += 1;
+                }
             }
         }
     }
