@@ -1,0 +1,33 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+#main {
+    height: 100vh;
+    display: flex;
+}
+
+#main table {
+    margin: auto;
+    border: 3px solid gray;
+    /* border-collapse: collapse; */
+}
+
+#main table tr td,
+#main table tr th {
+    border: 1px solid gray;
+    padding: 5px;
+    font-size: larger;
+    font-family: monospace;
+    text-align: center;
+}
+
+#main table tr th {
+    color: blue;
+}
+
+.red {
+    color: red;
+    font-weight: bold;
+}
