@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect, url_for, flash
 from flask_bs4 import Bootstrap
 from flask_moment import Moment
 from datetime import datetime
@@ -30,10 +30,21 @@ def user():
     return render_template('user.html.j2', title='Użytkownik', userName=userName)
 
 
+@app.route('/setSession', methods=['POST', 'GET'])
+def setSession():
+    userForm = NameForm()
+    if userForm.validate_on_submit():
+        oldName = session.get('userName')
+        if oldName is not None and oldName != userForm.userName.data:
+            flash('Wygląda na to, że zmieniłeś imię')
+        session['userName'] = userForm.userName.data
+        return redirect(url_for('setSession'))
+    return render_template('session.html.j2', title='Zastosowanie sesji', userForm = userForm, userName = session.get('userName'))
+
+
 @app.errorhandler(404)
 def pageNotFound(error):
     return render_template('404.html'), 404
-
 
 @app.errorhandler(500)
 def internalServerError(error):
