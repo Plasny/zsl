@@ -191,10 +191,12 @@ function cellCheck(id, mines) {
  * @param {Array[]} board -
  */
 function uncover(y, x, board) {
-    if(displayBoard[y][x] == "F") {
-        document.getElementById(`${y}:${x}`).innerHTML = "";
-        flags++;
-    }
+    // if(displayBoard[y][x] == "F") {
+    //     flags++;
+    //     let t = document.getElementById(`${y}:${x}`);
+    //     t.innerHTML = "";
+    //     console.log(`${y}:${x}\n${t}`)
+    // }
 
     if(board[y][x] != 0) 
         displayBoard[y][x] = board[y][x];
@@ -214,11 +216,21 @@ function uncover(y, x, board) {
             if (board[y+j][x+k] == "X")
                 continue;
             if (board[y+j][x+k] == 0) {
+                if(displayBoard[y+j][x+k] == "F") {
+                    let item = document.getElementById(id);
+                    item.innerHTML = "";
+                    flags++;
+                    document.getElementById("flagsAmount").innerText = `Pozostało flag: ${flags}`;
+                }
                 uncover(y+j, x+k, board);
                 document.getElementById(id).classList.remove("button");
             } else {
                 let item = document.getElementById(id);
                 item.classList.remove("button");
+                if(displayBoard[y+j][x+k] == "F") {
+                    flags++;
+                    document.getElementById("flagsAmount").innerText = `Pozostało flag: ${flags}`;
+                }
                 item.innerHTML = board[y+j][x+k];
                 displayBoard[y+j][x+k] = board[y+j][x+k];
             }
@@ -226,6 +238,7 @@ function uncover(y, x, board) {
     }
 
 }
+
 /**
  * Function that returns coordinates of given id
  * @param {String} id 
