@@ -1,0 +1,24 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <div class="container mt-2">
+
+        {{ wtf.quick_form(userForm) }}
+
+        {% if sequence is defined %}
+            <hr>
+
+            <h4>Operacje na podanym ciągu</h4>
+            <ul>
+                <li>Minimalna wartość w ciągu = {{ min }}</li>
+                <li>Maksymalna wartość w ciągu = {{ max }}</li>
+                <li>Średnia wartość ciągu = {{ avr }}</li>
+                <li>Ciąg posortowany malejąco = {{ sequence }}</li>
+            </ul>
+        {% endif %}
+
+    </div>
+{% endblock %}
