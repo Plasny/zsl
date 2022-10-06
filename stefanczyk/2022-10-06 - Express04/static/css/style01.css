@@ -1,0 +1,16 @@
+h1 {
+    font-family: monospace;
+    text-align: center;
+}
+
+form {
+    font-family: monospace;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: aqua;
+}
+
+form input {
+    margin: 5px 0;
+}

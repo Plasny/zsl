@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02</title>
+    <link rel="stylesheet" href="css/style01.css">
+</head>
+<body>
+    <h1>Wysyłanie pliku z rozszerzeniem</h1>
+    <form enctype="multipart/form-data" method="POST" action="/handleUpload">
+        <label for="date">data: </label>
+        <input type="date" name="date">
+        <br>
+
+        <label for="name">nazwa: </label>
+        <input type="text" name="name">
+        <br>
+
+        <label for="imagetoupload">zdjęcie: </label>
+        <input type="file" required accept="image/*" name="imagetoupload">
+
+        <input type="submit">
+    </form>
+</body>
+</html>
