@@ -1,0 +1,40 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+h1 {
+    color: white;
+    font-size: x-large;
+}
+
+.container {
+    width: 100%;
+    font-family: monospace;
+}
+
+.buttons {
+    float: left;
+}
+.buttons button {
+    display: block;
+    width: 100px;
+    border: none;
+    padding: 5px;
+    margin: 5px;
+    font-size: 18px;
+}
+.buttons input {
+    margin: 5px;
+}
+
+#main {
+    float: left;
+    width: 80%;
+    height: 100vh;
+    background-color: #0e1c2e;
+}
+
+.planet {
+    background-image: url('../img/planet.png');
+}
