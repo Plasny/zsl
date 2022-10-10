@@ -5,6 +5,7 @@ container.classList.add("container");           // dodanie klasy
 document.body.appendChild(container);           // dodanie elementu do html-a
 
 createForm();
+createLeaderboard();    // TODO
 setInterval(checkForm, 1000);
 
 document.getElementsByName("submit")[0].onclick = function () {
@@ -22,14 +23,17 @@ document.getElementsByName("submit")[0].onclick = function () {
             clearInterval(timerInterval);
         }
 
-        // console.log(`h: ${height}\nw: ${width}\nm: ${mines}`);
-        displayBoard = boardGen(height, width);
-        time = 0;
-        flags = mines;
-
         if(width*height <= mines)
             alert("Za dużo min ;)");
         else {
+            // console.log(`h: ${height}\nw: ${width}\nm: ${mines}`);
+            displayBoard = boardGen(height, width);
+            flags = mines;
+
+            time = 0;
+            startTime = new Date();
+            // console.log(startTime);
+
             run = true;
 
             let board = minesBoard();

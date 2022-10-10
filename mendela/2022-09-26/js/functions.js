@@ -53,12 +53,6 @@ function checkForm() {
  */
 var run;
 
-/**
- * Variable which stores how many seconds the game lasts.
- * @type {Number} (seconds)
- */
-var time;
-
 /** 
  * Table/Gameboard height.
  * @type {Number} 
@@ -82,6 +76,18 @@ var mines;
  * @type {Number}
  */
 var flags;
+
+/**
+ * Variable which stores time when the game began. Used with Date() instead of variable time.
+ * @type {Date}
+ */
+var startTime;
+
+/**
+ * Variable which stores how many seconds the game lasts.
+ * @type {Number} (seconds)
+ */
+var time;
 
 /** 
  * Variable which stores id of setInterval method. Needed for timer clearing.
@@ -302,7 +308,9 @@ function checkIfWin(board, mines) {
             console.log("WIN");
             document.getElementById("flagsAmount").innerText = "Wygrałeś :D";
             run = false;
-            alert("Wygrałeś :D")
+            alert("Wygrałeś :D");
+            
+            createCookie();
         }
     }
 }
@@ -387,6 +395,78 @@ function gameBoard(displayBoard, board) {
 function timer () {
     if (run) {
         time++;
-        document.getElementById("timer").innerText = `Grasz: ${time}[s]`;
+        let timeNow = new Date();
+        document.getElementById("timer").innerText = `Grasz: ${(timeNow.getSeconds() - startTime.getSeconds())}[s]`;
+        return timeNow.getSeconds() - startTime.getSeconds();
     }
+}
+
+// ---------- Leaderboard functions ----------
+
+/**
+ * Function that creates, manages and creates cookies for leaderboards
+ */
+function createCookie () {
+    let timeNow = new Date();
+    let playTime = 0;
+    playTime = `${timeNow.getSeconds() - startTime.getSeconds()}`;
+
+    let username = prompt("How shoud we call you?") || "anonim";
+
+    // if cookies exist:
+    if (document.cookie){
+        /// create cookie array, from `document.cookie` string
+        let cookiesArray = new Array;
+        cookiesArray = document.cookie.replaceAll(" ","").split(";");
+
+        /// create object from array of cookies
+        let cookiesObj = {};
+        for (let i in cookiesArray)
+            cookiesObj[cookiesArray[i].split("=")[0]] = cookiesArray[i].split("=")[1];
+        // console.log(cookiesArray);
+
+        /// change object elements to array
+        for (let key in cookiesObj)
+            cookiesObj[key] = cookiesObj[key].split(",");
+        // console.log(cookiesObj);
+
+        let boardType = `h${height}w${width}`;
+        let leaderboard = cookiesObj[boardType];
+        let scoreUsed = false;
+        /// check if your score is in the top 10
+        for (let i in leaderboard) {
+            // console.log(leaderboard[i].split("-")[1])
+            if(parseInt(leaderboard[i].split("-")[1]) >= parseInt(playTime)) {
+                console.log(parseInt(leaderboard[i].split("-")[1]))
+                leaderboard.splice(i, 0, `${username}-${playTime}`);
+                scoreUsed = true;
+                break;
+            }
+        }
+
+        if (leaderboard.length < 10 && !scoreUsed)
+            leaderboard.push(`${username}-${playTime}`);
+
+        if (leaderboard.length > 10)
+            leaderboard.pop();
+
+        document.cookie = `${boardType}=${leaderboard.toString()}`;
+        console.log(cookiesObj);
+    } else {
+        document.cookie = `h${height}w${width}=${username}-${playTime}`;
+        console.log("cookie created :)");
+    }
+}
+
+/**
+ * TODO:
+ * Function that displays leaderboard on the web page
+ */
+function displayLeaderboard () {
+    let leaderboard = document.createElement("div");
+    leaderboard.classList.add("leaderboard");
+
+    leaderboard.innerText = "Tabela wyników";
+
+    container.appendChild(leaderboard);
 }

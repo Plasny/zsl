@@ -25,8 +25,7 @@ body {
     /* background: lightgray; */
 }
 
-
-.minesForm, .saper {
+.minesForm, .saper, .leaderboard {
     width: 100%;
     margin: auto;
     margin-bottom: 10px;
