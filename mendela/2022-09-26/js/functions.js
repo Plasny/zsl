@@ -460,15 +460,13 @@ function createCookie () {
         document.cookie = `${boardType}=${leaderboard.toString()}`;
         console.log(cookiesObj);
 
-        // to change
         displayLeaderboard(leaderboard);
-        // document.getElementsByClassName("leaderboard")[0].innerText += leaderboard.toString().replaceAll(",","\n").replaceAll("-"," - ");
     } else {
         document.cookie = `${boardType}=${username}-${playTime}`;
         console.log("cookie created :)");
 
-        // to change
-        document.getElementsByClassName("leaderboard")[0].innerText += `${username} - ${millisToMinAndSec(playTime)}`;
+        let leaderboard = [`${username}-${playTime}`];
+        displayLeaderboard(leaderboard);
     }
 }
 
