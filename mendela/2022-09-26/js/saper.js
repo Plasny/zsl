@@ -5,7 +5,6 @@ container.classList.add("container");           // dodanie klasy
 document.body.appendChild(container);           // dodanie elementu do html-a
 
 createForm();
-createLeaderboard();    // TODO
 setInterval(checkForm, 1000);
 
 document.getElementsByName("submit")[0].onclick = function () {

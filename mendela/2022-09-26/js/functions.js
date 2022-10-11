@@ -6,6 +6,12 @@ const formFields = ["Height", "Width", "Mines", "submit"];
  * Creates form with 3 text inputs and a submit button
  */
 function createForm() {
+    let topDiv = document.createElement("div");
+    topDiv.setAttribute("id", "topDiv");
+
+    let marginDiv = document.createElement("div");
+    marginDiv.classList.add("formDiv");
+
     let form = document.createElement("form");
     form.classList.add("minesForm");
 
@@ -28,7 +34,11 @@ function createForm() {
         form.appendChild(div);
     }
 
-    container.appendChild(form);
+    marginDiv.appendChild(form);
+    topDiv.appendChild(marginDiv);
+    container.appendChild(topDiv);
+
+    displayLeaderboard();
 }
 
 /**
@@ -407,14 +417,13 @@ function timer () {
  * Function that creates, manages and creates cookies for leaderboards
  */
 function createCookie () {
-    let timeNow = new Date();
-    let playTime = 0;
-    playTime = `${timeNow.getSeconds() - startTime.getSeconds()}`;
+    let playTime = Date.now() - startTime;
 
+    let boardType = `h${height}w${width}m${mines}`;
     let username = prompt("How shoud we call you?") || "anonim";
 
-    // if cookies exist:
-    if (document.cookie){
+    // if cookie of boardType exist:
+    if (document.cookie.indexOf(boardType) >= 0){
         /// create cookie array, from `document.cookie` string
         let cookiesArray = new Array;
         cookiesArray = document.cookie.replaceAll(" ","").split(";");
@@ -430,21 +439,19 @@ function createCookie () {
             cookiesObj[key] = cookiesObj[key].split(",");
         // console.log(cookiesObj);
 
-        let boardType = `h${height}w${width}`;
         let leaderboard = cookiesObj[boardType];
         let scoreUsed = false;
         /// check if your score is in the top 10
         for (let i in leaderboard) {
             // console.log(leaderboard[i].split("-")[1])
             if(parseInt(leaderboard[i].split("-")[1]) >= parseInt(playTime)) {
-                console.log(parseInt(leaderboard[i].split("-")[1]))
                 leaderboard.splice(i, 0, `${username}-${playTime}`);
                 scoreUsed = true;
                 break;
             }
         }
 
-        if (leaderboard.length < 10 && !scoreUsed)
+        if ((leaderboard.length < 10) && !scoreUsed)
             leaderboard.push(`${username}-${playTime}`);
 
         if (leaderboard.length > 10)
@@ -452,21 +459,55 @@ function createCookie () {
 
         document.cookie = `${boardType}=${leaderboard.toString()}`;
         console.log(cookiesObj);
+
+        // to change
+        displayLeaderboard(leaderboard);
+        // document.getElementsByClassName("leaderboard")[0].innerText += leaderboard.toString().replaceAll(",","\n").replaceAll("-"," - ");
     } else {
-        document.cookie = `h${height}w${width}=${username}-${playTime}`;
+        document.cookie = `${boardType}=${username}-${playTime}`;
         console.log("cookie created :)");
+
+        // to change
+        document.getElementsByClassName("leaderboard")[0].innerText += `${username} - ${millisToMinAndSec(playTime)}`;
     }
 }
 
+function millisToMinAndSec (ms) {
+    let minutes = Math.floor(ms/60000);
+    let seconds = parseInt((ms % 60000) / 1000);
+    return `${minutes<10?'0':''}${minutes}:${seconds<10?'0':''}${seconds}`;
+}
+
 /**
- * TODO:
  * Function that displays leaderboard on the web page
  */
-function displayLeaderboard () {
-    let leaderboard = document.createElement("div");
-    leaderboard.classList.add("leaderboard");
+function displayLeaderboard (leaderboard) {
+    if(document.getElementsByClassName("leaderboard")[0]) {
+        document.getElementsByClassName("leaderboard")[0].remove();
+    }
 
-    leaderboard.innerText = "Tabela wyników";
+    let leaderboardDiv = document.createElement("div");
+    leaderboardDiv.classList.add("leaderboard");
 
-    container.appendChild(leaderboard);
+    let title = document.createElement("h3");
+    title.innerText = "Tabela wyników";
+    leaderboardDiv.appendChild(title);
+
+    let table = document.createElement("table");
+    for(let i in leaderboard) {
+        let tr = document.createElement("tr");
+
+        let td1 = document.createElement("td");
+        td1.innerText = leaderboard[i].split("-")[0];
+        tr.appendChild(td1);
+
+        let td2 = document.createElement("td");
+        td2.innerText = millisToMinAndSec(leaderboard[i].split("-")[1]);
+        tr.appendChild(td2);
+
+        table.appendChild(tr);
+    }
+    leaderboardDiv.appendChild(table);
+
+    topDiv.appendChild(leaderboardDiv);
 }
