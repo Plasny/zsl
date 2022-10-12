@@ -45,10 +45,10 @@ function createForm() {
  * Clears form input values which don't contain numbers
  */
 function checkForm() {
-    for (let i = 0; i < formFields.length-1; i++) {
+    for (let i = 0; i < formFields.length - 1; i++) {
         let value = document.getElementsByName(formFields[i])[0].value;
         // console.log(Number.isFinite(value));
-        if (!Number(value)) 
+        if (!Number(value))
             document.getElementsByName(formFields[i])[0].value = "";
     }
 }
@@ -58,7 +58,8 @@ function checkForm() {
 // ---------- Game functions ----------
 
 /**
- * Variable which tells if game is running. If false then game hasn't began or has ended.
+ * Variable which tells if game is running. 
+ * If false then game hasn't began or has ended.
  * @type {Boolean}
  */
 var run;
@@ -88,13 +89,14 @@ var mines;
 var flags;
 
 /**
- * Variable which stores time when the game began. Used with Date() instead of variable time.
+ * Variable which stores time when the game began. 
+ * Used with Date() instead of variable time.
  * @type {Date}
  */
 var startTime;
 
 /**
- * Variable which stores how many seconds the game lasts.
+ * Variable which is used to check how many seconds the game lasts.
  * @type {Number} (seconds)
  */
 var time;
@@ -107,10 +109,18 @@ var timerInterval;
 
 /**
  * Table of displayed objects. Available variables in table: 
- * 0 - covered tile, U - uncovered tile, [1-8] - uncovered tyile with number of mines attach to it, F - flagged tile, ? - Question mark on tile
+ * 0 - covered tile, U - uncovered tile, 
+ * [1-8] - uncovered tyile with number of mines attach to it, 
+ * F - flagged tile, ? - Question mark on tile
  * @type {Array[]}
  */
 var displayBoard;
+
+/**
+ * String that is used to divde username and time
+ * @type {String}
+ */
+var divider1 = "|-|";
 
 /**
  * Generates board full of zeros.
@@ -132,14 +142,14 @@ function boardGen(height, width) {
 }
 
 /**
- * Creates board with location of mines and adds numbers to cells next to a bombs
+ * Creates board with location of mines and adds numbers to cells next to bombs
  * @returns {Array[]} - array with X (mines)
  */
 function minesBoard() {
     let board = boardGen(height, width);
 
     let i = 0;
-    while(i < mines) {
+    while (i < mines) {
         let x = parseInt(Math.random() * width);
         let y = parseInt(Math.random() * height);
         // console.log(`x:${x} y:${y}`)
@@ -152,24 +162,24 @@ function minesBoard() {
                 --> "X" -->
                 --> --> --> 
             */
-            for(let j = -1; j <= 1; j++) {
+            for (let j = -1; j <= 1; j++) {
                 // check if it's not out of range
-                if ((y+j < 0) || (y+j >= height))
+                if ((y + j < 0) || (y + j >= height))
                     continue;
                 for (let k = -1; k <= 1; k++) {
                     // console.log(`${i}: x:${x} k:${k} y:${y} j:${j}`);
-                    if ((x+k < 0) || (x+k >= width))
+                    if ((x + k < 0) || (x + k >= width))
                         continue;
-                    if (board[y+j][x+k] == "X")
+                    if (board[y + j][x + k] == "X")
                         continue;
-                
-                        board[y+j][x+k] += 1;
+
+                    board[y + j][x + k] += 1;
                 }
             }
         }
     }
     // console.log("--- MINES ---")
-    console.table(board);
+    // console.table(board);
 
     return board;
 }
@@ -183,10 +193,10 @@ function cellCheck(id, mines) {
     if (run) {
         let item = document.getElementById(id);
         item.classList.remove("button");
-    
+
         let coo = id.split(":");
-        console.log(`check -> x:${coo[0]} y:${coo[1]}`)
-        if(mines[coo[1]][coo[0]] == "X") {
+        // console.log(`check -> x:${coo[0]} y:${coo[1]}`)
+        if (mines[coo[1]][coo[0]] == "X") {
             item.innerHTML = "";
             let bomb = document.createElement("img");
             bomb.src = "img/bomb.png"
@@ -195,7 +205,7 @@ function cellCheck(id, mines) {
             // console.log("mine")
         } else {
             uncover(parseInt(coo[1]), parseInt(coo[0]), mines);
-            console.table(displayBoard);
+            // console.table(displayBoard);
         }
     }
 }
@@ -214,41 +224,43 @@ function uncover(y, x, board) {
     //     console.log(`${y}:${x}\n${t}`)
     // }
 
-    if(board[y][x] != 0) 
+    if (board[y][x] != 0)
         displayBoard[y][x] = board[y][x];
     else
         displayBoard[y][x] = "U";
 
-    for(let j = -1; j <= 1; j++) {
+    for (let j = -1; j <= 1; j++) {
         // check if it's not out of range
-        if ((y+j < 0) || (y+j >= height))
+        if ((y + j < 0) || (y + j >= height))
             continue;
         for (let k = -1; k <= 1; k++) {
-            let id = `${x+k}:${y+j}`
-            if ((x+k < 0) || (x+k >= width))
+            let id = `${x + k}:${y + j}`
+            if ((x + k < 0) || (x + k >= width))
                 continue;
-            if (displayBoard[y+j][x+k] == "U")
+            if (displayBoard[y + j][x + k] == "U")
                 continue;
-            if (board[y+j][x+k] == "X")
+            if (board[y + j][x + k] == "X")
                 continue;
-            if (board[y+j][x+k] == 0) {
-                if(displayBoard[y+j][x+k] == "F") {
+            if (board[y + j][x + k] == 0) {
+                if (displayBoard[y + j][x + k] == "F") {
                     let item = document.getElementById(id);
                     item.innerHTML = "";
                     flags++;
-                    document.getElementById("flagsAmount").innerText = `Pozostało flag: ${flags}`;
+                    document.getElementById("flagsAmount").innerText
+                        = `Pozostało flag: ${flags}`;
                 }
-                uncover(y+j, x+k, board);
+                uncover(y + j, x + k, board);
                 document.getElementById(id).classList.remove("button");
             } else {
                 let item = document.getElementById(id);
                 item.classList.remove("button");
-                if(displayBoard[y+j][x+k] == "F") {
+                if (displayBoard[y + j][x + k] == "F") {
                     flags++;
-                    document.getElementById("flagsAmount").innerText = `Pozostało flag: ${flags}`;
+                    document.getElementById("flagsAmount").innerText
+                        = `Pozostało flag: ${flags}`;
                 }
-                item.innerHTML = board[y+j][x+k];
-                displayBoard[y+j][x+k] = board[y+j][x+k];
+                item.innerHTML = board[y + j][x + k];
+                displayBoard[y + j][x + k] = board[y + j][x + k];
             }
         }
     }
@@ -275,14 +287,14 @@ function cellFlag(id) {
         let coo = idToCoordinates(id);
 
         if (cell.classList.length) {
-            if(displayBoard[coo[1]][coo[0]] == "0" && flags > 0) {
+            if (displayBoard[coo[1]][coo[0]] == "0" && flags > 0) {
                 displayBoard[coo[1]][coo[0]] = "F";
-        
+
                 let flag = document.createElement("img");
                 flag.src = "img/flaga.png";
                 cell.appendChild(flag);
                 flags--;
-            } else if(displayBoard[coo[1]][coo[0]] == "F" ) {
+            } else if (displayBoard[coo[1]][coo[0]] == "F") {
                 displayBoard[coo[1]][coo[0]] = "?";
                 cell.innerHTML = "";
                 flags++;
@@ -306,7 +318,7 @@ function cellFlag(id) {
  * @param {Number} mines - number of mines in the game
  */
 function checkIfWin(board, mines) {
-    if(run) {
+    if (run) {
         let correct = 0;
 
         for (let i = 0; i < height; i++)
@@ -319,7 +331,8 @@ function checkIfWin(board, mines) {
             document.getElementById("flagsAmount").innerText = "Wygrałeś :D";
             run = false;
             alert("Wygrałeś :D");
-            
+
+            timer();
             createCookie();
         }
     }
@@ -336,7 +349,7 @@ function gameOver(explosion, mines) {
     for (let i = 0; i < height; i++)
         for (let j = 0; j < width; j++) {
             let cell = `${j}:${i}`
-            if(mines[i][j] == "X" && cell != explosion) {
+            if (mines[i][j] == "X" && cell != explosion) {
                 let item = document.getElementById(cell);
                 item.classList.remove("button");
                 item.innerHTML = "";
@@ -385,7 +398,8 @@ function gameBoard(displayBoard, board) {
             cell.oncontextmenu = function (event) {
                 event.preventDefault();
                 cellFlag(cellId, displayBoard);
-                document.getElementById("flagsAmount").innerText = `Pozostało flag: ${flags}`;
+                document.getElementById("flagsAmount").innerText
+                    = `Pozostało flag: ${flags}`;
                 checkIfWin(board, mines);
             }
 
@@ -402,36 +416,38 @@ function gameBoard(displayBoard, board) {
 /**
  * Displays how log you already play the game
  */
-function timer () {
+function timer() {
     if (run) {
         time++;
         let timeNow = new Date();
-        document.getElementById("timer").innerText = `Grasz: ${(timeNow.getSeconds() - startTime.getSeconds())}[s]`;
-        return timeNow.getSeconds() - startTime.getSeconds();
+        let timePlayed = Math.round((timeNow - startTime) / 1000);
+        document.getElementById("timer").innerText = `Grasz: ${timePlayed}[s]`;
+        return timePlayed;
     }
 }
+
+
 
 // ---------- Leaderboard functions ----------
 
 /**
- * Function that creates, manages and creates cookies for leaderboards
+ * Function that gets leaderboard from cookie or returns false
+ * @param {String} boardType - which leaderboard to get
+ * @returns {Array|False}
  */
-function createCookie () {
-    let playTime = Date.now() - startTime;
-
-    let boardType = `h${height}w${width}m${mines}`;
-    let username = prompt("How shoud we call you?") || "anonim";
+function getLeaderboard(boardType) {
 
     // if cookie of boardType exist:
-    if (document.cookie.indexOf(boardType) >= 0){
+    if (document.cookie.indexOf(boardType) >= 0) {
         /// create cookie array, from `document.cookie` string
         let cookiesArray = new Array;
-        cookiesArray = document.cookie.replaceAll(" ","").split(";");
+        cookiesArray = document.cookie.replaceAll(" ", "").split(";");
 
         /// create object from array of cookies
         let cookiesObj = {};
         for (let i in cookiesArray)
-            cookiesObj[cookiesArray[i].split("=")[0]] = cookiesArray[i].split("=")[1];
+            cookiesObj[cookiesArray[i].split("=")[0]]
+                = cookiesArray[i].split("=")[1];
         // console.log(cookiesArray);
 
         /// change object elements to array
@@ -440,67 +456,99 @@ function createCookie () {
         // console.log(cookiesObj);
 
         let leaderboard = cookiesObj[boardType];
+
+        return leaderboard;
+    } else {
+        return false;
+    }
+}
+
+/**
+ * Function that creates, manages and creates cookies for leaderboards
+ */
+function createCookie() {
+    let playTime = Date.now() - startTime;
+    let username = prompt("How shoud we call you?") || "anonim";
+
+    let boardType = `h${height}w${width}m${mines}`;
+    let leaderboard = getLeaderboard(boardType);
+
+    if (leaderboard) {
         let scoreUsed = false;
         /// check if your score is in the top 10
         for (let i in leaderboard) {
             // console.log(leaderboard[i].split("-")[1])
-            if(parseInt(leaderboard[i].split("-")[1]) >= parseInt(playTime)) {
-                leaderboard.splice(i, 0, `${username}-${playTime}`);
+            if (leaderboard[i].split(divider1)[1] >= playTime) {
+                leaderboard.splice(i, 0, `${username}${divider1}${playTime}`);
                 scoreUsed = true;
                 break;
             }
         }
 
         if ((leaderboard.length < 10) && !scoreUsed)
-            leaderboard.push(`${username}-${playTime}`);
+            leaderboard.push(`${username}${divider1}${playTime}`);
 
         if (leaderboard.length > 10)
             leaderboard.pop();
 
         document.cookie = `${boardType}=${leaderboard.toString()}`;
-        console.log(cookiesObj);
 
         displayLeaderboard(leaderboard);
     } else {
-        document.cookie = `${boardType}=${username}-${playTime}`;
+        document.cookie = `${boardType}=${username}${divider1}${playTime}`;
         console.log("cookie created :)");
 
-        let leaderboard = [`${username}-${playTime}`];
+        let leaderboard = [`${username}${divider1}${playTime}`];
         displayLeaderboard(leaderboard);
     }
 }
 
-function millisToMinAndSec (ms) {
-    let minutes = Math.floor(ms/60000);
+function millisToMinAndSec(ms) {
+    let minutes = Math.floor(ms / 60000);
     let seconds = parseInt((ms % 60000) / 1000);
     return `${minutes<10?'0':''}${minutes}:${seconds<10?'0':''}${seconds}`;
 }
 
 /**
  * Function that displays leaderboard on the web page
+ * @param {Array|False} leaderboard - array with leaderboard, false or undefined
  */
-function displayLeaderboard (leaderboard) {
-    if(document.getElementsByClassName("leaderboard")[0]) {
+function displayLeaderboard(leaderboard) {
+    if (document.getElementsByClassName("leaderboard")[0]) {
         document.getElementsByClassName("leaderboard")[0].remove();
     }
 
     let leaderboardDiv = document.createElement("div");
     leaderboardDiv.classList.add("leaderboard");
 
+    if (leaderboard === undefined) {
+        let info = document.createElement("p");
+        info.innerText = "Wpisz wymiary planszy i ilość min";
+        leaderboardDiv.appendChild(info);
+        topDiv.appendChild(leaderboardDiv);
+        return;
+    }
+
     let title = document.createElement("h3");
     title.innerText = "Tabela wyników";
     leaderboardDiv.appendChild(title);
 
+    if (leaderboard === false) {
+        let info = document.createElement("p");
+        info.innerText = "Pierwsza gra na takiej planszy 🤯";
+        leaderboardDiv.appendChild(info);
+    }
+
     let table = document.createElement("table");
-    for(let i in leaderboard) {
+    for (let i in leaderboard) {
         let tr = document.createElement("tr");
 
         let td1 = document.createElement("td");
-        td1.innerText = leaderboard[i].split("-")[0];
+        td1.innerText = leaderboard[i].split(divider1)[0];
         tr.appendChild(td1);
 
         let td2 = document.createElement("td");
-        td2.innerText = millisToMinAndSec(leaderboard[i].split("-")[1]);
+        td2.innerText = millisToMinAndSec(leaderboard[i].split(divider1)[1]);
         tr.appendChild(td2);
 
         table.appendChild(tr);

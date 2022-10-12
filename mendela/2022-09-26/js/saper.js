@@ -13,18 +13,20 @@ document.getElementsByName("submit")[0].onclick = function () {
     mines = document.getElementsByName("Mines")[0].value;
 
 
-    if (!(height.length&&width.length&&mines.length)) {
+    if (!(height.length && width.length && mines.length)) {
         alert("Uzupełnij wszystkie pola!")
     } else {
         // delete other boards
-        if(document.getElementsByClassName("saper")[0]) {
+        if (document.getElementsByClassName("saper")[0]) {
             document.getElementsByClassName("saper")[0].remove();
             clearInterval(timerInterval);
         }
 
-        if(width*height <= mines)
+        if (width * height <= mines)
             alert("Za dużo min ;)");
         else {
+            displayLeaderboard(getLeaderboard(`h${height}w${width}m${mines}`));
+
             // console.log(`h: ${height}\nw: ${width}\nm: ${mines}`);
             displayBoard = boardGen(height, width);
             flags = mines;
@@ -37,8 +39,7 @@ document.getElementsByName("submit")[0].onclick = function () {
 
             let board = minesBoard();
             gameBoard(displayBoard, board);
-            timerInterval = setInterval( function () {timer()}, 1000);
+            timerInterval = setInterval(function () { timer() }, 1000);
         }
-
     }
 }
