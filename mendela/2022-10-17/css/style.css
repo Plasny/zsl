@@ -1,0 +1,49 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+}
+
+.container {
+    margin: auto;
+}
+
+.main {
+    height: 100%;
+    display: flex;
+    align-content: center;
+}
+
+#points {
+    text-align: center;
+    font-family: monospace;
+}
+
+.main table {
+    margin: auto;
+    border-collapse: collapse;
+}
+
+.main td, .main th {
+    border: 1px solid black;
+    width: 5vh;
+    height: 5vh;
+}
+
+.wall {
+    background-color: gray;
+}
+
+.snake {
+    background-color: green;
+}
+
+.apple {
+    /* background-color: red; */
+    background-image: url(../img/apple.png);
+    background-size: contain;
+}
