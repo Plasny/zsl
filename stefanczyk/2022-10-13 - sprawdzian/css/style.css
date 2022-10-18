@@ -1,0 +1,41 @@
+body {
+    font-family: monospace;
+}
+
+#main {
+    width: 100%;
+}
+
+#main table {
+    border-collapse: collapse;
+}
+
+#main table td,
+#main table th {
+    text-align: center;
+    border: 1px solid white;
+    width: 70px;
+    height: 20px;
+    padding: 5px;
+    color: white;
+}
+
+#main table th {
+    background-color: orange;
+}
+
+.pink {
+    background-color: pink;
+}
+
+.purple {
+    background-color: green;
+}
+
+.gray {
+    background-color: gray;
+}
+
+.orange {
+    background-color: orange;
+}
