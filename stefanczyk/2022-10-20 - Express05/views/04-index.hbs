@@ -1,0 +1,11 @@
+<h1>{{subject}}</h1>
+
+<form action="/handle" method="GET" class="blueBorder">
+    <select name="field" size="{{fields.length}}">
+        {{#each fields}}
+        <option>{{name}}</option>
+        {{/each}}
+    </select>
+
+    <input type="submit" value="wyślij">
+</form>

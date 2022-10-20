@@ -1,0 +1,87 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: monospace;
+}
+
+h1 {
+  color: black;
+  text-decoration: underline;
+}
+
+.login {
+  color: blue;
+  text-decoration: none;
+  background-color: lightgray;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+}
+
+main {
+    width: 100%;
+    height: 90vh;
+}
+
+main h1 {
+    margin: 0 1vw;
+}
+
+main div {
+    margin: auto;
+    background-color: lightgray;
+    border-radius: 10px;
+    height: 40vh;
+    width: 80vw;
+    display: flexbox;
+    align-content: center;
+}
+
+main div p {
+    margin: 10px;
+    color: blue;
+    font-size: 20px;
+}
+
+footer {
+    border-top: 1px solid black;
+    background-color: lightgray;
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+}
+
+footer p {
+    margin: auto;
+    font-size: large;
+}
+
+form.blueBorder select, 
+form.blueBorder input[type="submit"] {
+  margin: 10px;
+  padding:10px;
+  border: blue 2px solid;
+  color: blue;
+  background-color: lightskyblue;
+  font-size: 20px;
+  width: 100px;
+  display: block;
+}
+
+form.blueBorder select option {
+  color: blue;
+  background-color: lightskyblue;
+}
+
+.radioGroup {
+  margin: 20px;
+  text-align: center;
+  display: inline-block;
+}
+.radioGroup label { 
+  display: block;
+  color: blue;
+  font-weight: bold;
+}
+
