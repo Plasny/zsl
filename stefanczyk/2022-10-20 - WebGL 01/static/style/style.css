@@ -1,0 +1,43 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.overlay {
+    position: fixed;
+    font-family: monospace;
+    color: red;
+}
+
+.overlay * {
+    margin: 10px;
+}
+
+#code {
+    padding: 10px;
+    width: fit-content;
+    border: red 2px solid;
+    border-radius: 5px;
+    font-weight: bold;
+    color: red;
+    white-space: pre;
+    overflow: scroll;
+    max-height: 80vh;
+}
+
+h1 {
+    font-family: monospace;
+    color: blue;
+}
+
+button {
+    border: 2px solid blue;
+    border-radius: 4px;
+    padding: 5px;
+    text-align: center;
+    color: blue;
+}
+
+button.cw03 {
+    width: 70px;
+}
