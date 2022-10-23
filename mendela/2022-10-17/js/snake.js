@@ -35,6 +35,3 @@ appleGen()
 snakeGen();
 
 document.body.setAttribute("onkeydown", "keyPress(event)");
-
-// ---------------------------------------------------------------------------
-// TODO: don't create apples on snake, win

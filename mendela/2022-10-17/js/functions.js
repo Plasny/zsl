@@ -84,9 +84,15 @@ function boardGen() {
 }
 
 function appleGen() {
-    x = Math.ceil(Math.random()*width);
-    y = Math.ceil(Math.random()*height);
-    document.getElementById(`${x}:${y}`).classList.add("apple");
+    while (true) {
+        x = Math.ceil(Math.random() * width);
+        y = Math.ceil(Math.random() * height);
+
+        if (!document.getElementById(x + ':' + y).classList.contains("snake")) {
+            document.getElementById(`${x}:${y}`).classList.add("apple");
+            break;
+        }
+    }
 }
 
 /**
@@ -94,7 +100,8 @@ function appleGen() {
  */
 function snakeGen() {
     snakeLength = 1;
-    document.getElementById("points").innerText = `Długość węża: ${snakeLength}`;
+    document.getElementById("points")
+        .innerText = `Długość węża: ${snakeLength}`;
 
     Array.from(document.getElementsByClassName("snake")).forEach((element) =>
         element.classList.remove("snake")
@@ -102,7 +109,7 @@ function snakeGen() {
 
     let x = Math.ceil(width / 2);
     let y = Math.ceil(height / 2);
-    snakeNow = [{x: x, y: y}];
+    snakeNow = [{ x: x, y: y }];
 
     document.getElementById(`${x}:${y}`).classList.add("snake");
 
@@ -144,7 +151,7 @@ function snakeMovement() {
      */
     let nextCellClass = document.getElementById(`${x}:${y}`).classList;
 
-    if (x*y == 0 || x == width + 1 || y == height + 1 || nextCellClass.contains("snake")) {
+    if (x * y == 0 || x == width + 1 || y == height + 1 || nextCellClass.contains("snake")) {
         cancelAnimationFrame(aniFrame);
         started = false;
         alert("Przegrałeś");
@@ -153,19 +160,22 @@ function snakeMovement() {
     } else if (nextCellClass.contains("apple") == true) {
         nextCellClass.remove("apple");
         snakeLength++;
-        document.getElementById("points").innerText = `Długość węża: ${snakeLength}`;
-
-        if (snakeLength == height*width) {
-            alert("Wygrałeś !!!");
-            return false;
-            
-        }
+        document.getElementById("points")
+            .innerText = `Długość węża: ${snakeLength}`;
 
         appleGen();
+
+        if (snakeLength == height * width) {
+            cancelAnimationFrame(aniFrame);
+            started = false;
+            alert("Wygrałeś !!!");
+            snakeGen();
+            return false;
+        }
     }
 
-    snakeNow.unshift({x:x, y:y});
-    if(snakeNow.length > snakeLength)
+    snakeNow.unshift({ x: x, y: y });
+    if (snakeNow.length > snakeLength)
         snakeNow.pop();
 
     return true;
@@ -177,7 +187,7 @@ function snakeMovement() {
 function game() {
     let gameContinues = snakeMovement();
 
-    if(gameContinues) {
+    if (gameContinues) {
         Array.from(document.getElementsByClassName("snake")).forEach((element) =>
             element.classList.remove("snake")
         );
