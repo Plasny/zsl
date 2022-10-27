@@ -15,14 +15,16 @@
 
 #code {
     padding: 10px;
-    width: fit-content;
     border: red 2px solid;
     border-radius: 5px;
     font-weight: bold;
     color: red;
     white-space: pre;
-    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: auto;
     max-height: 80vh;
+    width: fit-content;
+    scrollbar-width: thin;
 }
 
 h1 {
@@ -30,7 +32,8 @@ h1 {
     color: blue;
 }
 
-button {
+button,
+input {
     border: 2px solid blue;
     border-radius: 4px;
     padding: 5px;
@@ -38,6 +41,23 @@ button {
     color: blue;
 }
 
+input {
+    width: 40px;
+    border: 2px solid red;
+}
+
 button.cw03 {
     width: 70px;
+}
+
+.inline {
+    height: 20px;
+    display: flex;
+    align-content: center;
+}
+
+.inline * {
+    margin-top: auto;
+    margin-bottom: auto;
+    width:auto;
 }

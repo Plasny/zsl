@@ -1,8 +1,6 @@
 let code = [];
 let id = 0;
 
-const randPos = maxVal => ((Math.random() * 2 * maxVal) - maxVal).toFixed(2);
-
 function randHex(size) {
     let result = [];
     for (let i = 0; i < size; i++)
@@ -11,11 +9,13 @@ function randHex(size) {
 }
 
 // cube 
-const geometry = new THREE.BoxGeometry(40, 40, 40);
+const geometry = () => new THREE.BoxGeometry(1,1,1);
 const material = () => new THREE.MeshBasicMaterial({ 
     side: THREE.DoubleSide, 
+    transparent: true,
+    opacity: 0.5
 });
-const newCube = () => new THREE.Mesh(geometry, material());
+const newCube = () => new THREE.Mesh(geometry(), material());
 
 window.addEventListener("load", function () {
     // webgl setup
@@ -33,7 +33,7 @@ window.addEventListener("load", function () {
     renderer.setClearColor(0xffffff);
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    camera.position.set(200, 200, 200);
+    camera.position.set(100, 100, 100);
     camera.lookAt(scene.position);
 
     function render() {
@@ -50,31 +50,26 @@ window.addEventListener("load", function () {
     codeBlock();
 
     document.getElementById("add").addEventListener("click", function () {
-        let codeElem = { id: id++, pos: {
-            x: randPos(150),
-            y: randPos(100),
-            z: randPos(150),
+        let width = document.getElementById("width").value;
+        let height = document.getElementById("height").value;
+        let depth = document.getElementById("depth").value;
+        
+        let codeElem = { id: id++, dimensions: {
+            width: width,
+            height: height,
+            depth: depth,
         } };
 
         let cube = newCube();
 
-        cube.name = "cube";
+        cube.scale.x = width;
+        cube.scale.y = height; 
+        cube.scale.z = depth;
         cube.material.color.setHex(randHex(6));
-        cube.position.x = codeElem.pos.x;
-        cube.position.y = codeElem.pos.y;
-        cube.position.z = codeElem.pos.z;
 
         scene.add(cube);
         code.push(codeElem);
 
-        codeBlock();
-    });
-    document.getElementById("del").addEventListener("click", function () {
-        while(scene.getObjectByName("cube"))
-            scene.remove(scene.getObjectByName("cube"));
-
-        id = 0;
-        code = [];
         codeBlock();
     });
 });
