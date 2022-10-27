@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cw01</title>
+
+    <script>
+        document.addEventListener("keydown", (e) => {
+            document.getElementById("keyPressed").innerText = e.keyCode;
+        })
+    </script>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-content: center;
+        }
+
+        #keyPressed {
+            font-size: 120px;
+            font-family: monospace;
+            color: gray;
+            margin: auto;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="keyPressed"></div>
+</body>
+
+</html>
