@@ -11,7 +11,7 @@ const cubeSize = 80;
 const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
 const material = new THREE.MeshBasicMaterial({
     side: THREE.DoubleSide, // dwustronny
-    map: new THREE.TextureLoader().load('mats/Minecraft-Diamond-Or.jpg'), // plik tekstury
+    map: new THREE.TextureLoader().load('mats/Minecraft-Diamond-Ore.jpg'), // plik tekstury
     transparent: true, // przezroczysty / nie
     opacity: 0.9, // stopień przezroczystości
 })

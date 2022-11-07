@@ -74,6 +74,10 @@ window.addEventListener("load", function () {
             }
             else {
                 directionPlus = true;
+                interval = setInterval(function () {
+                    code.camPosX--;
+                    code.camPosZ--;
+                }, 10);
             }
         }
         else {
