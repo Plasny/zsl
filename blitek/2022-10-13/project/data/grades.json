@@ -1,0 +1,32 @@
+{
+    "matematyka": {
+        "term1": {
+            "answer": [4, 5, 3],
+            "quiz": [5, 1, 4, 4, 2],
+            "test": [3, 1, 4, 6, 5],
+            "interim": 4
+        },
+        "term2": {
+            "answer": [4, 5, 5, 3, 5],
+            "quiz": [5, 4, 2, 3],
+            "test": [6, 4, 5],
+            "interim": 5,
+            "yearly": 4
+        }
+    },
+    "fizyka": {
+        "term1": {
+            "answer": [4, 1, 2, 5, 3],
+            "quiz": [5, 1, 2],
+            "test": [3, 1, 4, 6, 4, 5],
+            "interim": 4
+        },
+        "term2": {
+            "answer": [4, 5, 4],
+            "quiz": [5, 4, 2],
+            "test": [3, 5, 4, 6, 4, 5],
+            "interim": 5,
+            "yearly": 4
+        }
+    }
+}

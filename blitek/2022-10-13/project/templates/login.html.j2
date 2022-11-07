@@ -1,6 +1,11 @@
 <!-- https://getbootstrap.com/docs/ -->
 {% extends "bootstrap/base.html" %}
 
+{% block scripts %}
+    {{ super() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+{% endblock %}
+
 {% block title %}{{ title }}{% endblock %}
 
 {% block navbar %}
@@ -31,4 +36,6 @@
             </div>
         {% endif %}
     </div>
+
+    {% include "includes/footer.html.j2" %}
 {% endblock %}
