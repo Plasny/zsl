@@ -1,0 +1,16 @@
+<!-- https://getbootstrap.com/docs/ -->
+
+{% extends "bootstrap/base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+<!-- https://getbootstrap.com/docs/5.2/components/navbar/ -->
+{% block navbar %}
+    {% include "includes/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-2">
+        <h2>Witaj, {{ userName }}</h2>
+    </div>
+{% endblock %}

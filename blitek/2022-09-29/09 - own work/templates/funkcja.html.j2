@@ -1,0 +1,32 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block navbar %}
+    {% include "includes/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-2">
+        <h2>Miejsca zerowe funkcji: x1 = {{ x1 }}, x2 = {{ x2 }}</h2>
+
+        <!-- custom form -->
+        <form method="POST" action="/funkcja" class="row g-3">
+            {{ userForm.hidden_tag() }}
+
+            <div class="col">
+                {{ userForm.a.label }} {{ userForm.a(class_='form-control') }}
+            </div>
+            <div class="col">
+                {{ userForm.b.label }} {{ userForm.b(class_='form-control') }}
+            </div>
+            <div class="col">
+                {{ userForm.c.label }} {{ userForm.c(class_='form-control') }}
+            </div>
+
+            <div class="col-12">
+                {{ userForm.submit(class_="btn btn-danger") }}
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,43 @@
+body {
+    font-family: monospace;
+}
+
+h1 {
+    text-align: center;
+}
+
+h2 {
+    text-decoration: double;
+}
+
+.pingwin {
+    width: 50%;
+}
+
+.koty {
+    padding: 10px;
+    margin: auto;
+    color: blueviolet;
+    background-color: black;
+    border: 2px blueviolet solid;
+    border-radius: 2px;
+}
+
+.auta {
+    padding: 10px;
+    margin: auto;
+    color: red;
+    font-size: large;
+}
+
+.drzewa {
+    padding: 10px;
+    margin: auto;
+    color: green;
+    background-color: brown;
+    border: green 2px groove;
+}
+
+.product {
+    width:50%;
+}

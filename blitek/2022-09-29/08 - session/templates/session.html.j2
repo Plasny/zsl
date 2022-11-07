@@ -1,0 +1,36 @@
+<!-- https://getbootstrap.com/docs/ -->
+
+{% extends "bootstrap/base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+<!-- https://getbootstrap.com/docs/5.2/components/navbar/ -->
+{% block navbar %}
+    {% include "includes/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-2">
+        {% for message in get_flashed_messages() %}
+            <!-- https://getbootstrap.com/docs/5.2/components/alerts -->
+            <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+                {{ message }}
+                <!-- https://getbootstrap.com/docs/5.2/components/alerts/#dismissing -->
+                <button type="button" class="btn-close" data-bs-dismiss="alert" arial-label="Close"></button>
+            </div>
+        {% endfor %}
+
+        {% if userName %}
+            <h2>Witaj, {{ userName }}!</h2>
+        {% else %}
+            <h2>Witaj, nieznajomy!</h2>
+        {% endif %}
+
+        <!-- custom form -->
+        <form method="POST" action="/setSession">
+            {{ userForm.hidden_tag() }}
+            {{ userForm.userName.label }} {{ userForm.userName(class_='form-control') }}
+            {{ userForm.submit(class_="btn btn-danger") }}
+        </form>
+    </div>
+{% endblock %}

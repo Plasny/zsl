@@ -1,0 +1,22 @@
+<h1>{{subject}}</h1>
+
+<form>
+    <input type="text" name="text">
+    <input type="submit">
+</form>
+
+<div class="base bold">
+    <span style="color:gray">tekst wejściowy: </span>{{text}}
+</div>
+
+<div class="base bold">
+    <span style="color:gray">10 znaków: </span>{{shortText text}}
+</div>
+
+<div class="base bold">
+    <span style="color:gray">duże litery: </span>{{capitalLetter text}}
+</div>
+
+<div class="base bold">
+    <span style="color:gray">myślniki: </span>{{dashes text}}
+</div>

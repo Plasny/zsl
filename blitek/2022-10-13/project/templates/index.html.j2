@@ -1,0 +1,29 @@
+<!-- https://getbootstrap.com/docs/ -->
+{% extends "bootstrap/base.html" %}
+{# {% import "bootstrap/wtf.html" as wtf %} #}
+
+{% block scripts %}
+    {{ super() }}
+    {# {{ moment.include_moment() }}
+    {{ moment.locale('pl') }} #}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+{% endblock %}
+
+{% block title %}{{ title }}{% endblock %}
+
+<!-- https://getbootstrap.com/docs/5.2/components/navbar/ -->
+{% block navbar %}
+    {% if userLogin %}
+        {% include "includes/navbarlogin.html.j2" %}
+    {% else %}
+        {% include "includes/navbar.html" %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-2">
+        <p class="text-center">Strona Główna</p>
+    </div>
+
+    {% include "includes/footer.html.j2" %}
+{% endblock %}

@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #eee;
+    display: flex;
+    align-items: center;
+}
+
+.container {
+    padding: 20px;
+    margin: auto;
+    margin-top: 20px;
+    border: silver solid 2px;
+    background: white;
+}
+
+.container form input {
+    width: 100%;
+}
+
+.container hr {
+    margin: 20px 0;
+}
+
+.container a {
+    color: black;
+}

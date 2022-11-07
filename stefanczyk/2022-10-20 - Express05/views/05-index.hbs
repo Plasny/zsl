@@ -1,0 +1,12 @@
+<h1>{{subject}}</h1>
+
+<form action="/handle" method="GET" class="blueBorder">
+    {{#each fields}}
+    <div class="radioGroup">
+        <input type="radio" name="field" value="{{name}}" id="{{name}}">
+        <label for="{{name}}">{{name}}</label>
+    </div>
+    {{/each}}
+
+    <input type="submit" value="wyślij">
+</form>

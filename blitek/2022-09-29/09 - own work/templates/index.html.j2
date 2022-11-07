@@ -1,0 +1,27 @@
+<!-- https://getbootstrap.com/docs/ -->
+
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}{{ title }}{% endblock %}
+
+<!-- https://getbootstrap.com/docs/5.2/components/navbar/ -->
+{% block navbar %}
+    {% include "includes/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-2">
+        <!-- custom form -->
+        <form method="POST" action="/user">
+            {{ userForm.hidden_tag() }}
+            {{ userForm.userName.label }} {{ userForm.userName(class_='form-control') }}
+            {{ userForm.submit(class_="btn btn-danger") }}
+        </form>
+
+        <hr>
+
+        <!-- bootstrap form -->
+        {{ wtf.quick_form(userForm, action='/user') }}
+    </div>
+{% endblock %}
