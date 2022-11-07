@@ -1,0 +1,25 @@
+body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    align-content: center;
+
+    font-family: monospace;
+}
+
+#root {
+    margin: auto;
+}
+
+td {
+    width: 100px;
+    height: 100px;
+    background-color: gray;
+
+    text-align: center;
+    line-height: 100%;
+    font-size: 40px;
+}
