@@ -1,0 +1,34 @@
+<h1>{{subject}}</h1>
+
+<h3>wyświetlenie całej tablicy jedno lub dwu-wymiarowej</h3>
+<div class="base">
+    <p>{{langs}}</p> 
+    <p>{{digits}}</p> 
+</div>
+
+<h3>pobranie 0 elementu z tablicy jedno lub dwu-wymiarowej</h3>
+<div class="base">
+    <p>{{langs.[0]}}</p> 
+    <p>{{digits.[0].[0]}}</p> 
+</div>
+
+<h3>iteracja przez tablicę</h3>
+<div class="base">
+    {{#each countries}}
+    <p>{{@index}} - {{this}}</p>
+    {{/each}}
+</div>
+
+<h3>iteracja przez obiekt</h3>
+<div class="base">
+    {{#each user}}
+    <p>{{@index}} - {{@key}} - {{this}}</p>
+    {{/each}}
+</div>
+
+<h3>iteracja przez tablicę obiektów</h3>
+<div class="base">
+    {{#each books}}
+    <p>{{@index}} - {{title}}</p>
+    {{/each}}
+</div>

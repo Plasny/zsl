@@ -1,0 +1,49 @@
+body {
+  font-family: monospace;
+}
+
+h1 {
+  color: black;
+  text-decoration: underline;
+}
+
+h3 {
+  color: gray;
+  text-decoration: underline;
+}
+
+form * {
+  margin: 10px;
+  padding: 10px;
+  border: blue 2px solid;
+  color: blue;
+}
+
+.base {
+  color: blue;
+  text-decoration: none;
+  background-color: lightgray;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+}
+
+.bold {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+}
+
+.card img {
+  height: 100px;
+  width: 100px;
+  border-radius: 5px;
+}
+
+.card p {
+  margin: auto 10px;
+}
