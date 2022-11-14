@@ -29,21 +29,50 @@ body {
 }
 
 .main td, .main th {
-    border: 1px solid black;
+    /* border: 1px solid black; */
     width: 5vh;
     height: 5vh;
 }
 
+tr td {
+    background-color: #49c51cd8;
+}
+tr:nth-child(odd) .board:nth-child(even),tr:nth-child(even) .board:nth-child(odd) {
+    background-color: #209e12;
+}
+
 .wall {
+    border: 1px solid black;
     background-color: gray;
 }
 
-.snake {
+/* .snake {
     background-color: green;
-}
+} */
 
 .apple {
     /* background-color: red; */
-    background-image: url(../img/apple.png);
+    background-image: url('../img/apple.png');
     background-size: contain;
+}
+
+.head, .body, .body-turn, .tail {
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.body {
+    background-image: url('../img/body.png');
+}
+
+.body-turn {
+    background-image: url('../img/body-turn.png');
+}
+
+.tail {
+    background-image: url('../img/tail.png');
+}
+
+.head {
+    background-image: url('../img/head.png');
 }

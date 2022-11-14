@@ -3,21 +3,21 @@ function keyPress(e) {
     // console.log(e.code);
     // console.log(e.keyCode);
 
-    switch(e.code) {
+    switch (e.code) {
         case "KeyW":
-        case "ArrowUp": 
+        case "ArrowUp":
             snakeDirection = "up";
             break;
         case "KeyS":
-        case "ArrowDown": 
+        case "ArrowDown":
             snakeDirection = "down";
             break;
         case "KeyA":
-        case "ArrowLeft": 
+        case "ArrowLeft":
             snakeDirection = "left";
             break;
         case "KeyD":
-        case "ArrowRight": 
+        case "ArrowRight":
             snakeDirection = "right";
             break;
     }
@@ -30,8 +30,11 @@ function keyPress(e) {
 }
 
 // ---------------------------------------------------------------------------
-boardGen();
-appleGen()
-snakeGen();
+window.addEventListener("DOMContentLoaded", function () {
+    boardGen();
+    appleGen()
+    snakeGen();
+    
+    document.body.setAttribute("onkeydown", "keyPress(event)");
+});
 
-document.body.setAttribute("onkeydown", "keyPress(event)");
