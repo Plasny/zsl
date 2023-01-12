@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Żużel</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script type="module" src="js/zuzel.js"></script>
+</head>
+
+<body>
+    <!-- laps left -->
+    <div id="lapsLeft"></div>
+
+    <!-- Board and player trails -->
+    <div class="container">
+        <canvas id="c1"></canvas>
+    </div>
+
+    <!-- Player models -->
+    <div class="container">
+        <canvas id="c2"></canvas>
+    </div>
+
+    <!-- Menu and GameOver screen -->
+    <div class="container">
+        <div id="menu">
+            <div class="settings">
+                <label for="laps">Number of laps: </label>
+                <input type="number" id="laps" value=3>
+                <label for="speed">Speed of motorcycles: </label>
+                <input type="number" id="speed" value=3>
+                <label for="rotation">Rotation of motorcycles: </label>
+                <input type="number" id="rotation" value=3>
+            </div>
+            <div class="players">
+                <form id="p-1">
+                    <img src="./img/blackMotor.webp">
+
+                    <div>
+                        <label for="name">Player Name</label>
+                        <input type="text" name="name">
+                    </div>
+
+                    <div>
+                        <label for="color">Trail color</label>
+                        <input type="color" name="color" value="#ff0000">
+                    </div>
+
+                    <div>
+                        <label for="lKey">Key code for turning left:</label>
+                        <input type="button" name="lKey" value="Press key and click to set">
+                    </div>
+
+                    <div>
+                        <label for="rKey">Key code for turning right:</label>
+                        <input type="button" name="rKey" value="Press key and click to set">
+                    </div>
+
+                    <button type="submit" name="submit">Add</button>
+                </form>
+                <form id="p-2">
+                    <img src="./img/redMotor.webp">
+
+                    <div>
+                        <label for="name">Player Name</label>
+                        <input type="text" name="name">
+                    </div>
+
+                    <div>
+                        <label for="color">Trail color</label>
+                        <input type="color" name="color" value="#ffff00">
+                    </div>
+
+                    <div>
+                        <label for="lKey">Key code for turning left:</label>
+                        <input type="button" name="lKey" value="Press key and click to set">
+                    </div>
+
+                    <div>
+                        <label for="rKey">Key code for turning right:</label>
+                        <input type="button" name="rKey" value="Press key and click to set">
+                    </div>
+
+                    <button type="submit" name="submit">Add</button>
+                </form>
+                <form id="p-3">
+                    <img src="./img/yellowMotor.webp">
+
+                    <div>
+                        <label for="name">Player Name</label>
+                        <input type="text" name="name">
+                    </div>
+
+                    <div>
+                        <label for="color">Trail color</label>
+                        <input type="color" name="color" value="#40ff30">
+                    </div>
+
+                    <div>
+                        <label for="lKey">Key code for turning left:</label>
+                        <input type="button" name="lKey" value="Press key and click to set">
+                    </div>
+
+                    <div>
+                        <label for="rKey">Key code for turning right:</label>
+                        <input type="button" name="rKey" value="Press key and click to set">
+                    </div>
+
+                    <button type="submit" name="submit">Add</button>
+                </form>
+                <form id="p-4">
+                    <img src="./img/greenMotor.webp">
+
+                    <div>
+                        <label for="name">Player Name</label>
+                        <input type="text" name="name">
+                    </div>
+
+                    <div>
+                        <label for="color">Trail color</label>
+                        <input type="color" name="color" value="#0000ff">
+                    </div>
+
+                    <div>
+                        <label for="lKey">Key code for turning left:</label>
+                        <input type="button" name="lKey" value="Press key and click to set">
+                    </div>
+
+                    <div>
+                        <label for="rKey">Key code for turning right:</label>
+                        <input type="button" name="rKey" value="Press key and click to set">
+                    </div>
+
+                    <button type="submit" name="set">Add</button>
+                </form>
+            </div>
+            <button id="startGame1">Press to start</button>
+        </div>
+        <div id="gameOver" hidden>
+            <h2 id="topText">Game Over</h2>
+            <div id="scoreboard"></div>
+            <button id="goToMenu">Go to menu</button>
+            <button id="startGame2">Start again</button>
+        </div>
+    </div>
+
+</body>
+
+</html>
