@@ -1,0 +1,29 @@
+<script defer src="js/script.js"></script>
+
+<h1>Sprawdzian</h1>
+
+<button id="change">LISTA/TABELA</button>
+
+<div id="content">
+    {{#each items}}
+    {{> div }}
+    {{/each}}
+</div>
+
+{{!-- <table id="table">
+    <tr>
+        <th>NAZWA</th>
+        <th>KATEGORIA</th>
+        <th>CENA</th>
+        <th>OCENA</th>
+    </tr>
+    {{#each items}}
+    {{> row }}
+    {{/each}}
+</table>
+
+<ul id="list" style="display: none">
+    {{#each items}}
+    {{> list }}
+    {{/each}}
+</ul> --}}

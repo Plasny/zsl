@@ -1,0 +1,29 @@
+<h1>Sprawdzian</h1>
+
+<form action="" method="POST">
+    {{#each (countStars items)}}
+    <label for=`s{{this}}`>{{this}}</label>
+    <input type="radio" name="stars" id=`s{{this}}` value="{{this}}">
+    {{/each}}
+
+    <select name="category">
+        <option>ALL</option>
+    {{#each (uniqeCategory items)}}
+        <option>{{this}}</option>
+    {{/each}}
+    </select>
+
+    <input type="submit" value="FILTRUJ">
+</form>
+
+<table>
+    <tr>
+        <th>NAZWA</th>
+        <th>KATEGORIA</th>
+        <th>CENA</th>
+        <th>OCENA</th>
+    </tr>
+    {{#each items}}
+    {{> row }}
+    {{/each}}
+</table>

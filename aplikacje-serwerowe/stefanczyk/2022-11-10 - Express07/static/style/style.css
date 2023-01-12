@@ -1,0 +1,50 @@
+body {
+    font-family: monospace;
+}
+
+h1 {
+    color: red;
+    font-size: 16px;
+}
+
+input, select, button {
+    border: 1px solid blue;
+    color: blue;
+    margin: 5px auto;
+}
+
+label {
+    color: blue;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td, th {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+th {
+    background-color: yellow;
+}
+
+td {
+    background-color: lightgray;
+    min-width: 60px;
+}
+
+ul ul {
+    list-style-type: none;
+}
+
+#content div {
+    border: 1px solid black;
+    margin: 5px;
+    width: fit-content;
+}
+
+#content div p {
+    margin: 0px 10px;
+}
