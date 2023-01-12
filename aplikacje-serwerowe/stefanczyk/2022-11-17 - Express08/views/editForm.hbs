@@ -1,0 +1,43 @@
+<h1>02: zapis / odczyt / edycja danych w bazie NEDB</h1>
+
+<div class="container">
+    <form method="post" action="/" class="block">
+        <caption>Dane pojazdu</caption>
+        {{#each vehicleData}}
+        <div class="row">
+            <label for="{{this}}">{{this}}:</label>
+            <div><input type="checkbox" value="{{this}}" id="{{this}}" name="data" /></div>
+        </div>
+        {{/each}}
+
+        <input type="hidden" name="operation" value="add" />
+        <input class="add" type="submit" value="DODAJ DO BAZY" />
+
+    </form>
+
+    <table class="block">
+        <caption>wszystkie pojazdy - edycja</caption>
+        <tr>
+            <th></th>
+            <th>ubezpieczony</th>
+            <th>benzyna</th>
+            <th>uszkodzony</th>
+            <th>napęd 4x4</th>
+            <th></th>
+            <th></th>
+        </tr>
+
+        {{#each docs}}
+            {{#ifX _id ../id}}
+                {{#with ../this}}
+                    {{> editRow}}
+                {{/with}}
+            {{else}}
+                {{#with ../this}}
+                    {{> row}}
+                {{/with}}
+            {{/ifX}}
+        {{/each}}
+    </table>
+
+</div>

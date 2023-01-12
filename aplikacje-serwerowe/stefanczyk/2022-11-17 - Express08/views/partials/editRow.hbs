@@ -1,0 +1,44 @@
+<form method="post" action="/">
+    <tr>
+        <td>{{@index}}</td>
+        <td>
+            <select name="ubezpieczony">
+                <option value="{{ubezpieczony}}">-[{{ubezpieczony}}]-</option>
+                <option>TAK</option>
+                <option>NIE</option>
+            </select>
+        </td>
+        <td>
+            <select name="benzyna">
+                <option value="{{benzyna}}">-[{{benzyna}}]-</option>
+                <option>TAK</option>
+                <option>NIE</option>
+            </select>
+        </td>
+        <td>
+            <select name="uszkodzony">
+                <option value="{{uszkodzony}}">-[{{uszkodzony}}]-</option>
+                <option>TAK</option>
+                <option>NIE</option>
+            </select>
+        </td>
+        <td>
+            <select name="napęd 4x4">
+                <option value="{{'napęd 4x4'}}">-[{{'napęd 4x4'}}]-</option>
+                <option>TAK</option>
+                <option>NIE</option>
+            </select>
+        </td>
+        <td>
+            <input type="hidden" name="operation" value="update">
+            <input type="hidden" name="id" value="{{_id}}">
+            <input type="submit" class="update" value="UPDATE">
+        </td>
+</form>
+        <td>
+            <form method="get" action="/">
+                <input type="submit" class="edit" value="CANCEL">
+            </form>
+        </td>
+    </tr>
+

@@ -1,0 +1,20 @@
+<tr>
+    <td>{{@index}}</td>
+    <td>{{ubezpieczony}}</td>
+    <td>{{benzyna}}</td>
+    <td>{{uszkodzony}}</td>
+    <td>{{'napęd 4x4'}}</td>
+    <td>
+        <form method="post" action="/">
+            <input type="hidden" name="operation" value="del">
+            <input type="hidden" name="id" value="{{_id}}">
+            <input type="submit" class="del" value="DELETE">
+        </form>
+    </td>
+    <td>
+        <form method="get" action="/editCar">
+            <input type="hidden" name="id" value="{{_id}}">
+            <input type="submit" class="edit" value="EDIT">
+        </form>
+    </td>
+</tr>
