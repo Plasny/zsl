@@ -1,0 +1,58 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.overlay {
+    position: fixed;
+    width: 100%;
+    font-family: monospace;
+    color: red;
+}
+
+.overlay * {
+    margin: 10px;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+#animations {
+    width: 170px;
+}
+
+#animations button {
+    margin: 2px;
+}
+
+h1 {
+    font-family: monospace;
+    color: blue;
+}
+
+button {
+    border: none;
+    border-radius: 15px;
+    background-color: rgb(100, 100, 100, 0.5);
+    color: white;
+    font-weight: bold;
+    padding: 5px;
+    text-align: center;
+    width: 80px;
+}
+
+.inline {
+    height: 20px;
+    display: flex;
+    align-content: center;
+    margin: auto 0px;
+}
+
+.inline * {
+    margin: auto;
+}
