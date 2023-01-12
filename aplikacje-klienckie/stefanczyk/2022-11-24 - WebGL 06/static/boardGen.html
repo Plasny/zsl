@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Board Generator</title>
+
+    <link rel="stylesheet" href="css/generator.css">
+    <script src="js/boardGen-main.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <aside>
+            <select id="size"></select>
+            <button class="goEnable" id="dirIn" title="Changes how dirIn is set. Instead of setting opposite number to dirOut it checks position of other hexagons and sets dirIn acordingly to adjacent field. Multiple dirIns are currently unsupported :(">AUTO DIRIN [ALFA] - <span style="color:red">OFF</span></button>
+            <button id="boardReset">BOARD RESET</button>
+
+            <div class="spacer"></div>
+
+            <button id="save">ZAPISZ NA SERWERZE</button>
+            <button id="load">WCZYTAJ Z SERWERA</button>
+
+            <div class="spacer"></div>
+
+            <a href="/hex">
+                <button class="goto">GO TO HEX!</button>
+            </a>
+            <a href="/game">
+                <button class="goto">GO TO GAME!</button>
+            </a>
+        </aside>
+
+        <code class="json"></code>
+
+        <main>
+            <div id="board"></div>
+        </main>
+    </div>
+</body>
+
+</html>
