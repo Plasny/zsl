@@ -1,0 +1,41 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Index{% endblock %}
+
+{% block scripts %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-2">
+    {{ wtf.quick_form(searchForm, form_type="basic") }}
+
+    {% if search %}
+    <h3 class="mt-5">Pogoda w miejscowości {{search}}:</h3>
+
+    {% if cityInfo %}
+    {# <ul>
+        {% for i in cityInfo %}
+        <li>{{i}} - {{ cityInfo[i] }}</li>
+        {% endfor %}
+    </ul> #}
+    <div class="mx-2">
+        {% for i in cityInfo %}
+        <div class="m-1">
+            <i class="{{format[i].icon}} me-1"></i>
+            {% if i == 'kierunek_wiatru' %}
+            {{ i.replace('_', ' ')}}: {{cityInfo[i]}}{{format[i].after}}
+            {% else %}
+            {{ i.replace('_', ' ')}}: {{cityInfo[i]}}{{format[i].after}}
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>BRAK</p>
+    {% endif %}
+    {% endif %}
+
+</div>
+{% endblock %}
