@@ -1,0 +1,34 @@
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Nazwa przedmiotu</th>
+            <th>Oceny - pierwszy semestr</th>
+            <th>Średnia</th>
+            <th>Ocena śródroczna</th>
+            <th>Oceny - drugi semestr</th>
+            <th>Średnia</th>
+            <th>Ocena śródroczna</th>
+            <th>Ocena roczna</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for subject in subjects %}
+        <tr>
+            <td>{{subject[1]}}</td>
+            <td>
+                {%for grade in grades %}
+                    {%if grade[1] == 1 and grade[2] == subject[0]%}
+                        {%if grade[3] == 'answer'%}
+                            <span class="badge bg-success" data-bs-toggle="tooltip" title="{{grade[4]}}{% if grade[5] %} - {{grade[5]}}{%endif%}">{{grade[0]}}</span>
+                        {%elif grade[3] == 'quiz'%}
+                            <span class="badge bg-warning" data-bs-toggle="tooltip" title="{{grade[4]}}{% if grade[5] %} - {{grade[5]}}{%endif%}">{{grade[0]}}</span>
+                        {%elif grade[3] == 'test'%}
+                            <span class="badge bg-info" data-bs-toggle="tooltip" title="{{grade[4]}}{% if grade[5] %} - {{grade[5]}}{%endif%}">{{grade[0]}}</span>
+                        {%endif%}
+                    {%endif%}
+                {%endfor%}
+            </td>
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>

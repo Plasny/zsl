@@ -1,0 +1,49 @@
+<!-- https://getbootstrap.com/docs/ -->
+{% extends "bootstrap/base.html" %}
+
+{% block scripts %}
+    {{ super() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+{% endblock %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block navbar %}
+    {% if userLogin %}
+        {% include "includes/navbarlogin.html.j2" %}
+    {% else %}
+        {% include "includes/navbar.html" %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-2">
+        {% if userLogin %}
+            <div class="alert alert-info">
+                {{ userLogin }} jesteś zalogowany :D <br>
+                <a href="/dashboard" class="alert-link">Przejdź do dashboard-a</a>
+            </div>
+        {% else %}
+            <div class="col-lg-12 mt-3">
+                {% for message in get_flashed_messages() %}
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-lg-4 offset-lg-4">
+                <form method="POST" action="/login">
+                    {{ login.hidden_tag() }}
+                    {{ login.userLogin.label(class_="form-label") }}
+                    {{ login.userLogin(class_="form-control") }}
+                    {{ login.userPass.label(class_="form-label") }}
+                    {{ login.userPass(class_="form-control") }}
+                    {{ login.submit(class_="btn btn-dark mt-3 float-end") }}
+                </form>
+            </div>
+        {% endif %}
+    </div>
+
+    {% include "includes/footer.html.j2" %}
+{% endblock %}
