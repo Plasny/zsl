@@ -79,7 +79,7 @@
                             Twoja średnia
                         </div>
                         <div class="card-body">
-                            4.2 
+                            {{ allAverage }}
                         </div>
                     </div>
                 </div>
@@ -89,8 +89,9 @@
                             Przedmioty - najwyższa średnia
                         </div>
                         <div class="card-body text-success">
-                            informatyka <span class="badge bg-success">4,80</span>
-                            matematyka <span class="badge bg-success">4,75</span>
+                            {% for subject, grade in bestSubjects %}
+                            {{ subject }} <span class="badge bg-success">{{ grade }}</span>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -100,7 +101,9 @@
                             Przedmioty - zagrożenia
                         </div>
                         <div class="card-body text-danger">
-                            chemia, fizyka
+                            {% for subject in subjectsD %}
+                            {{ subject }}
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
