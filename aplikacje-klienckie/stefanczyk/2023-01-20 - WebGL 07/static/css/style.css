@@ -1,0 +1,158 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body.preload * {
+    animation-duration: 0s !important;
+}
+
+.overlay {
+    position: absolute;
+    font-family: monospace;
+    color: greenyellow;
+    height: 100vh;
+    width: 100vw;
+}
+
+.flex {
+    display: flex;
+}
+
+.topbar {
+    height: 10vh;
+    width: 100vw;
+
+    /* display: inline-flex; */
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    font-size: xx-large;
+
+    background-color: green;
+
+    border-bottom: 1px solid greenyellow;
+}
+
+.topbar>* {
+    display: block;
+    margin: auto 10px;
+}
+
+#login {
+    align-self: center;
+    min-width: 350px;
+    width: fit-content;
+    padding: 10px;
+    border: 1px solid greenyellow;
+    border-radius: 2rem;
+    text-align: center;
+    font-size: 2.5vh;
+    margin: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#login button,
+#login input {
+    display: block;
+    margin: 0.5vh auto;
+    width: 60%;
+    height: 4vh;
+    border-radius: 0.5rem;
+    border: 1px solid greenyellow;
+    font-size: 2vh;
+    font-weight: bold;
+}
+
+#login input[type="text"] {
+    background: none;
+    color: white;
+    text-align: center;
+}
+
+#login button {
+    background-color: greenyellow;
+    color: black;
+}
+
+#game {
+    height: 100vh;
+    background-color: black;
+}
+
+#login>[name="message"] {
+    display: block;
+    opacity: 1;
+    height: 4vh;
+    animation-name: show;
+    animation-duration: 1s;
+}
+
+#login>[name="message"].hidden {
+    opacity: 0;
+    height: 0;
+    animation-name: hide;
+    animation-duration: 1s;
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes show {
+    0% {
+        opacity: 0;
+        height: 0;
+    }
+
+    25% {
+        opacity: 0;
+    }
+
+    75% {
+        height: 4vh;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes hide {
+    0% {
+        opacity: 1;
+        height: 4vh;
+    }
+
+    25% {
+        height: 4vh;
+    }
+
+    75% {
+        opacity: 0;
+    }
+
+    100% {
+        height: 0;
+    }
+}
+
+.username {
+    color: white;
+    font-weight: bold;
+}
+
+#win,
+#waiting,
+#waitingForMove,
+#loading {
+    margin: auto;
+    padding: 2vh;
+    font-size: 4vh;
+    border: 1px solid yellowgreen;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 1rem;
+    user-select: none;
+    text-align: center;
+}

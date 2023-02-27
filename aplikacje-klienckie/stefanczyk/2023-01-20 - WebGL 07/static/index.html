@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CHECKERS</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="js/_tween.umd.js"></script>
+    <script src="js/_three145.js"></script>
+    <script type="module" src="/js/Main.js"></script>
+</head>
+
+<body class="preload">
+    <div class="overlay">
+        <div id="status" class="topbar">
+            <p>STATUS</p>
+        </div>
+    </div>
+
+    <div class="overlay flex">
+        <div id="win" class="hidden"></div>
+    </div>
+
+    <div class="overlay flex">
+        <div id="loading" class="hidden">loading...</div>
+    </div>
+
+    <div class="overlay flex">
+        <div id="waiting" class="hidden">
+            <p>Oczekiwanie na drugiego gracza...</p>
+            <!-- <img src="/img/spinner.gif" alt="spinner"> -->
+        </div>
+    </div>
+
+    <div class="overlay flex">
+        <div id="waitingForMove" class="hidden">
+            <p>Oczekiwanie na ruch drugiego gracza...</p>
+            <p id="waitingTimer"></p>
+        </div>
+    </div>
+
+    <div class="flex overlay">
+        <form id="login">
+            <h2>LOGOWANIE</h2>
+
+            <input type="text" name="username">
+            <output class="hidden" name="message"></output>
+            <button name="submit">LOGUJ</button>
+            <button name="reset">RESET</button>
+        </form>
+    </div>
+
+    <div id="game"></div>
+
+</body>
+
+</html>
