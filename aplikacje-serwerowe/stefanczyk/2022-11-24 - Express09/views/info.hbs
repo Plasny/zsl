@@ -1,0 +1,15 @@
+<div>
+    {{#if file}}
+        <ul class="dictionary">
+            <li><strong>id: </strong>{{file/id}}</li>
+            <li><strong>name: </strong>{{file/name}}</li>
+            <li><strong>path: </strong>{{file/path}}</li>
+            <li><strong>size: </strong>{{file/size}}</li>
+            <li><strong>type: </strong>{{file/type}}</li>
+            <li><strong>savedate: </strong>{{toUnixMillis file/lastModifiedDate}}</li>
+            <li><strong>savedate (human readable): </strong>{{file/lastModifiedDate}}</li>
+        </ul>
+    {{else}}
+        <p class="info">{{message}}</p>
+    {{/if}}
+</div>

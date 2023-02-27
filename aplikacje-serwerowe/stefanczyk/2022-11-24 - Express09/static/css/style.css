@@ -1,0 +1,123 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: monospace;
+}
+
+.flex {
+    display: flex;
+}
+
+nav {
+    height: 5vh;
+}
+
+nav ul {
+    list-style-type: none;
+    overflow: hidden;
+    background-color: rgb(60, 59, 161);
+    /* background-color: rgb(62, 21, 245); */
+}
+
+nav ul li {
+    width: 15vw;
+    float: left;
+    text-align: center;
+}
+
+nav ul li a {
+    line-height: 5vh;
+    color: white;
+    font-size: 16px;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+aside {
+    background-color: lightgray;
+    color: darkgray;
+    width: 20vw;
+    height: 95vh;
+    text-align: center;
+}
+
+aside h3 {
+    color: darkgray;
+    font-size: 16px;
+    line-height: 32px;
+}
+
+aside ul {
+    list-style-type: none;
+}
+
+main {
+    height: 95vh;
+    width: 100%;
+}
+
+.container {
+    display: flex;
+    height: 100%;
+}
+
+.container form {
+    margin: auto;
+}
+
+.error {
+    margin: auto;
+    color: red;
+    font-size: 64px;
+}
+
+img.icon {
+    width: 64px;
+    height: 64px;
+}
+
+table.filemanager {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table.filemanager td,
+table.filemanager th {
+    text-align: center;
+    line-height: 40px;
+    width: 10%;
+    padding: 0;
+}
+
+table.filemanager th {
+    background-color: rgb(122, 147, 194);
+}
+
+ul.dictionary li {
+    margin: 10px;
+    margin-left: 20px;
+    list-style-type: none;
+    color: gray;
+    font-size: 20px;
+}
+
+ul.dictionary li strong {
+    color: rgb(60, 59, 161);
+    font-size: 24px;
+}
+
+.info {
+    width: 100%;
+    line-height: 60px;
+    font-size: 32px;
+    color: green;
+    text-align: center;
+}
+
+input {
+    padding: 5px;
+}

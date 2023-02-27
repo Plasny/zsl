@@ -1,0 +1,9 @@
+<aside>
+    <h3>{{ sidenav/title }}</h3>
+
+    <ul>
+        {{#each sidenav/links}}
+            <li><a href="{{url}}">{{name}}</a></li>
+        {{/each}}
+    </ul>
+</aside>
