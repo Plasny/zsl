@@ -24,6 +24,10 @@ let angle = 0;
 function render() {
     requestAnimationFrame(render);
     renderer.render(scene, camera);
+    camera.position.z = Math.cos(angle) * 200;
+    camera.position.x = Math.sin(angle) * 200;
+    camera.lookAt(scene.position);
+    angle += 0.01;
 }
 
 // funkcja dostosowująca rozmiar ekranu kamery z rozmiarem okna
@@ -33,13 +37,13 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function cameraMovement() {
-    frame = requestAnimationFrame(cameraMovement);
-    camera.position.z = Math.cos(angle) * 200;
-    camera.position.x = Math.sin(angle) * 200;
-    camera.lookAt(scene.position);
-    angle += 0.01;
-}
+// function cameraMovement() {
+//     frame = requestAnimationFrame(cameraMovement);
+//     camera.position.z = Math.cos(angle) * 200;
+//     camera.position.x = Math.sin(angle) * 200;
+//     camera.lookAt(scene.position);
+//     angle += 0.01;
+// }
 
 window.addEventListener("load", function () {
     scene.add(axes);
@@ -54,6 +58,6 @@ window.addEventListener("load", function () {
 
     window.addEventListener('resize', onWindowResize, false);
 
-    cameraMovement();
+    // cameraMovement();
     render();
 });

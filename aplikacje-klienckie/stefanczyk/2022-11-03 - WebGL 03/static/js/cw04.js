@@ -1,7 +1,3 @@
-// TODO
-
-const toRad = (degrees) => degrees * Math.PI / 180;
-
 let obj = {
     intensity: 1,
     position: {
@@ -10,6 +6,8 @@ let obj = {
         z: 0
     }
 };
+
+const toRad = (degrees) => degrees * Math.PI / 180;
 
 // stałe
 const scene = new THREE.Scene();
@@ -45,8 +43,8 @@ const plane = new THREE.Mesh(planeGeometry, planeMaterial);
 plane.rotation.x = toRad(90);
 
 // światło
-const light = new THREE.PointLight(0xffffd0, 1);
-light.position.set(obj.position.x, obj.position.y, obj.position.z);
+const lightConf = new Light;
+const light = lightConf.getLight();
 
 // funkcja renderująca scene
 function render() {
@@ -88,7 +86,7 @@ window.addEventListener("load", function () {
 
     document.getElementById("intensity").addEventListener("input", function () {
         obj.intensity = document.getElementById("intensity").value / 10;
-        light.intensity = obj.intensity;
+        lightConf.setIntensity(obj.intensity);
 
         codeBlock();
     });

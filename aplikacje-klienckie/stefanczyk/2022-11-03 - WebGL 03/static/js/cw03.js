@@ -1,7 +1,3 @@
-// TODO
-
-const toRad = (degrees) => degrees * Math.PI / 180;
-
 let code = {
     cube: {
         x: 0,
@@ -15,6 +11,8 @@ let code = {
     },
 };
 
+const toRad = (degrees) => degrees * Math.PI / 180;
+
 // stałe
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -24,16 +22,9 @@ const renderer = new THREE.WebGLRenderer({ antialias: true });
 const axes = new THREE.AxesHelper(1000);
 const cubeSize = 100;
 
-// bryła
-const cubeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
-const cubeMaterial = new THREE.MeshPhongMaterial({
-    specular: 0xffffff,
-    shininess: 50,
-    side: THREE.DoubleSide,
-    map: new THREE.TextureLoader().load("mats/crate.jpg"),
-})
-const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-cube.position.y = cubeSize / 2;
+// obiekt zrobiony w cw03o.js
+const myObject = new MyObject3D(0, cubeSize / 2, 0, cubeSize, 3);
+const object = myObject.getObj();
 
 // płaszczyzna
 const planeGeometry = new THREE.PlaneGeometry(1000, 1000);
@@ -55,8 +46,6 @@ const light = new THREE.AmbientLight(0xffffd0, 1);
 function render() {
     requestAnimationFrame(render);
     renderer.render(scene, camera);
-
-    cube.rotation.y += 0.005;
 }
 
 // funkcja dostosowująca rozmiar ekranu kamery z rozmiarem okna
@@ -74,14 +63,14 @@ function codeBlock() {
 window.addEventListener("load", function () {
     scene.add(axes);
     scene.add(plane);
-    scene.add(cube);
     scene.add(light);
+    scene.add(object);
 
     document.getElementById("root").appendChild(renderer.domElement);
     renderer.setClearColor(0xffffff);
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    camera.position.set(300, 200, 300);
+    camera.position.set(4 * cubeSize, 3 * cubeSize, 4 * cubeSize);
     camera.lookAt(scene.position);
 
     window.addEventListener('resize', onWindowResize, false);
@@ -90,11 +79,19 @@ window.addEventListener("load", function () {
     render();
 
     document.getElementById("cubeX").addEventListener("input", function () {
-        code.cube.x = document.getElementById("cubeX").value;
+        let value = document.getElementById("cubeX").value;
+        let i = 2;
+        let cube = scene.getObjectByName(`cube${i}`);
+
+        cube.position.x = value * cubeSize / 2 + myObject.getCubesX(i);
+        code.cube.x = value;
         codeBlock();
     });
     document.getElementById("objY").addEventListener("input", function () {
-        code.object3D.y = document.getElementById("objY").value;
+        let value = document.getElementById("objY").value;
+
+        object.position.y = value * cubeSize / 2;
+        code.object3D.y = value;
         codeBlock();
     });
 });
