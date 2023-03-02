@@ -1,0 +1,51 @@
+{% extends "bootstrap/base.html" %}
+
+{% block scripts %}
+    {{ super() }}
+{% endblock %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block navbar %}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12 mx-auto text-center mt-5">
+            <h3>Dane statystyczne</h3>
+            <form method="POST">
+                <button name="statData" value="max" type="submit" class="btn btn-success">Wartość maksymalna</button>
+                <button name="statData" value="min" type="submit" class="btn btn-danger">Wartość minimalna</button>
+                <button name="statData" value="avg" type="submit" class="btn btn-warning">Wartość średnia</button>
+            </form>
+        </div>
+    </div>
+    {% include "partials/statistics.html.j2" %}
+    <div class="row">
+        <div class="col-lg-5 mx-auto text-center mt-5">
+            <h3>Wyszukaj</h3>
+            <form method="POST">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="tu wpisz..." name="search">
+                    <input type="submit" class="btn btn-outline-secondary" value="Szukaj">
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-lg-8 mx-auto text-center">
+            <h5>Tabela z danymi</h5>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Imię</th>
+                        <th>Nazwisko</th>
+                        <th>Wynagrodzenie</th>
+                        <th>Miasto</th>
+                    </tr>
+                </thead>
+                {% include "partials/table-content.html.j2" %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

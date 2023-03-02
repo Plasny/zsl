@@ -1,0 +1,19 @@
+{% if statistics %}
+    <div class="row justify-content-center mt-3">
+        {% for statistic in statistics %}
+            {% if statistic[0] == "max" %}
+                <div class="col-4 mx-auto text-center bg-success p-2 rounded" style="--bs-bg-opacity: .5">
+                    Wartość maksymalna: {{statistic[1]}}
+                </div>
+            {% elif statistic[0] == "min" %}
+                <div class="col-4 mx-auto text-center bg-danger p-2 rounded" style="--bs-bg-opacity: .5">
+                    Wartość minimalna: {{statistic[1]}}
+                </div>
+            {% elif statistic[0] == "avg" %}
+                <div class="col-4 mx-auto text-center bg-warning p-2 rounded" style="--bs-bg-opacity: .5">
+                    Wartość średnia: {{statistic[1]}}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
