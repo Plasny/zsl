@@ -1,0 +1,37 @@
+{% extends "bootstrap/base.html" %}
+
+{% block scripts %}
+    {{ super() }}
+{% endblock %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block navbar %}
+    {% include "includes/navbar.html.j2" %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="alert alert-warning mt-3">
+            Ostatnio dodany rekord: {{lastAdded.firstName}} {{lastAdded.lastName}}
+        </div>
+        <div class="row">
+            <div class="col-lg-4 offset-lg-4 mt-3">
+                <form method="POST" action="/add-user">
+                    {{ addUserForm.hidden_tag() }}
+                    {{ addUserForm.userLogin.label(class='form-label') }}
+                    {{ addUserForm.userLogin(class='form-control') }}
+                    {{ addUserForm.userPass.label(class='form-label') }}
+                    {{ addUserForm.userPass(class='form-control') }}
+                    {{ addUserForm.firstName.label(class='form-label') }}
+                    {{ addUserForm.firstName(class='form-control') }}
+                    {{ addUserForm.lastName.label(class='form-label') }}
+                    {{ addUserForm.lastName(class='form-control') }}
+                    {{ addUserForm.submit(class='btn btn-dark mt-3 float-end') }}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
