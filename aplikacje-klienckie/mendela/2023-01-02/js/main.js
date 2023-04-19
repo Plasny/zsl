@@ -1,32 +1,6 @@
-/**
- * Width of the game board
- * @type {Number}
- */
-const width = 1200;
-
-/**
- * Height of the game board
- * @type {Number}
- */
-const height = 600;
-
-/**
- * Id of canvas to draw game on
- * @type {String}
- */
-const canvasId = 'c1';
-const canvasId2 = 'c2';
-
-/**
- * List with paths to player models
- * @type {String[]}
- */
-const modelPaths = [
-    "./img/blackMotor.webp",
-    "./img/redMotor.webp",
-    "./img/yellowMotor.webp",
-    "./img/greenMotor.webp",
-];
+import {width, height, canvasId, timeout} from "./consts.js"
+import {hexToRgba, getImg, keysPressed} from "./utils.js"
+import {goToGameOver, goToMenu, menuSetter, menuHandler, playerCount} from "./ui.js"
 
 /**
  * Number of laps for a game
@@ -47,12 +21,6 @@ let speed = 3;
 let rotationStep;
 
 /**
- * Number of players that want to play the game
- * @type {Number}
- */
-let playerCount = 0;
-
-/**
  * Array of two paths. The outer and inner band of the speedway
  * @type {[Path2D, Path2D]}
  */
@@ -65,10 +33,9 @@ let paths = [];
 let lapLine;
 
 /**
- * Map of the pressed keys in a given moment
- * @type {Map<number,boolean>}
+ * @type {CanvasRenderingContext2D}
  */
-let keysPressed = {};
+let ctx1;
 
 /**
  * Image used as texture for the background of the game board
@@ -77,21 +44,22 @@ let keysPressed = {};
 const texture = await getImg("./img/grass.jpg");
 
 /**
- * @type {CanvasRenderingContext2D}
- */
-let ctx1;
-let ctx2;
-
-/**
  * List of `Player` objects
  * @type {Object[]}
  */
-let players = [];
+export let players = [];
+
+/**
+ * Function that resets players array
+ */
+export function resetPlayers() {
+    players = [];
+}
 
 /**
  * Class representing the players motorcycle and managing to draw its movement on game board.
  */
-class Player {
+export class Player {
     /**
      * Create a Player
      * @param {Any} id id for the player
@@ -113,11 +81,11 @@ class Player {
         this.turn = {
             right: turnRightKey,
             left: turnLeftKey,
-        }
+        };
         this.pos = {
             x: width / 3,
             y: 2 * height / 3 + dist,
-        }
+        };
 
         this.modelHeight = 40;
         this.modelWidth = 60;
@@ -125,6 +93,7 @@ class Player {
         this.model.src = modelPath;
         this.model.onload = this.drawModel();
 
+        this.tailArr = [];
         this.drawTail();
     }
 
@@ -132,11 +101,11 @@ class Player {
      * Method that draws players motorcycle image onto canvas2
      */
     drawModel() {
-        ctx2.translate(this.pos.x, this.pos.y);
-        ctx2.rotate(this.rotation);
-        ctx2.drawImage(this.model, - this.modelWidth / 2, - this.modelHeight / 2, this.modelWidth, this.modelHeight);
-        ctx2.rotate(-this.rotation);
-        ctx2.translate(-this.pos.x, -this.pos.y);
+        ctx1.translate(this.pos.x, this.pos.y);
+        ctx1.rotate(this.rotation);
+        ctx1.drawImage(this.model, - this.modelWidth / 2, - this.modelHeight / 2, this.modelWidth, this.modelHeight);
+        ctx1.rotate(-this.rotation);
+        ctx1.translate(-this.pos.x, -this.pos.y);
     }
 
     /**
@@ -145,17 +114,30 @@ class Player {
     drawTail() {
         let x, y;
 
-        ctx1.strokeStyle = this.color;
-        ctx1.beginPath();
-        ctx1.moveTo(this.pos.x, this.pos.y);
+        for (const i in this.tailArr) {
+            if (this.tailArr[i].color.a <= 0) {
+                this.tailArr.splice(i, 1);
+            }
+        }
+
+        const path = new Path2D();
+
+        path.moveTo(this.pos.x, this.pos.y);
 
         x = speed * Math.cos(this.rotation);
         y = speed * Math.sin(this.rotation);
         this.pos.x += x;
         this.pos.y += y;
 
-        ctx1.lineTo(this.pos.x, this.pos.y);
-        ctx1.stroke();
+        path.lineTo(this.pos.x, this.pos.y);
+
+        this.tailArr.push({ path: path, color: hexToRgba(this.color) });
+
+        for (const el of this.tailArr) {
+            ctx1.strokeStyle = `rgba(${el.color.r}, ${el.color.g}, ${el.color.b}, ${el.color.a})`;
+            ctx1.stroke(el.path);
+            el.color.a -= (0.2 / speed);
+        }
     }
 
     /**
@@ -175,7 +157,7 @@ class Player {
         if (ctx1.isPointInStroke(lapLine, this.pos.x, this.pos.y) && this.lapChange) {
             this.lap += 1;
             this.lapChange = false;
-            setTimeout(() => { this.lapChange = true }, 500);
+            setTimeout(() => { this.lapChange = true; }, timeout);
             console.log(`Player ${this.name} is on ${this.lap} lap`);
         }
 
@@ -191,22 +173,6 @@ class Player {
         this.drawModel();
     }
 
-}
-
-/**
- * Function that loads image from a given url
- * @param {String} imgPath url for image
- * @returns image after it is loaded
- */
-async function getImg(imgPath) {
-    const image = new Image();
-    image.src = imgPath;
-
-    return new Promise((resolve, reject) => {
-        image.onload = () => {
-            resolve(image);
-        }
-    });
 }
 
 /**
@@ -254,49 +220,22 @@ function drawBoard(id, img, opacity = 1) {
     x = width - x;
     path2.arc(x, y, r, Math.PI / 2, -Math.PI / 2);
     x = width - y;
-    path2.lineTo(x, r * 2)
+    path2.lineTo(x, r * 2);
     ctx1.stroke(path2);
     ctx1.fill(path2);
 
     lapLinePath = new Path2D();
     x = width / 3;
     y = 2 * height / 3;
-    lapLinePath.moveTo(x, y);
-    lapLinePath.lineTo(x, height);
+
+    // lapLinePath.moveTo(x, y);
+    // lapLinePath.lineTo(x, height);
+    let w = speed != undefined ? speed * 10 : 10;
+    lapLinePath.rect(x, y, w, height);
+    // ctx1.fillStyle = "#ff00ff";
+    // ctx1.fill(lapLinePath);
 
     return [[path1, path2], lapLinePath];
-}
-
-/**
- * Function that creates a trail effect after bikes 
- * @param {[Path2D, Path2D]} paths paths which are used for redrawing of the gameboard
- * @param {Number} [opacity=1] opacity of the game board
- */
-function fadeAway(paths, opacity = 1) {
-    const pattern = ctx1.createPattern(texture, "repeat");
-    ctx1.lineWidth = 5;
-
-    ctx1.beginPath();
-    ctx1.fillStyle = `rgba(255, 255, 255, ${opacity})`;
-    ctx1.strokeStyle = "#000000";
-    ctx1.stroke(paths[0]);
-    ctx1.fill(paths[0]);
-
-    ctx1.fillStyle = pattern;
-    ctx1.strokeStyle = "#000000";
-    ctx1.stroke(paths[1]);
-    ctx1.fill(paths[1]);
-}
-
-/**
- * Function that configures canvas which displays player skins.
- * @param {String} id id of a canvas element in the index.html
- */
-function setupImagesCanvas(id) {
-    const canvas = document.getElementById(id);
-    canvas.width = width;
-    canvas.height = height;
-    ctx2 = canvas.getContext("2d");
 }
 
 /**
@@ -304,7 +243,7 @@ function setupImagesCanvas(id) {
  */
 function updateLapsLeft() {
     let l = document.getElementById("lapsLeft");
-    let text = "";
+    let text = "Live Scores:<br>";
 
     players.forEach(player => {
         text += `${player.name} - `;
@@ -316,7 +255,7 @@ function updateLapsLeft() {
                 text += "<span style='color:violet'>last lap left</span><br>";
         }
         else
-            text += "<span style='color:red'>no longer alive</span><br>"
+            text += "<span style='color:red'>no longer alive</span><br>";
     });
 
     l.innerHTML = text;
@@ -326,8 +265,8 @@ function updateLapsLeft() {
  * ! Game loop
  */
 function game() {
-    fadeAway(paths, .05);
-    ctx2.clearRect(0, 0, width, height);
+    ctx1.clearRect(0, 0, width, height);
+    drawBoard(canvasId, texture);
     players.forEach(player => player.move());
     updateLapsLeft();
 
@@ -369,7 +308,7 @@ function delKey(e) {
  */
 function startGame() {
     if (playerCount == 0) {
-        alert("No players added.\nPlease configure a player and then add it using `Add` button.")
+        alert("No players added.\nPlease configure a player and then add it using `Add` button.");
         return;
     }
 
@@ -377,7 +316,7 @@ function startGame() {
         let menu = document.getElementById(i);
         if (menu.submit.innerText == "Remove") {
             let handler = menuHandler.bind(menu);
-            handler()
+            handler();
             players.push(handler());
         }
     }
@@ -396,95 +335,6 @@ function startGame() {
     game();
 }
 
-/**
- * Function that displays menu for choosing players and starting the game on the webpage 
- */
-function goToMenu() {
-    let menu = document.getElementById("menu");
-    let gameOverScreen = document.getElementById("gameOver");
-    menu.removeAttribute("hidden");
-    gameOverScreen.setAttribute("hidden", "true");
-}
-
-/**
- * Function that displays scoreboard and players that won on the webpage
- * @param {Boolean} [win=false] if the game was won or not
- */
-function goToGameOver(win = false) {
-    let menu = document.getElementById("menu");
-    let scoreboard = document.getElementById("scoreboard");
-    let topText = document.getElementById("topText");
-    let gameOverScreen = document.getElementById("gameOver");
-    menu.setAttribute("hidden", "true");
-    gameOverScreen.removeAttribute("hidden");
-
-    let scoreboardText = "";
-    let winners = [];
-    players.sort(function (a, b) { return b.lap - a.lap });
-    players.forEach(player => {
-        if (player.lap >= laps)
-            winners.push(player.name);
-        scoreboardText += `${player.name} - lap ${player.lap} <br>`;
-    });
-    scoreboard.innerHTML = scoreboardText;
-
-    if (win) {
-        topText.innerHTML = `<span style="font-size: 80px;">Player(s) ${winners.toString()} won</span>`;
-    } else {
-        topText.innerText = "Game Over!";
-    }
-
-    players = [];
-}
-
-/**
- * Function that gets key when button is pressed
- * @param {Event} e Event needed for setting value of key
- */
-function getKeyCode(e) {
-    for (const [k, v] of Object.entries(keysPressed)) {
-        if (v == true) {
-            e.target.value = k;
-            return;
-        }
-    }
-}
-
-/**
- * Function that sets up other functions and variables in the form of a given id
- * @param {String} id id of the form
- */
-function menuSetter(id) {
-    let menu = document.getElementById(id);
-    let playerID = id.split("-")[1] - 1;
-
-    menu.name.value = `Player${playerID + 1}`;
-    menu.rKey.addEventListener("click", getKeyCode)
-    menu.lKey.addEventListener("click", getKeyCode);
-}
-
-/**
- * Function that handles menu, which enables users to add new players
- * @param {Event} e Event for preventing default behavior of form submitting
- */
-function menuHandler(e) {
-    if (e) e.preventDefault();
-    let playerID = this.id.split("-")[1] - 1;
-
-    if (this.submit.innerText == "Remove") {
-        this.submit.innerText = "Add";
-        this.style.backgroundColor = "#f0f8ff";
-        playerCount--;
-    } else {
-        this.submit.innerText = "Remove";
-        this.style.backgroundColor = "#e0ffe0";
-        playerCount++;
-
-        const playerModelPath = modelPaths[playerID];
-
-        return new Player(playerID, this.name.value, this.rKey.value, this.lKey.value, this.color.value, playerModelPath, 40 + playerID * 40);
-    }
-}
 
 window.addEventListener("load", function () {
     while (true) {
@@ -493,7 +343,6 @@ window.addEventListener("load", function () {
     }
 
     [paths, lapLine] = drawBoard(canvasId, texture);
-    setupImagesCanvas(canvasId2);
 
     window.addEventListener("keydown", addKey);
     window.addEventListener("keyup", delKey);

@@ -112,7 +112,7 @@ function snakeGen() {
     for (css of ["snake", "tail", "head", "body", "body-turn"]) {
         Array.from(document.getElementsByClassName(css)).forEach((element) => {
             element.classList.remove(css);
-            element.style.transform = "rotate(0deg)";
+            element.style.transform = null;
         });
     }
 
@@ -205,7 +205,7 @@ function game() {
         for (css of ["snake", "tail", "head", "body", "body-turn"]) {
             Array.from(document.getElementsByClassName(css)).forEach((element) => {
                 element.classList.remove(css);
-                element.style.transform = "rotate(0deg)";
+                element.style.transform = null;
             });
         }
 

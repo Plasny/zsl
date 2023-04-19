@@ -25,7 +25,9 @@ body {
 
 .main table {
     margin: auto;
-    border-collapse: collapse;
+    /* border-collapse: collapse; */
+    border-spacing: 0px;
+    border: 1px solid black;
 }
 
 .main td, .main th {
@@ -46,9 +48,10 @@ tr:nth-child(odd) .board:nth-child(even),tr:nth-child(even) .board:nth-child(odd
     background-color: gray;
 }
 
-/* .snake {
-    background-color: green;
-} */
+.snake {
+    /* background-color: green; */
+    border: none;
+}
 
 .apple {
     /* background-color: red; */
