@@ -1,0 +1,113 @@
+dialog#newDirDialog {
+    background: var(--dir-bg);
+}
+
+dialog#newFileDialog {
+    background: var(--file-bg);
+}
+
+.items {
+    display: inline-block;
+    margin: 5px 0 0 5px;
+    padding: 10px;
+    border-radius: 1rem;
+    text-align: center;
+}
+
+.items > img {
+    height: 7vh;
+    width: auto;
+
+}
+.items > p {
+    margin-bottom: 0.5vh;
+}
+
+main .files>div {
+    background: var(--file-bg);
+}
+
+main .dirs>div {
+    background: var(--dir-bg);
+    color: white;
+}
+
+.toolBox {
+    width: 100%;
+    border-radius: 0.5rem;
+    background-color: white;
+    padding: 3px 2px 0;
+}
+
+.smallBtn {
+    height: 3vh;
+    width: auto;
+}
+
+/* ! fix */
+.upload {
+    display: flex;
+    background-color: var(--primary-bg-color) !important;
+}
+
+.upload > p,
+.upload > .side {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.upload > .side {
+    width: 25%;
+    height: 100%;
+    color: white;
+}
+
+input.side {
+    all: unset;
+}
+
+.upload > p {
+    width: 50%;
+    height: 100%;
+    background-color: white;
+}
+
+.upload > .side img {
+    width: 100%;
+    height: auto;
+    margin: auto;
+}
+
+.upload input[type=file] {
+    z-index: 1;
+    opacity: 0;
+    width: 75%;
+    height: 100%;
+}
+
+.smallText {
+    overflow: hidden;
+}
+
+.path {
+    height: 40px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    padding: 4px;
+    border: 1px solid lightblue;
+    background-color: lightblue;
+    border-radius: 0.8rem;
+    margin: 5px;
+}
+
+.path > * {
+    margin: 4px;
+}
+
+.path a img {
+    height: 32px;
+    width: auto;
+}

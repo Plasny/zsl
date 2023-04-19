@@ -1,0 +1,7 @@
+<div class="toolBox">
+    <img src="/img/icon/trash.png" alt="Delete" onclick="event.stopPropagation(); del('{{name}}')" class="smallBtn">
+    <img src="/img/icon/rename.png" alt="Rename" onclick="event.stopPropagation(); rename('{{name}}')" class="smallBtn">
+    {{#if file}}
+    <img src="/img/icon/edit.png" alt="Edit" onclick="event.stopPropagation(); edit('/{{name}}')" class="smallBtn">
+    {{/if}}
+</div>

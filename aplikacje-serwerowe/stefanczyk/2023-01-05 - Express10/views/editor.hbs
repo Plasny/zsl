@@ -1,0 +1,17 @@
+<link rel="stylesheet" href="/css/editor.css">
+<script defer src="/js/editor.js"></script>
+
+<div id="fileName">{{fileName}}</div>
+
+{{#if error}}
+<div class="error">{{error}}</div>
+{{else}}
+<form>
+    <div class="editor">
+        <div id="lineNr"></div>
+        <textarea id="content">{{data}}</textarea>
+    </div>
+
+    <button id="save">zapisz zmiany</button>
+</form>
+{{/if}}

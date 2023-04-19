@@ -1,0 +1,41 @@
+<script defer src="/js/filemanager.js"></script>
+<link rel="stylesheet" href="/css/filemanager.css">
+
+{{#if error}}
+<div class="error">{{error}}</div>
+{{else}}
+{{> pagination}}
+
+<div class="dirs">
+    {{#each dirs}}
+        <div class="items" onclick='goTo("{{checkRoot ../path}}/{{name}}")'>
+            <img src="/img/icon/folder.png" alt="folder icon">
+            <p>{{name}}</p>
+
+            {{> toolBox}}
+        </div>
+    {{/each}}
+</div>
+
+<div class="files">
+    {{#each files}}
+        <div class="items" onclick='preview("{{checkRoot ../path}}/{{name}}")'>
+            <img src="/img/icon/{{getExt name}}.png" alt="{{getExt name}} file icon">
+            <p>{{name}}</p>
+
+            {{> toolBox}}
+        </div>
+    {{/each}}
+</div>
+{{/if}}
+
+<dialog id="renameDialog">
+    <p>Podaj nową nazwę pliku/folderu</p>
+    <form method="dialog">
+        <input type="text" name="fname">
+        <div>
+            <button type="submit">Zmień nazwę</button>
+            <button onclick="event.preventDefault(); renameDialog.close()">Anuluj</button>
+        </div>
+    </form>
+</dialog>

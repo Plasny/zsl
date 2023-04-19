@@ -1,0 +1,10 @@
+<div class="path">
+    <input type="hidden" id="path" value="{{path}}">
+    {{#each pagination}}
+    <a href="?p={{urlPath}}">{{{display}}}</a>
+    {{#if @last}}
+    {{else}}
+    >
+    {{/if}}
+    {{/each}}
+</div>

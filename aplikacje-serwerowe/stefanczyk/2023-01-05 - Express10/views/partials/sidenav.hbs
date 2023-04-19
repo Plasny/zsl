@@ -1,0 +1,62 @@
+{{#each sideNav/buttons}}
+<dialog id="{{id}}Dialog">
+    <p>{{dialogText}}</p>
+    {{#if info}}
+    <p class="info">{{info}}</p>
+    {{/if}}
+    <form method="dialog">
+        <input type="text" id="{{id}}fname">
+        <div>
+            <button type="submit">Utwórz</button>
+            <button onclick="event.preventDefault(); {{id}}Dialog.close()">Anuluj</button>
+        </div>
+    </form>
+    <script>
+        const {{id}}Dialog = document.getElementById('{{id}}Dialog');
+        {{id}}Dialog.addEventListener('submit', () => {
+            const fname = document.getElementById('{{id}}fname').value;
+            add('{{type}}', fname);
+        });
+    </script>
+</dialog>
+{{/each}}
+
+<aside>
+    <ul>
+        {{#each sideNav/buttons}}
+        <li><button class="btn" id="{{id}}"
+                onclick="document.getElementById('{{id}}Dialog').showModal();">{{name}}</button></li>
+        {{/each}}
+        <li>
+            <form enctype="multipart/form-data" method="POST" action="{{uploadUrl}}" class="btn upload">
+                <label for="file" class="side"><img src="/img/icon/upload.png" alt="Choose file"></label>
+                <input required multiple type="file" name="file" id="fileUpload" hidden>
+                <input type="hidden" name="path" value="{{path}}">
+                <p id="upload-text" class="smallText">Wybierz pliki</p>
+                <input type="submit" value="OK" class="side">
+            </form>
+        </li>
+        <script>
+            let upload = document.getElementById('fileUpload');
+            let text = document.getElementById('upload-text');
+
+            text.addEventListener('click', function () {
+                upload.click();
+            });
+
+            upload.addEventListener('input', function () {
+                let files = [];
+                for (let i = 0; i < upload.files.length; i++) {
+                    files.push(upload.files.item(i).name);
+                }
+
+                if (files.length == 0) {
+                    text.innerText = 'Wybierz pliki';
+                    return;
+                }
+
+                text.innerText = files.toString().slice(0, 10) + '…'; 
+            });
+        </script>
+    </ul>
+</aside>

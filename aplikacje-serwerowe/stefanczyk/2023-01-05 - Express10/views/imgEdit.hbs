@@ -1,0 +1,23 @@
+<link rel="stylesheet" href="/css/imgEditor.css">
+<script defer src="/js/imgEditor.js"></script>
+
+<div class="container">
+    <div id="filters">
+        <h3>Filters</h3>
+        {{#each filter}}
+            <div class="f-item" onclick="canvasSetup('{{filter}}')">
+                <img class="small" style="filter:{{filter}}" src="/preview?p={{../fileName}}">
+                <p>{{name}}</p>
+            </div>
+        {{/each}}
+    </div>
+
+    <div class="max">
+        <div id="fileName">{{fileName}}</div>
+        <div class="container" style="height: 90%;">
+            <img id="mainIMG" src="/preview?p={{fileName}}">
+            <canvas id="canvas"></canvas>
+        </div>
+        <button class="btn" onclick="save()">Zapisz</button>
+    </div>
+</div>

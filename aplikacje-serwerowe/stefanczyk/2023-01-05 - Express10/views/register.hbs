@@ -1,0 +1,51 @@
+<form id="form">
+    <h2>Rejestracja</h2>
+    <div>
+        <label for="user">Nazwa użytkownika:</label>
+        <input type="text" name="user">
+    </div>
+    <div>
+        <label for="pass">Hasło:</label>
+        <input type="password" name="pass" id="p1">
+    </div>
+    <div>
+        <label for="pass">Powtórz hasło:</label>
+        <input type="password" id="p2">
+    </div>
+    <div id="error"></div>
+    <button type="submit">Zarejestruj</button>
+</form>
+
+<script>
+    function login(e) {
+        e.preventDefault();
+        const data = new FormData(this);
+
+        fetch('/register', {
+            method: 'POST',
+            body: data
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res === "ok") {
+                    location.href = "/login";
+                }
+
+                error.innerHTML = `<span style="color: red">${res}</span>`;
+            });
+    }
+
+    const p1 = document.getElementById("p1");
+    const p2 = document.getElementById("p2");
+    const form = document.getElementById("form");
+    const error = document.getElementById("error");
+    form.addEventListener("submit", login);
+    form.addEventListener("input", () => {
+        if (p1.value != "" && p1.value === p2.value) {
+            error.innerHTML = "<span style='color: green;'>Hasła są takie same</span>";
+            return;
+        }
+
+        error.innerHTML = "<span style='color: red;'>Hasła nie są takie same</span>";
+    })
+</script>
