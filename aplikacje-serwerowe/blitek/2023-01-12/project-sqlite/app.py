@@ -42,16 +42,33 @@ dbPath = cDir + "/db/grades.db"
 con = sqlite3.connect(dbPath)
 cur = con.cursor()
 cur.execute(
-    "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, userLogin TEXT NOT NULL, userPass TEXT NOT NULL, firstName TEXT, lastName TEXT);"
+    """CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        userLogin TEXT NOT NULL, 
+        userPass TEXT NOT NULL, 
+        firstName TEXT, 
+        lastName TEXT
+    )"""
 )
 cur.execute(
-    "CREATE TABLE IF NOT EXISTS subjects (id INTEGER PRIMARY KEY AUTOINCREMENT, subject TEXT NOT NULL)"
+    """CREATE TABLE IF NOT EXISTS subjects (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        subject TEXT NOT NULL
+    )"""
 )
 cur.execute(
-    "CREATE TABLE IF NOT EXISTS terms (id INTEGER PRIMARY KEY AUTOINCREMENT, term TEXT NOT NULL, comment TEXT)"
+    """CREATE TABLE IF NOT EXISTS terms (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        term TEXT NOT NULL, 
+        comment TEXT
+    )"""
 )
 cur.execute(
-    "CREATE TABLE IF NOT EXISTS categories (id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT NOT NULL, comment TEXT)"
+    """CREATE TABLE IF NOT EXISTS categories (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        category TEXT NOT NULL, 
+        comment TEXT
+    )"""
 )
 cur.execute(
     """CREATE TABLE IF NOT EXISTS grades (
@@ -60,8 +77,8 @@ cur.execute(
         term_id INTEGER NOT NULL, 
         category_id INTEGER NOT NULL, 
         grade INTEGER NOT NULL, 
-        comment TEXT)
-    """
+        comment TEXT
+    )"""
 )
 
 # check if terms are set
@@ -108,18 +125,9 @@ class AddSubject(FlaskForm):
 class AddGrade(FlaskForm):
     """formularz dodawania oceny"""
 
-    subject = SelectField("Wybierz przedmiot:", choices=str)
-    term = RadioField(
-        "Wybierz semestr", choices=[("term1", "Semestr 1"), ("term2", "Semestr 2")]
-    )
-    category = SelectField(
-        "Wybierz kategorie:",
-        choices=[
-            ("answer", "Odpowiedź"),
-            ("quiz", "Kartkówka"),
-            ("test", "Sprawdzian"),
-        ],
-    )
+    subject = SelectField("Wybierz przedmiot:")
+    term = RadioField("Wybierz semestr:")
+    category = SelectField("Wybierz kategorie:")
     grade = SelectField(
         "Ocena:",
         choices=[
@@ -134,100 +142,88 @@ class AddGrade(FlaskForm):
     submit = SubmitField("Dodaj")
 
 
-def countAverage(subjectValue, termValue):
-    """funkcja obliczająca średnie"""
-    with app.open_resource("data/grades.json", "r") as gradesFile:
-        grades = json.load(gradesFile)
+def countAverage(grades, subject_id="", term_id=""):
+    gradeTypes = ["answer", "quiz", "test"]
     sum = 0
     len = 0
-    if subjectValue == "" and termValue == "":
-        for subject, terms in grades.items():
-            for term, categories in terms.items():
-                for category, grades in categories.items():
-                    if category == "answer" or category == "quiz" or category == "test":
-                        for grade in grades:
-                            sum += grade
-                            len += 1
+    if subject_id != "" and term_id != "":
+        for grade in grades:
+            if grade[1] == term_id and grade[2] == subject_id and grade[3] in gradeTypes:
+                sum += grade[0]
+                len += 1
+    elif subject_id != "":
+        for grade in grades:
+            if grade[2] == subject_id and grade[3] in gradeTypes:
+                sum += grade[0]
+                len += 1
     else:
-        for subject, terms in grades.items():
-            if subject == subjectValue:
-                for term, categories in terms.items():
-                    if term == termValue:
-                        for category, grades in categories.items():
-                            if (
-                                category == "answer"
-                                or category == "quiz"
-                                or category == "test"
-                            ):
-                                for grade in grades:
-                                    sum += grade
-                                    len += 1
+        for grade in grades :
+            if grade[3] in gradeTypes:
+                sum += grade[0]
+                len += 1
     if len == 0:
-        return 0
+        return None
     return round(sum / len, 2)
 
 
-def yearAverage(subjectValue):
-    with app.open_resource("data/grades.json", "r") as gradesFile:
-        grades = json.load(gradesFile)
-    sum = 0
-    len = 0
-    if subjectValue == "":
-        for subject, terms in grades.items():
-            for term, categories in terms.items():
-                for category, grades in categories.items():
-                    if category == "answer" or category == "quiz" or category == "test":
-                        for grade in grades:
-                            sum += grade
-                            len += 1
-    else:
-        for subject, terms in grades.items():
-            if subject == subjectValue:
-                for term, categories in terms.items():
-                    for category, grades in categories.items():
-                        if (
-                            category == "answer"
-                            or category == "quiz"
-                            or category == "test"
-                        ):
-                            for grade in grades:
-                                sum += grade
-                                len += 1
-    if len == 0:
-        return 0
-    return round(sum / len, 2)
-
-
-def sortSubjects():
-    subjects = {}
-
-    with app.open_resource("data/grades.json", "r") as gradesFile:
-        grades = json.load(gradesFile)
-        gradesFile.close()
-
-    for subject in grades:
-        subjects[subject] = yearAverage(subject)
-
-    subjectsSorted = sorted(subjects.items(), key=lambda k: k[1], reverse=True)
-    subjectsSorted = collections.OrderedDict(subjectsSorted)
-
+def sortSubjects(grades, subjects):
+    groupThisTwo = []
+    for subject in subjects:
+        groupThisTwo.append((subject[1], countAverage(grades, subject[0])))
+    subjectsSorted = sorted(
+        groupThisTwo, key=lambda k: k[1] if k[1] != None else 0, reverse=True
+    )
     return subjectsSorted
 
 
-def bestTwo():
-    s = sortSubjects()
-    return list(s.items())[:2]
+def bestTwo(grades, subjects):
+    return sortSubjects(grades, subjects)[:2]
 
 
-def underTwo():
-    s = sortSubjects()
-    ups = []
+def underTwo(grades, subjects):
+    s = sortSubjects(grades, subjects)
+    grades = []
+    for sub in s:
+        if sub[1] == None or sub[1] < 2:
+            grades.append(sub)
+    return grades 
 
-    for sub, grade in s.items():
-        if grade < 2:
-            ups.append(sub)
 
-    return ups
+def markAsWord(grades, subject_id="", term_id=""):
+    gradeTypes = ["answer", "quiz", "test"]
+    sum = 0
+    len = 0
+    if subject_id != "" and term_id != "":
+        for grade in grades:
+            if grade[1] == term_id and grade[2] == subject_id and grade[3] in gradeTypes:
+                sum += grade[0]
+                len += 1
+    elif subject_id != "":
+        for grade in grades:
+            if grade[2] == subject_id and grade[3] in gradeTypes:
+                sum += grade[0]
+                len += 1
+    else:
+        for grade in grades :
+            if grade[3] in gradeTypes:
+                sum += grade[0]
+                len += 1
+
+    if len == 0:
+        return 'Nieklasyfikowany' 
+
+    mark = round(sum / len, 2)
+    if(mark <= 1.75):
+        return 'Niedostateczny'
+    elif(mark <= 2.75):
+        return 'Dopuszczający'
+    elif(mark <= 3.75):
+        return 'Dostateczny'
+    elif(mark <= 4.75):
+        return 'Dobry'
+    elif(mark <= 5.25):
+        return 'Bardzo dobry'
+    return 'Celujący'
 
 
 @app.route("/")
@@ -251,7 +247,11 @@ def login():
         con = sqlite3.connect(dbPath)
         cur = con.cursor()
         cur.execute(
-            f"SELECT userLogin, firstName FROM users WHERE userLogin='{userLogin}' AND userPass='{userPass}'"
+            f"""SELECT userLogin, firstName 
+                FROM users 
+                WHERE userLogin=?
+                AND userPass=?
+            """, (userLogin, userPass)
         )
         user = cur.fetchall()
         con.close()
@@ -287,13 +287,14 @@ def dashboard():
     cur.execute("SELECT * FROM subjects")
     subjects = cur.fetchall()
     cur.execute(
-        """
-        SELECT grade, term_id, subject_id, category, categories.comment, grades.comment FROM grades 
-        INNER JOIN categories ON categories.id=grades.category_id
+        """SELECT grade, term_id, subject_id, category, categories.comment, grades.comment 
+            FROM grades 
+            INNER JOIN categories ON categories.id=grades.category_id
         """
     )
     grades = cur.fetchall()
     con.commit()
+    con.close()
     return render_template(
         "dashboard.html.j2",
         title="Dashboard",
@@ -301,6 +302,10 @@ def dashboard():
         firstName=session.get("firstName"),
         subjects=subjects,
         grades=grades,
+        subjectAvg=countAverage,
+        bestTwo=bestTwo,
+        underTwo=underTwo,
+        markAsWord=markAsWord,
     )
 
 
@@ -308,21 +313,12 @@ def dashboard():
 def addSubject():
     addSubject = AddSubject()
     if addSubject.validate_on_submit():
-        with open(f"{cDir}/data/grades.json", "r", encoding="utf-8") as gradesFile:
-            grades = json.load(gradesFile)
-            subject = addSubject.subject.data
-            grades[subject] = {
-                "term1": {"answer": [], "quiz": [], "test": [], "interim": None},
-                "term2": {
-                    "answer": [],
-                    "quiz": [],
-                    "test": [],
-                    "interim": None,
-                    "yearly": None,
-                },
-            }
-        with open(f"{cDir}/data/grades.json", "w", encoding="utf-8") as gradesFile:
-            json.dump(grades, gradesFile, indent=2)
+        subject = addSubject.subject.data
+        con = sqlite3.connect(dbPath)
+        cur = con.cursor()
+        cur.execute("INSERT INTO subjects (subject) VALUES(?)", (subject,))
+        con.commit()
+        con.close()
         flash("Dane zapisane poprawnie")
         return redirect("addSubject")
     return render_template(
@@ -338,18 +334,24 @@ def addSubject():
 @app.route("/addGrade", methods=["POST", "GET"])
 def addGrade():
     addGradeForm = AddGrade()
-    with open(f"{cDir}/data/grades.json", "r", encoding="utf-8") as gradesFile:
-        grades = json.load(gradesFile)
-        addGradeForm.subject.choices = [subject for subject in grades]
+    con = sqlite3.connect(dbPath)
+    cur = con.cursor()
+    cur.execute("SELECT id, subject FROM subjects")
+    addGradeForm.subject.choices = cur.fetchall()
+    cur.execute("SELECT id, comment FROM terms")
+    addGradeForm.term.choices = cur.fetchall()
+    cur.execute("SELECT id, comment FROM categories")
+    addGradeForm.category.choices = cur.fetchall()
     if addGradeForm.validate_on_submit():
-        subject = addGradeForm.subject.data
-        term = addGradeForm.term.data
-        category = addGradeForm.category.data
+        subject_id = addGradeForm.subject.data
+        term_id = addGradeForm.term.data
+        category_id = addGradeForm.category.data
         grade = addGradeForm.grade.data
-        grades[subject][term][category].append(int(grade))
-        with open(f"{cDir}/data/grades.json", "w", encoding="utf-8") as gradesFile:
-            json.dump(grades, gradesFile, indent=2)
-            flash("Dane zapisane poprawnie")
+        cur.execute("INSERT INTO grades(subject_id, term_id, category_id, grade) VALUES(?,?,?,?)",
+            (subject_id, term_id, category_id, grade))
+        con.commit()
+        con.close()
+        flash("Dane zapisane poprawnie")
         return redirect("addGrade")
     return render_template(
         "add-grade.html.j2",

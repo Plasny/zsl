@@ -15,11 +15,11 @@
             return new bootstrap.Tooltip(tooltipTriggerEl);
         })
     </script>
-    {# <script>
+    <script>
         const data = {
             labels: [
-                {% for subject in grades %}
-                    '{{ subject | title }}',
+                {% for subject in subjects %}
+                    '{{ subject[1] | title }}',
                 {% endfor %}
             ],
             datasets: [
@@ -27,8 +27,8 @@
                     label: 'Średnia ocen - pierwszy semestr',
                     backgroundColor: 'rgb(110, 55, 110, 0.5)',
                     data: [
-                        {% for subject, terms in grades.items() %}
-                            '{{ countAverage(subject, "term1") }}',
+                        {% for subject in subjects %}
+                            '{{ subjectAvg(grades, subject[0], 1) }}',
                         {% endfor %}
                     ],
                 },
@@ -36,8 +36,8 @@
                     label: 'Średnia ocen - drugi semestr',
                     backgroundColor: 'rgb(20, 164, 193, 0.5)',
                     data: [
-                        {% for subject, terms in grades.items() %}
-                            '{{ countAverage(subject, "term2") }}',
+                        {% for subject in subjects %}
+                            '{{ subjectAvg(grades, subject[0], 2) }}',
                         {% endfor %}
                     ],
                 },
@@ -54,7 +54,7 @@
             document.getElementById('gradesChart'),
             config
         );
-    </script> #}
+    </script>
 
     {{ moment.include_moment() }}
     {{ moment.locale('pl') }}
@@ -74,10 +74,10 @@
 {% block content %}
     <div class="mt-2 mx-5"> <!-- alternatywnie contener zamiast marginesów (mx-5) -->
         {% if firstName or userLogin %}
-            <div class="alert alert-info alert-dismissible fade show" role="alert">
+            {# <div class="alert alert-info alert-dismissible fade show" role="alert">
                 {{ firstName }} jesteś zalogowany :D
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+            </div> #}
             <div class="row">
                 <div class="col-lg-2">
                     <div class="card h-100">
@@ -85,7 +85,7 @@
                             Twoja średnia
                         </div>
                         <div class="card-body">
-                            {# {{ allAverage }} #}
+                            {{subjectAvg(grades)}}
                         </div>
                     </div>
                 </div>
@@ -95,9 +95,9 @@
                             Przedmioty - najwyższa średnia
                         </div>
                         <div class="card-body text-success">
-                            {# {% for subject, grade in bestSubjects %}
-                            {{ subject }} <span class="badge bg-success">{{ grade }}</span>
-                            {% endfor %} #}
+                            {% for best in bestTwo(grades, subjects) %}
+                            {{ best[0] }} <span class="badge bg-success">{{ best[1] }}</span>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -107,9 +107,9 @@
                             Przedmioty - zagrożenia
                         </div>
                         <div class="card-body text-danger">
-                            {# {% for subject in subjectsD %}
-                            {{ subject }}
-                            {% endfor %} #}
+                            {% for subject in underTwo(grades, subjects) %}
+                                {{ subject[0] }}
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
