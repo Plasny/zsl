@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: monospace;
+        }
+
+        h1 {
+            color: blue;
+            margin: 10px auto;
+        }
+
+        .task {
+            display: block;
+            min-width: fit-content;
+            width: 150px;
+            color: white;
+            background-color: red;
+            padding: 4px;
+            margin-left: 2px;
+            margin-bottom: 2px;
+        }
+    </style>
+
+    <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const data = [
+            { name: "Mleko", quantity: 3 },
+            { name: "Czekolada", quantity: 2 },
+            { name: "Butelka wody", quantity: 5 },
+        ];
+
+        class List extends React.Component {
+            render() {
+                const listItems = data.map((el, index) =>
+                    <Task
+                        key={index}
+                        quantity={el.quantity}
+                        name={el.name}
+                    />
+                );
+                return (
+                    <>
+                        {listItems}
+                    </>
+                );
+            }
+        }
+
+        class Task extends React.Component {
+            render() {
+                return (
+                    <div className="task">
+                        {this.props.quantity} x {this.props.name}
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(
+            <List />,
+            document.getElementById('react-app')
+        )
+    </script>
+</head>
+
+<body>
+    <h1>JSX Component</h1>
+    <div id="react-app"></div>
+</body>
+
+</html>

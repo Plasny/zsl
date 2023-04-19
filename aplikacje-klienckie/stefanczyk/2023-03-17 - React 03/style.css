@@ -1,0 +1,91 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: monospace;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1 1 auto;
+}
+
+nav {
+    display: block;
+    width: 100vw;
+    border-bottom: 1px solid black;
+}
+
+.navEl {
+    display: inline-block;
+    border-right: 1px solid black;
+    width: 150px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 20px;
+    text-align: center;
+    user-select: none;
+}
+
+.navActive {
+    background-color: blue;
+    color: white;
+}
+
+.select,
+.form {
+    display: block;
+    margin: auto;
+    background: blue;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    max-width: 15rem;
+}
+
+.form input,
+.form h2 {
+    margin-bottom: 1rem;
+}
+
+.form input {
+    line-height: 1.5rem;
+    border: 1px solid white;
+}
+.form button {
+    background-color: white;
+    color: blue;
+    border: 1px solid white;
+    border-left: 1px solid blue;
+    padding-left: 1px;
+    padding-right: 1px;
+    line-height: 1.5rem;
+}
+
+.select {
+    border: 1px solid white;
+    margin-bottom: 1rem;
+}
+.select select {
+    margin-bottom: 0.5rem;
+}
+
+.checkEl {
+    display: inline-flex;
+    width: 10rem;
+    line-height: 2rem;
+    color: black;
+    margin-bottom: 1rem;
+}
+.checkEl input[type="checkbox"] {
+    margin: auto 0.5rem;
+    height: 1.5rem;
+    width: 1.5rem;
+}

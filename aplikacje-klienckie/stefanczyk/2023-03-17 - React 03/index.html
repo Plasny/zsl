@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forms</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel" data-type="module">
+        class SimpleForm extends React.Component {
+            constructor() {
+                super();
+                this.state = {
+                    data: ''
+                };
+            }
+
+            send = (e) => {
+                e.preventDefault();
+
+                this.setState({
+                    ...this.state,
+                    data: e.target.text.value
+                });
+            };
+
+            render() {
+                return (
+                    <div className="form">
+                        <h2>Formularz</h2>
+                        <form onSubmit={this.send}>
+                            <input type="text" name="text" />
+                            <button type="submit">Wyślij</button>
+                        </form>
+                        <p>data: {this.state.data}</p>
+                    </div>
+                );
+
+            }
+        }
+
+        //---------------------------------------------------------------------- 
+        class SelectElement extends React.Component {
+            constructor(props) {
+                super();
+                this.state = {
+                    selected: ''
+                };
+            }
+
+            select = (e) => {
+                this.setState({
+                    ...this.state,
+                    selected: e.target.value
+                });
+                this.props.update(e.target.value);
+            };
+
+            render() {
+                const options = [<option disabled selected>Wybierz</option>];
+                for (const option of this.props.list) {
+                    options.push(<option key={option.id}>{option.name}</option>);
+                }
+
+                return (
+                    <div className="select">
+                        <select onChange={this.select}>{options}</select>
+                        <p>wybrane z select: {this.state.selected}</p>
+                    </div>
+                );
+            }
+
+        }
+
+        class SelectForm extends React.Component {
+            constructor() {
+                super();
+                this.state = {
+                    selections: []
+                };
+            }
+
+            update = (newData) => {
+                this.setState({
+                    ...this.state,
+                    selections: [...this.state.selections, newData]
+                });
+            };
+
+            alert = () => {
+                alert("Selected: " + this.state.selections.join(', '));
+            };
+
+            render() {
+                const arr1 = [
+                    { id: 0, name: "hamlet" },
+                    { id: 1, name: "krzyżacy" },
+                    { id: 2, name: "lalka" }
+                ];
+                const arr2 = [
+                    { id: 0, name: "Kraków" },
+                    { id: 1, name: "Warszawa" },
+                    { id: 2, name: "Gdańsk" },
+                    { id: 3, name: "Toruń" }
+                ];
+
+                return (
+                    <div className="form">
+                        <SelectElement list={arr1} update={this.update} />
+                        <SelectElement list={arr2} update={this.update} />
+                        <p>Selected values: {this.state.selections.join(', ')}</p>
+                        <button onClick={this.alert}>Alert</button>
+                    </div>
+                );
+            }
+        }
+
+        //---------------------------------------------------------------------- 
+        class CheckboxElement extends React.Component {
+            constructor(props) {
+                super()
+                this.state = {
+                    active: false
+                }
+            }
+            change = (e) => {
+                this.setState({
+                    ...this.state,
+                    active: e.target.checked,
+                })
+
+                this.props.update(e.target.checked)
+            }
+            render() {
+                return(
+                    <div className="checkEl" style={{backgroundColor: this.state.active?"yellow":"darkgray"}}>
+                        <input type="checkbox" onChange={this.change} />
+                        <span>{this.props.value}$</span>
+                    </div>
+                )
+            }
+        }
+
+        class CheckboxForm extends React.Component {
+            constructor() {
+                super();
+                this.state = {
+                    sum: 0,
+                    list: [
+                        { checked: false, value: 1 },
+                        { checked: false, value: 2 },
+                        { checked: false, value: 3 },
+                        { checked: false, value: 10 },
+                        { checked: false, value: 20 },
+                    ]
+                };
+            }
+
+            update = (i, value) => {
+                this.state.list[i].checked = value
+
+                let sum = 0;
+                for(const item of this.state.list) {
+                    if(item.checked) sum += item.value 
+                }
+
+                this.setState({
+                    ...this.state,
+                    sum: sum
+                })
+            }
+
+            render() {
+                const list = []
+                for (const i in this.state.list) {
+                    const item = this.state.list[i];
+                    list.push(<CheckboxElement key={i} value={item.value} update={(value) => this.update(i, value)} />)
+                }
+
+                return (
+                    <div className="form">
+                        {list}
+                        <p>suma: {this.state.sum}</p>
+                    </div>
+                );
+            }
+        }
+
+
+        //---------------------------------------------------------------------- 
+        class NavLink extends React.Component {
+            render() {
+                const active = this.props.active === this.props.pageName;
+
+                return (
+                    <div
+                        className={active ? 'navEl navActive' : 'navEl'}
+                        onClick={() => this.props.clickHandler(this.props.pageName)}
+                    >
+                        {this.props.pageName}
+                    </div>
+                );
+            }
+        }
+
+        class Main extends React.Component {
+            constructor() {
+                super();
+                this.state = {
+                    activePane: 'CheckboxForm'
+                };
+            }
+
+            handleNav = (pane) => {
+                this.setState({
+                    activePane: pane,
+                });
+            };
+
+            getPane = () => {
+                switch (this.state.activePane) {
+                    case 'SimpleForm':
+                        return <SimpleForm />;
+                    case 'SelectForm':
+                        return <SelectForm />;
+                    case 'CheckboxForm':
+                        return <CheckboxForm />;
+                }
+            };
+
+            render() {
+                return (
+                    <div className="app">
+                        <nav>
+                            <NavLink pageName='SimpleForm' active={this.state.activePane} clickHandler={this.handleNav} />
+                            <NavLink pageName='SelectForm' active={this.state.activePane} clickHandler={this.handleNav} />
+                            <NavLink pageName='CheckboxForm' active={this.state.activePane} clickHandler={this.handleNav} />
+                        </nav>
+
+                        <main>
+                            {this.getPane()}
+                        </main>
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(
+            <Main />,
+            document.getElementById('react-app')
+        );
+    </script>
+</head>
+
+<body>
+    <div id="react-app"></div>
+</body>
+
+</html>

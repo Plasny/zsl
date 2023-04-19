@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clocks</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel" data-type="module">
+        class NavLink extends React.Component {
+            render() {
+                const active = this.props.active === this.props.pageName;
+
+                return (
+                    <div
+                        className={active ? 'navEl navActive' : 'navEl'}
+                        onClick={() => this.props.handleClick(this.props.pageName)}
+                    >
+                        {this.props.pageName}
+                    </div>
+                );
+            }
+        }
+
+        class Stopwatch extends React.Component {
+            constructor() {
+                super();
+                this.state = {
+                    time: 0
+                };
+            }
+
+            componentWillUnmount() {
+                clearInterval(this.interval);
+            }
+
+
+            start = () => {
+                this.interval ? clearInterval(this.interval) : null;
+                this.interval = setInterval(() => {
+                    this.setState({
+                        time: this.state.time + 1
+                    });
+                }, 1000);
+            };
+
+            render() {
+                return (
+                    <div
+                        className='circle'
+                    >
+                        <div>
+                            <p>{this.state.time}</p>
+                            <button onClick={this.start}>Start</button>
+                        </div>
+                    </div>
+                );
+
+            }
+        }
+
+        class Timer extends React.Component {
+            constructor(props) {
+                super();
+                this.timerValue = props.time;
+                this.state = {
+                    action: 'Start',
+                    time: this.zeroTime(),
+                };
+            }
+
+            componentWillUnmount() {
+                cancelAnimationFrame(this.animation);
+            }
+
+            zeroTime = () => {
+                const tmpDate = new Date(0);
+                return tmpDate.setSeconds(this.timerValue + tmpDate.getTimezoneOffset() * 60);
+            };
+
+            setTimer = () => {
+                switch (this.state.action) {
+                    case 'Start':
+                        const startDate = new Date();
+                        this.setState({
+                            ...this.state,
+                            action: 'Stop',
+                            finishDate: startDate.setSeconds(startDate.getSeconds() + this.timerValue + startDate.getTimezoneOffset() * 60),
+                        });
+                        const update = () => {
+                            this.setState({
+                                ...this.state,
+                                time: new Date(this.state.finishDate - new Date())
+                            });
+
+                            if (this.state.time - this.state.time.getTimezoneOffset() * 60 * 1000 <= 10) {
+                                this.state.action = 'Stop';
+                                this.setTimer();
+                                return;
+                            }
+
+                            this.animation = requestAnimationFrame(update);
+                        };
+                        this.animation = requestAnimationFrame(update);
+                        break;
+                    case 'Stop':
+                        cancelAnimationFrame(this.animation);
+                        this.setState({
+                            ...this.state,
+                            action: 'Reset',
+                        });
+                        break;
+                    case 'Reset':
+                        this.setState({
+                            action: 'Start',
+                            time: this.zeroTime(),
+                        });
+                }
+            };
+
+            render() {
+                return (
+                    <div
+                        className='circle'
+                    >
+                        <div>
+                            <p>{new Date(this.state.time).toLocaleTimeString()}</p>
+                            <button onClick={this.setTimer}>{this.state.action}</button>
+                        </div>
+                    </div>
+                );
+            }
+        }
+
+        class ZoneClock extends React.Component {
+            constructor(props) {
+                super();
+                this.state = {
+                    saved: props.saved,
+                }
+            }
+
+            save = () => {
+                const newZone = {
+                    name: this.props.name,
+                    zone: this.props.zone,
+                }
+                let zones = localStorage.getItem('favouriteZones');
+
+                if(!zones) {
+                    localStorage.setItem('favouriteZones', JSON.stringify([newZone]));
+                    return;
+                }
+
+                zones = JSON.parse(zones);
+                if(zones.find(zone => zone.name === newZone.name))
+                    return;
+
+                zones.push(newZone);
+                localStorage.setItem('favouriteZones', JSON.stringify(zones))
+
+                this.setState({
+                    saved: true 
+                })
+            }
+
+            delete = () => {
+                const delZone = {
+                    name: this.props.name,
+                    zone: this.props.zone,
+                }
+                let zones = localStorage.getItem('favouriteZones');
+
+                zones = JSON.parse(zones);
+                zones = zones.filter(zone => zone.name != delZone.name)
+                localStorage.setItem('favouriteZones', JSON.stringify(zones))
+
+                if(this.props.update) {
+                    this.props.update()
+                }
+
+                this.setState({
+                    saved: false
+                })
+            }
+
+            render() {
+                let color = 'lightcoral';
+                let btnText= 'Save';
+                const options = {
+                    timeZone: this.props.zone,
+                };
+
+                if(this.state.saved) {
+                    color = 'coral';
+                    btnText = 'Remove'
+                }
+
+                return (
+                    <div 
+                        className="circle" 
+                        style={{backgroundColor: color}}
+                    >
+                        <div>
+                            <h3>{this.props.name}</h3>
+                            <p>{this.props.time.toLocaleTimeString('pl-PL', options)}</p>
+                            <button 
+                                style={{color: color}}
+                                onClick={this.state.saved?this.delete:this.save}
+                            >{btnText}</button>
+                        </div>
+                    </div>
+                );
+            }
+        }
+
+        class ZoneList extends React.Component {
+            constructor() {
+                super();
+
+                let saved = localStorage.getItem('favouriteZones');
+                saved = JSON.parse(saved);
+
+                this.state = {
+                    time: new Date(),
+                    saved: saved,
+                    zones: [],
+                };
+            }
+
+            componentDidMount() {
+                fetch('zones.json')
+                    .then(res => res.json())
+                    .then(res => {
+                        res.forEach(el => {
+                            if(this.state.saved.find(zone => zone.name === el.value)){
+                                el.saved = true;
+                                return;
+                            }
+
+                            el.saved = false;
+                        })
+
+                        this.setState({
+                            ...this.state,
+                            zones: res,
+                        });
+                    });
+
+                this.animation = requestAnimationFrame(this.updateTime)
+            }
+
+            componentWillUnmount() {
+                cancelAnimationFrame(this.animation)
+            }
+
+            updateTime = () => {
+                this.setState({
+                    ...this.state,
+                    time: new Date(),
+                })
+
+                this.animation = requestAnimationFrame(this.updateTime)
+            }
+
+            render() {
+                let zones = [];
+                for (const el of this.state.zones) {
+                    zones.push(<ZoneClock key={zones.length} time={this.state.time} name={el.value} zone={el.utc[el.utc.length - 1]} saved={el.saved} />);
+                }
+
+                return (
+                    <div className="flex">{zones}</div>
+                );
+            }
+        }
+
+        class SavedList extends React.Component {
+            constructor() {
+                super();
+
+                let zones = localStorage.getItem('favouriteZones');
+                zones = JSON.parse(zones)
+
+                this.state = {
+                    time: new Date(),
+                    zones: zones,
+                };
+            }
+
+            getZones = () => {
+                let zones = localStorage.getItem('favouriteZones');
+                zones = JSON.parse(zones)
+
+                this.setState({
+                    ...this.state,
+                    zones: zones,
+                })
+            }
+
+            componentDidMount() {
+                this.animation = requestAnimationFrame(this.updateTime)
+            }
+
+            componentWillUnmount() {
+                cancelAnimationFrame(this.animation)
+            }
+
+            updateTime = () => {
+                this.setState({
+                    ...this.state,
+                    time: new Date(),
+                })
+
+                this.animation = requestAnimationFrame(this.updateTime)
+            }
+
+            render() {
+                let zones = [];
+                for (const el of this.state.zones) {
+                    zones.push(<ZoneClock key={zones.length} time={this.state.time} name={el.name} zone={el.zone} saved={true} update={this.getZones}/>);
+                }
+
+                return (
+                    <div className="flex">{zones}</div>
+                );
+            }
+        }
+
+        class Main extends React.Component {
+            constructor() {
+                super();
+                this.state = {
+                    activePane: 'Timer'
+                };
+            }
+
+            handleNav = (pane) => {
+                this.setState({
+                    activePane: pane,
+                });
+            };
+
+            getPane = () => {
+                switch (this.state.activePane) {
+                    case 'Stopwatch':
+                        return <Stopwatch />;
+                    case 'Timer':
+                        return (
+                            <div className="flex">
+                                <Timer time={30} />
+                                <Timer time={1 * 60} />
+                                <Timer time={5 * 60} />
+                            </div>
+                        );
+                    case 'Timezones':
+                        return <ZoneList />;
+                    case 'SavedClocks':
+                        return <SavedList />;
+                }
+            };
+
+            render() {
+                return (
+                    <div className="app">
+                        <nav>
+                            <NavLink pageName='Stopwatch' active={this.state.activePane} handleClick={this.handleNav} />
+                            <NavLink pageName='Timer' active={this.state.activePane} handleClick={this.handleNav} />
+                            <NavLink pageName='Timezones' active={this.state.activePane} handleClick={this.handleNav} />
+                            <NavLink pageName='SavedClocks' active={this.state.activePane} handleClick={this.handleNav} />
+                        </nav>
+
+                        <main>
+                            {this.getPane()}
+                        </main>
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(
+            <Main />,
+            document.getElementById('react-app')
+        );
+    </script>
+</head>
+
+<body>
+    <div id="react-app"></div>
+</body>
+
+</html>

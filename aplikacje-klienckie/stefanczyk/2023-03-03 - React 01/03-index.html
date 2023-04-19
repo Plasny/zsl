@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch JSON</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: monospace;
+        }
+
+        h1 {
+            height: 5vh;
+            color: blue;
+            margin: 10px auto;
+        }
+
+        .flex {
+            display: flex;
+            width: 100%;
+        }
+
+        .product {
+            height: 300px;
+            width: 220px;
+            display: inline-block;
+            background-color: lightskyblue;
+            margin: 5px;
+        }
+
+        .product>* {
+            width: 100%;
+        }
+
+        .product>h4 {
+            text-align: center;
+            height: 60px;
+            line-height: 20px;
+            font-size: 16px;
+            color: white;
+        }
+
+        .product .img {
+            height: 120px;
+            width: 120px;
+        }
+
+        .product>.stars {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            background-color: lightgray;
+        }
+
+        .product>.stars>img {
+            height: auto;
+            width: 40px;
+            margin: 2px;
+        }
+
+    </style>
+
+    <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        fetch('./data.json')
+            .then(res => res.json())
+            .then(res => render(res));
+
+        function render(data) {
+            class List extends React.Component {
+                render() {
+                    const listItems = data.items.map((el, index) =>
+                        <Product
+                            key={index}
+                            name={el.title}
+                            img={el.product_url}
+                            price={el.price}
+                            stars={el.stars}
+                            stars_src={el.img_url}
+                        />
+                    );
+                    return (
+                        <div className="list">
+                            {listItems}
+                        </div>
+                    );
+                }
+            }
+
+            class Product extends React.Component {
+                render() {
+                    let starsList = [];
+                    for (let i = 0; i < this.props.stars; i++) {
+                        starsList[i] = <img key={i} src={this.props.stars_src} />;
+                    }
+
+                    return (
+                        <div className="product">
+                            <h4>{this.props.name}</h4>
+                            <div className="flex" style={{ height: "180px" }}>
+                                <img className="img" src={this.props.img} alt="Product image" />
+                                <div>
+                                    <p style={{ color: "yellow" }}>Price</p>
+                                    <p style={{ fontSize: "24px" }}>{this.props.price}$</p>
+                                </div>
+                            </div>
+                            <div className="stars">
+                                {starsList}
+                            </div>
+                        </div>
+                    );
+                }
+            }
+
+            ReactDOM.render(
+                <List />,
+                document.getElementById('react-app')
+            );
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Fetch json data from server and make images list</h1>
+    <div id="react-app"></div>
+</body>
+
+</html>

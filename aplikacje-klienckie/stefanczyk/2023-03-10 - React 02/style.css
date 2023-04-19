@@ -1,0 +1,71 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: monospace;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+main {
+    flex: 1 1 auto;
+}
+
+nav {
+    display: block;
+    width: 100vw;
+    border-bottom: 1px solid black;
+}
+
+.navEl {
+    display: inline-block;
+    border-right: 1px solid black;
+    width: 150px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 20px;
+    text-align: center;
+    user-select: none;
+}
+
+.navActive {
+    background-color: lightcoral;
+}
+
+.circle {
+    margin: 20px;
+    width: 200px;
+    height: 200px;
+    background-color: lightcoral;
+    border-radius: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: center
+}
+.circle div {
+    text-align: center;
+    margin: auto;
+}
+.circle div p {
+    color: white;
+    font-size: 20px;
+    padding: 5px;
+}
+.circle div button {
+    background-color: white;
+    color: lightcoral;
+    font-size: 20px;
+    padding: 5px;
+    border: none;
+    border-radius: 0.5rem;
+    user-select: none;
+}
