@@ -1,0 +1,67 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#game {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightblue;
+}
+
+#board {
+    border: 1px solid black;
+    background-color: white;
+    border-collapse: collapse;
+}
+
+#board > div {
+    height: 40px;
+    display: flex;
+}
+
+/* Cell styles */
+.cell {
+    width: 40px;
+    height: 40px;
+    /* border: 1px solid black; */
+    background-color: white;
+
+    line-height: 40px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.s-top {
+    border-radius: 50% 50% 0 0;
+}
+.s-bottom {
+    border-radius: 0 0 50% 50%;
+}
+.s-left {
+    border-radius: 50% 0 0 50%;
+}
+.s-right {
+    border-radius: 0 50% 50% 0;
+}
+.s-all {
+    border-radius: 40%;
+}
+
+.red {
+    background-color: red;
+    border: 1px solid black;
+}
+.blue {
+    background-color: blue;
+    color: white;
+    border: 1px solid black;
+}
+.yellow {
+    background-color: yellow;
+    border: 1px solid black;
+}

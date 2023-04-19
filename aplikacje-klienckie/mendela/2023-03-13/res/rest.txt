@@ -1,0 +1,12 @@
+.bg-pill_br_x {
+    width: 16px; height: 16px;
+    background: url('css_sprites.png') -752px -383px;
+}
+.bg-pill_yl_x {
+    width: 16px; height: 16px;
+    background: url('css_sprites.png') -736px -415px;
+}
+.bg-pill_bl_x {
+    width: 16px; height: 16px;
+    background: url('css_sprites.png') -768px -351px;
+}
