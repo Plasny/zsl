@@ -1,0 +1,76 @@
+.error {
+    color: red;
+    font-weight: bold;
+    font-size: xx-large;
+}
+
+.row {
+    margin: auto;
+    width: fit-content;
+}
+
+.corridor,
+.rowNr,
+.taken,
+.available,
+.choosen {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+}
+
+.corridor {
+    width: 60px;
+}
+
+.rowNr {
+    font-size: 12px;
+    margin: auto 5px;
+}
+
+input[name="seats[]"] {
+    display: none;
+}
+
+.taken,
+.available,
+.choosen {
+    color: white;
+    margin: 2px;
+    margin-bottom: 6px;
+    user-select: none;
+}
+
+.available,
+.choosen {
+    cursor: pointer;
+}
+
+.taken {
+    background-color: gray;
+}
+
+.available {
+    background-color: green;
+}
+
+input[name="seats[]"]:checked~label {
+    background-color: orange;
+}
+
+.choosen {
+    background-color: orange;
+}
+
+.screen {
+    width: 800px;
+    height: 5px;
+    margin: 30px auto;
+    background-color: black;
+}
+
+.info {
+    margin-top: 20px;
+}

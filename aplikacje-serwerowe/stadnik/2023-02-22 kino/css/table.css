@@ -1,0 +1,10 @@
+table {
+    border-collapse: collapse;
+}
+
+table td,
+table th {
+    font-size: 3vh;
+    border: 1px solid black;
+    padding: 10px;
+}

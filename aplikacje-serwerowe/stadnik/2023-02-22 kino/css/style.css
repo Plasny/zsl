@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    font-family: monospace;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 95vh;
+}
+
+ul.navBar {
+    list-style-type: none;
+    text-align: end;
+    background-color: lightskyblue;
+}
+
+ul.navBar>li {
+    margin: auto 1vw;
+    display: inline;
+}
+
+ul.navBar>li a:hover, 
+ul.navBar>li a:visited,
+ul.navBar>li a:active,
+ul.navBar>li a {
+    height: auto;
+    line-height: 5vh;
+    font-size: 3vh;
+    text-decoration: none;
+    color: white;
+}

@@ -1,0 +1,36 @@
+#loginForm {
+    max-width: 600px;
+    padding: 3vh;
+    border: 1px solid black;
+    border-radius: 1rem;
+    font-size: 3vh;
+}
+
+#loginForm h2 {
+    text-align: center;
+}
+
+#loginForm hr {
+    margin: 2vh 0;
+}
+
+#loginForm input {
+    display: block;
+    margin-bottom: 1.5vh;
+    height: 3vh;
+    width: 100%;
+}
+
+#loginForm input[type="submit"] {
+    margin: auto;
+    background-color: lightskyblue;
+    border: 1px solid black;
+    height: 4vh;
+    width: 50%;
+    font-size: inherit;
+}
+
+.info {
+    font-size: 12px;
+    margin-bottom: 1.5vh;
+}

@@ -1,0 +1,44 @@
+.sidebar {
+    width: 20%;
+    height: 100%;
+    border-right: 2px solid black;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar > a {
+    display: block;
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 20px;
+    text-decoration: none;
+    text-align: center;
+    border-bottom: 1px solid black;
+}
+
+main {
+    width: 80%;
+    height: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+main > p {
+    margin: auto;
+    font-size: large;
+}
+
+.container {
+    flex-direction: row;
+}
+
+form {
+    margin: auto;
+}
+
+form label {
+    display: inline-block;
+    width: 200px;
+}
