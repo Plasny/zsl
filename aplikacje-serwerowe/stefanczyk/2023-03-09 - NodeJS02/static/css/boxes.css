@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    font-family: monospace;
+    display: flex;
+}
+
+#server,
+#client {
+    width: 50%;
+    height: 100%;
+    background-color: lightblue;
+    position: relative;
+}
+#client {
+    background-color: lightblue;
+    cursor: crosshair;
+}
+#server {
+    background-color: lightskyblue;
+}
+#server *,
+#client * {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: red;
+}
+
+.box {
+    width: 100px;
+    height: 100px;
+    background-color: red;
+}

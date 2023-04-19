@@ -1,0 +1,129 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    font-family: monospace;
+}
+
+h1 {
+    height: 5vh;
+    background-color: blueviolet;
+    color: white;
+    line-height: 5vh;
+    font-size: 4vh;
+    padding-left: 1vw;
+}
+
+#chat {
+    width: 100vw;
+    height: 95vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#chat>* {
+    margin: 0 auto;
+    width: 80vw;
+    max-width: 500px;
+}
+
+#chat>p {
+    margin: 1vh auto;
+    height: 3vh;
+    text-align: center;
+    line-height: 3vh;
+    font-size: 2vh;
+}
+
+#chat form {
+    height: 5vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#chat form button {
+    width: 10%;
+    height: 100%;
+    background-color: blueviolet;
+    color: white;
+    border: none;
+    border-end-end-radius: 0.5rem;
+    border-start-end-radius: 0.5rem;
+}
+
+#chat form textarea {
+    width: 90%;
+    height: 100%;
+    border-end-start-radius: 0.5rem;
+    border-start-start-radius: 0.5rem;
+    resize: vertical;
+    padding: 5px;
+}
+
+.messages {
+    height: 80vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding: 10px;
+    margin-bottom: 1vh;
+}
+
+.m0,
+.m1,
+.m2,
+.m3,
+.m4 {
+    margin-bottom: 0.2vh;
+    width: fit-content;
+    border-radius: 0.5rem;
+    padding: 5px 10px;
+}
+
+.m0 {
+    color: black;
+    width: 100%;
+    background-color: green;
+}
+
+.m1 {
+    color: white;
+    margin-left: auto;
+    background-color: black;
+}
+
+.m2 {
+    color: white;
+    margin-right: auto;
+    background-color: darkviolet;
+}
+
+.m3 {
+    color: black;
+    margin-right: auto;
+    background-color: green;
+}
+
+.m4 {
+    color: black;
+    margin-right: auto;
+    background-color: red;
+}
+
+.msgUser {
+    text-decoration:solid ;
+}
+
+.msgTime {
+    font-weight: 300;
+    color: lightgrey;
+}
+
+.msgContent {
+    font-weight: bold;
+}

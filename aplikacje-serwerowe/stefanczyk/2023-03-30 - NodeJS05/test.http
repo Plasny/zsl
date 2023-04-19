@@ -1,0 +1,28 @@
+### Get all tasks
+GET http://localhost:5555/api/tasks HTTP/1.1
+
+### Get a given task
+GET http://localhost:5555/api/task/3 HTTP/1.1
+
+### Create a task
+POST http://localhost:5555/api/tasks HTTP/1.1
+content-type: application/json
+
+{
+    "title": "test task 1",
+    "description": "hard"
+}
+
+
+### Delete a task
+DELETE  http://localhost:5555/api/task/1 HTTP/1.1
+
+### Update a task
+PUT http://localhost:5555/api/task/3 HTTP/1.1
+content-type: application/json
+
+{
+    "title": "test task 3",
+    "description": "hard",
+    "completed": true
+}

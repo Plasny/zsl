@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zwierzaki</title>
+
+    <link rel="stylesheet" href="styles/main.css">
+    <script src="scripts/main.js"></script>
+</head>
+
+<body>
+    <h1>MVC - Model, View, Control</h1>
+
+    <div class="container">
+        <div class="selects">
+            <select id="typeSelect" size="3">
+                <option>cat</option>
+                <option>dog</option>
+                <option>cow</option>
+            </select>
+
+            <select id="colorSelect" size="3">
+                <option>white</option>
+                <option>black</option>
+                <option>yellow</option>
+            </select>
+
+            <select id="idSelect" size="3">
+            </select>
+        </div>
+
+        <div class="buttons">
+            <button onclick="addOne()">add one</button>
+            <button onclick="getAll()">get all</button>
+            <button onclick="delOne()">delete selected</button>
+            <button onclick="updateOne()">update selected</button>
+        </div>
+
+    </div>
+</body>
+
+</html>
