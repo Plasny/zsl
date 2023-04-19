@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monetki</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/script.js"></script>
+</head>
+
+<body>
+    <form id="editForm"></form>
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>nominał</th>
+                <th>nr kat.</th>
+                <th>stop</th>
+                <th>rok</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tab"></tbody>
+        <tbody>
+            <tr>
+                <th colspan="6">Dodawanie rekordu</th>
+            </tr>
+            <tr>
+                <form id="newForm">
+                    <input type="hidden" name="action" value="add">
+                    <td>
+                        <select name="country_id" id="country" required />
+                    </td>
+                    <td>
+                        <input type="text" name="denomination" required>
+                    </td>
+                    <td>
+                        <input type="text" name="category" required>
+                    </td>
+                    <td>
+                        <select name="alloy_id" id="alloy" required />
+                    </td>
+                    <td>
+                        <input type="text" name="year" required>
+                    </td>
+                    <td>
+                        <button class="add" type="submit">✅</button>
+                    </td>
+                </form>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+
+</html>
