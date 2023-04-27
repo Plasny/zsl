@@ -1,0 +1,89 @@
+nav.sideNav {
+  min-width: 13rem;
+  width: 20%;
+  height: 100%;
+  background-color: var(--c-30);
+  color: var(--c-60);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.nav-el {
+  display: block;
+  margin: 0.5rem;
+  text-align: center;
+  padding: 1rem;
+  border: 1px solid var(--c-60);
+  border-radius: 1rem;
+}
+
+.nav-el>h3 {
+  margin-bottom: 0.5rem;
+}
+
+.nav-el>div>input[type="number"] {
+  margin-left: 1rem;
+  width: 3rem;
+}
+
+.nav-el>div>label {
+  display: inline-block;
+}
+
+.nav-el>button {
+  border: none;
+  padding: 0.5rem;
+  margin: auto;
+  width: 100%;
+  max-width: 10rem;
+  height: 2rem;
+  background-color: var(--c-10);
+  color: var(--c-60);
+  border-radius: 3px;
+}
+
+.nav-el>button:disabled {
+  background-color: gray;
+}
+
+.nav-el>hr {
+  margin: 1rem auto;
+}
+
+main {
+  width: 80%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.board {
+  border: 1px solid black;
+}
+
+.group {
+  margin: auto;
+  display: flex;
+}
+
+.field {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  text-align: center;
+  font-size: 1.5rem;
+  border: 1px solid black;
+  user-select: none;
+}
+
+.dontcheck {
+  background-color: lightgray;
+}
+
+.last {
+  color: red;
+}

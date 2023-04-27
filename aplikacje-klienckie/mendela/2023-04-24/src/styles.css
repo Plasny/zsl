@@ -1,0 +1,18 @@
+:root {
+  --c-60: #F2F5EA;
+  --c-30: #1B1725;
+  --c-10: #AC7B84;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+app-root {
+  width: 100vw;
+  height: 100vh;
+  background: var(--c-60);
+  display: flex;
+}

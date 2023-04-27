@@ -1,0 +1,78 @@
+<nav class="sideNav">
+
+  <div *ngIf="started" class="nav-el">
+    <h2 style="margin-bottom: 1rem;">Current scores</h2>
+    <div>Player: {{player.points}}</div>
+    <div>Opponents: {{opponent.points}}</div>
+  </div>
+
+  <form (ngSubmit)="start()" class="nav-el" #myForm="ngForm">
+    <h2>Game setup</h2>
+
+    <hr>
+
+    <h3>Board size</h3>
+    <div>
+      <label for="height">Board height</label>
+      <input type="number" name="height" id="height" min="3" [(ngModel)]="boardHeight">
+    </div>
+    <div>
+      <label for="width">Board width</label>
+      <input type="number" name="width" id="width" min="3" [(ngModel)]="boardWidth">
+    </div>
+
+    <hr>
+
+    <h3>Game length</h3>
+    <div>
+      <label for="maxPoints">Number of points required to win</label>
+      <input type="number" name="maxPoints" id="maxPoints" min="1" [(ngModel)]="maxPoints">
+    </div>
+
+    <hr>
+
+    <h3>Player type</h3>
+    <div>
+      <label>Circle <input type="radio" name="pType" value="O" [(ngModel)]="player.type" /></label>
+      <label>Cross <input type="radio" name="pType" value="X" [(ngModel)]="player.type" /></label>
+    </div>
+
+    <hr>
+
+    <button type="submit" [disabled]="myForm.invalid">
+      {{myForm.invalid ? 'Invalid data' : 'Begin game'}}
+    </button>
+  </form>
+
+  <div class="nav-el">
+    <h3>Debug options</h3>
+    <label><input type="checkbox" #xyInfo /> x/y info</label>
+  </div>
+
+</nav>
+
+<main>
+
+  <div *ngIf="!started" [ngStyle]="{'margin-bottom.rem': 1}">Waiting for the game to begin...</div>
+
+  <div *ngIf="!playing && started" [ngStyle]="{'margin-bottom.rem': 1, 'text-align': 'center'}">
+    {{player.points > opponent.points ? 'You' : 'Computer'}} won!<br>
+    ⬇ Last game ⬇
+  </div>
+
+  <div *ngIf="board.length > 0" class="board">
+    <div *ngFor="let col of board; let y = index" class="group">
+      <div *ngFor="let field of col; let x = index" class="field" (click)="set(x, y)"
+        [ngClass]="{'dontcheck': field.dontcheck, 'last': lastInserted.x === x && lastInserted.y === y}">
+
+        <div *ngIf="xyInfo.checked" style="line-height: 0.4rem; font-size: 0.4rem; position: absolute;">
+          x: {{x}}, y: {{y}}
+        </div>
+
+        {{field.type}}
+
+      </div>
+    </div>
+  </div>
+
+</main>
