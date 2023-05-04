@@ -1,0 +1,26 @@
+{
+  "name": "instapp",
+  "version": "0.1",
+  "description": "",
+  "main": "build/app.js",
+  "scripts": {
+    "build": "tsc --build",
+    "clear": "rm -rf ./storage/*",
+    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "start": "tsc --build && node build/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "@types/formidable": "^2.0.5",
+    "formidable": "^2.1.1",
+    "tracer": "^1.1.6"
+  }
+}
