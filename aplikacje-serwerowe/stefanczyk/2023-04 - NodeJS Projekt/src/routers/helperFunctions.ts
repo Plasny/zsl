@@ -32,9 +32,10 @@ export function returnJSON(
  * Function which sends formatted message as a response
  * @param res
  * @param message String message
+ * @param code HTTP status code to send
  */
-export function returnMessage(res: ServerResponse, message: string) {
-  res.writeHead(200, { "content-type": "application/json;charset=utf-8" });
+export function returnMessage(res: ServerResponse, message: string, code: number = 200) {
+  res.writeHead(code, { "content-type": "application/json;charset=utf-8" });
   res.end(JSON.stringify({ message: message }));
 }
 

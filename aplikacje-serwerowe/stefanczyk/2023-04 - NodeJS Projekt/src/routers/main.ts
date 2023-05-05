@@ -1,6 +1,7 @@
 import { IncomingMessage, ServerResponse } from "http";
 import { check } from "./helperFunctions";
 import photosRouter from "./router-photos";
+import tagsRouter from "./router-tags";
 
 /**
  * Function with router which routes reqests to other routers
@@ -21,6 +22,10 @@ export default async function router(
   switch (true) {
     case check(req, /^\/api\/photos/):
       await photosRouter(req, res);
+      break;
+
+    case check(req, /^\/api\/tags/):
+      await tagsRouter(req, res);
       break;
 
     default:

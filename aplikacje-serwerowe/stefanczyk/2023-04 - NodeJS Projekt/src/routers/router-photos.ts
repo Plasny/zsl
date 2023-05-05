@@ -1,6 +1,6 @@
 import config from "../models/config";
 import { IncomingMessage, ServerResponse } from "http";
-import { check, returnJSON } from "./helperFunctions";
+import { check, getBody, returnJSON } from "./helperFunctions";
 import formidable from "formidable";
 import photoStore from "../models/photoStore";
 import { logger } from "../app";
@@ -21,12 +21,29 @@ export default async function photosRouter(
   }
 
   let id;
+  let body;
   const form = formidable({
     keepExtensions: true,
     uploadDir: config.storageDir,
   });
 
   switch (true) {
+    case check(req, /^\/api\/photos\/tags$/, "PATCH"):
+      body = await getBody(req) as {id: string, tags: string[]}
+      returnJSON(res, photoStore.addTagsToPhoto(body.id, body.tags));
+      break;
+
+    // probably won't be used
+    case check(req, /^\/api\/photos\/tags\/add$/, "PATCH"):
+      body = await getBody(req) as {id: string, tags: string[]}
+      returnJSON(res, photoStore.addTagsToPhoto(body.id, body.tags, false));
+      break;
+
+    case check(req, /^\/api\/photos\/tags/, "GET"):
+      id = req.url.replace(/^\/api\/photos\/tags\//, "");
+      returnJSON(res, photoStore.getPhotosTags(id));
+      break;
+
     case check(req, /^\/api\/photos$/, "POST"):
       form.parse(req, (err, fields, files) => {
         if (err) {
@@ -38,7 +55,7 @@ export default async function photosRouter(
           res,
           photoStore.registerPhoto(
             files.file as formidable.File,
-            fields.album as string
+            fields.album as string,
           )
         );
       });
