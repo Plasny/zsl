@@ -1,0 +1,5 @@
+### get file of image
+http://localhost:5555/api/photos/img/lhszlupe-6iwxl
+
+### get file of image with given history index (0 is oryginal file)
+http://localhost:5555/api/photos/img/lht09s1l-fgdls?history=1

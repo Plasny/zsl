@@ -4,6 +4,7 @@ import { check, getBody, returnJSON } from "./helperFunctions";
 import formidable from "formidable";
 import photoStore from "../models/photoStore";
 import { logger } from "../app";
+import type { bufferAndMime, returnMsg } from "../models/types";
 
 /**
  * Function with router for photos api
@@ -28,14 +29,15 @@ export default async function photosRouter(
   });
 
   switch (true) {
+    /// ---------- tags ----------
     case check(req, /^\/api\/photos\/tags$/, "PATCH"):
-      body = await getBody(req) as {id: string, tags: string[]}
+      body = (await getBody(req)) as { id: string; tags: string[] };
       returnJSON(res, photoStore.addTagsToPhoto(body.id, body.tags));
       break;
 
     // probably won't be used
     case check(req, /^\/api\/photos\/tags\/add$/, "PATCH"):
-      body = await getBody(req) as {id: string, tags: string[]}
+      body = (await getBody(req)) as { id: string; tags: string[] };
       returnJSON(res, photoStore.addTagsToPhoto(body.id, body.tags, false));
       break;
 
@@ -44,6 +46,40 @@ export default async function photosRouter(
       returnJSON(res, photoStore.getPhotosTags(id));
       break;
 
+    /// ---------- getfile ----------
+    case check(req, /^\/api\/photos\/img/, "GET"):
+      let obj;
+      id = req.url.replace(/^\/api\/photos\/img\//, "");
+      id = id.replace(/\?history=.*$/, "");
+      console.log(id)
+      const url = new URL("http://" + req.headers.host + req.url);
+
+      if (url.searchParams.has("history")) {
+        const history = url.searchParams.get("history")!
+        obj = await photoStore.getFile(id, parseInt(history));
+      } else {
+        obj = await photoStore.getFile(id);
+      }
+
+      if (obj.hasOwnProperty("error")) {
+        delete (obj as returnMsg).error;
+        res.writeHead(403, {
+          "content-type": "application/json;charset=utf-8",
+        });
+        res.end(JSON.stringify(obj));
+        break;
+      }
+
+      res.writeHead(200, {
+        "Content-Type": (obj as bufferAndMime).mime ?? "",
+        "Content-Disposition":
+          "attachment;filename=" + (obj as bufferAndMime).name,
+      });
+      res.write((obj as bufferAndMime).file);
+      res.end();
+      break;
+
+    /// ---------- base ----------
     case check(req, /^\/api\/photos$/, "POST"):
       form.parse(req, (err, fields, files) => {
         if (err) {
@@ -55,7 +91,7 @@ export default async function photosRouter(
           res,
           photoStore.registerPhoto(
             files.file as formidable.File,
-            fields.album as string,
+            fields.album as string
           )
         );
       });

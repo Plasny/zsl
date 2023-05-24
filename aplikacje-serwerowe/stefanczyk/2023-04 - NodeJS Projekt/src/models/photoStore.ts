@@ -5,15 +5,13 @@ albums -> list of photos
 
 each photo -> list of tags, history, etc.
 
-tag, date -> list of photos
+??? tag, date -> list of photos
 */
 
-// todo add tags to photos
-
 import formidable from "formidable";
-import { deleteFile } from "./fsOperations";
+import { deleteFile, getFileBuffer } from "./fsOperations";
 import tagsStore, { tag } from "./tagsStore";
-import { access, returnMsg } from "./types";
+import { access, bufferAndMime, returnMsg } from "./types";
 
 /**
  * IDstring is a string made of current date, dash and a random number made
@@ -221,6 +219,36 @@ class photoStore {
       id: id,
       tags: this.store[id].tags,
     };
+  }
+
+
+  /**
+   * Method which returns photo file
+   * @param id id of the photo
+   * @param history version of the file
+   */
+  async getFile(id: IDstring, history?: number): Promise<returnMsg | bufferAndMime> {
+    if (!this.store.hasOwnProperty(id)) return Object.assign({}, this.noAccErr);
+
+    if(history === undefined)
+      return {
+        mime: this.store[id]._mimetype,
+        name: this.store[id].originalName,
+        file: await getFileBuffer(this.store[id].storageId)
+      }
+
+    if(history >= 0 && history < this.store[id].history.length)
+      return {
+        mime: this.store[id]._mimetype,
+        name: this.store[id].originalName,
+        file: await getFileBuffer(this.store[id].history[history].storageId)
+      }
+
+    return {
+      error: true,
+      message: "No file for this history index"
+    }
+
   }
 }
 
