@@ -21,12 +21,15 @@ export default async function photosRouter(
     return;
   }
 
-  let id;
-  let body;
   const form = formidable({
     keepExtensions: true,
     uploadDir: config.storageDir,
   });
+
+  let id;
+  let body;
+  let url;
+  let obj;
 
   switch (true) {
     /// ---------- tags ----------
@@ -46,13 +49,27 @@ export default async function photosRouter(
       returnJSON(res, photoStore.getPhotosTags(id));
       break;
 
+    /// ---------- metadata ----------
+    case check(req, /^\/api\/photos\/metadata/, "GET"):
+      id = req.url.replace(/^\/api\/photos\/metadata\//, "");
+      id = id.replace(/\?history=.*$/, "");
+      url = new URL("http://" + req.headers.host + req.url);
+
+      if (url.searchParams.has("history")) {
+        const history = url.searchParams.get("history")!
+        obj = await photoStore.getMetadata(id, parseInt(history));
+      } else {
+        obj = await photoStore.getMetadata(id);
+      }
+
+      returnJSON(res, obj)
+      break;
+
     /// ---------- getfile ----------
     case check(req, /^\/api\/photos\/img/, "GET"):
-      let obj;
       id = req.url.replace(/^\/api\/photos\/img\//, "");
       id = id.replace(/\?history=.*$/, "");
-      console.log(id)
-      const url = new URL("http://" + req.headers.host + req.url);
+      url = new URL("http://" + req.headers.host + req.url);
 
       if (url.searchParams.has("history")) {
         const history = url.searchParams.get("history")!

@@ -12,6 +12,7 @@ import formidable from "formidable";
 import { deleteFile, getFileBuffer } from "./fsOperations";
 import tagsStore, { tag } from "./tagsStore";
 import { access, bufferAndMime, returnMsg } from "./types";
+import { getMetadata } from "./photoOperations";
 
 /**
  * IDstring is a string made of current date, dash and a random number made
@@ -248,7 +249,26 @@ class photoStore {
       error: true,
       message: "No file for this history index"
     }
+  }
 
+  /**
+   * Method which returns metadata for a photo
+   * @param id id of the photo
+   * @param history version of the file
+   */
+  async getMetadata(id: IDstring, history?: number) {
+    if (!this.store.hasOwnProperty(id)) return Object.assign({}, this.noAccErr);
+
+    if(history === undefined)
+      return await getMetadata(this.store[id].storageId)
+
+    if(history >= 0 && history < this.store[id].history.length)
+      return await getMetadata(this.store[id].history[history].storageId)
+
+    return {
+      error: true,
+      message: "No file for this history index"
+    }
   }
 }
 
