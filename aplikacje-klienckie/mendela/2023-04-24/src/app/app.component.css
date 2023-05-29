@@ -31,6 +31,10 @@ nav.sideNav {
   display: inline-block;
 }
 
+.nav-el label {
+  user-select: none;
+}
+
 .nav-el>button {
   border: none;
   padding: 0.5rem;
