@@ -1,5 +1,6 @@
-import { readFileSync } from "fs";
-import * as path from "path";
+import dotenv from "dotenv";
+import { randomBytes } from "crypto";
+import path from "path";
 
 /**
  * Type which represents configuration options for this app
@@ -14,6 +15,16 @@ type configType = {
    * List of tags to start with
    */
   tagsList: string[];
+
+  /**
+   * Encryption key for jwt
+   */
+  encryptionKey: string;
+
+  /**
+   * Port on which to run the server
+   */
+  port: number;
 };
 
 /**
@@ -22,26 +33,8 @@ type configType = {
  * started.
  */
 function config(): configType {
-  const appPath = process.cwd();
-
-  let json: configType | null;
-  try {
-    json = JSON.parse(
-      readFileSync(path.join(appPath, "config.json"), {
-        encoding: "utf-8",
-      })
-    );
-  } catch {
-    json = null;
-    console.log("No config.json or wrong formatting. Using defaults.");
-  }
-
-  const relativeDir = json?.storageDir
-    ? path.resolve(json.storageDir)
-    : path.join(appPath, "storage");
-
-  const tagsList = json?.tagsList
-    ? json.tagsList
+  const tagsList = process.env.DEFAULT_TAGS
+    ? JSON.parse(process.env.DEFAULT_TAGS)
     : [
         "#love",
         "#instagood",
@@ -75,10 +68,23 @@ function config(): configType {
         "#photo",
       ];
 
+  const storageDir = process.env.STORAGE_DIR
+    ? path.resolve(process.env.STORAGE_DIR)
+    : path.join(process.cwd(), "storage");
+
+  const encryptionKey =
+    process.env.ENCRYPTION_KEY ?? randomBytes(32).toString("ascii");
+
+  const port = parseInt(process.env.PORT ?? "5555");
+
   return {
-    storageDir: relativeDir,
+    storageDir: storageDir,
     tagsList: tagsList,
+    encryptionKey: encryptionKey,
+    port: port,
   };
 }
+
+dotenv.config();
 
 export default config();
