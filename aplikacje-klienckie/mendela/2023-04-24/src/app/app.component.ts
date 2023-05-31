@@ -93,113 +93,124 @@ export class AppComponent {
       );
     }
 
-    try {
-      switch (key) {
-        // @ts-expect-error
-        case 'horizontal':
+    // todo change to ifs
+    switch (key) {
+      // @ts-expect-error
+      case 'horizontal':
+        y = moveParams.horizontal.first!.y;
+
+        try {
           const tileToTheLeft =
             this.board[moveParams.horizontal.first!.y][moveParams.horizontal.first!.x - 1];
-          const tileToTheRight =
-            this.board[moveParams.horizontal.last!.y][moveParams.horizontal.last!.x + 1];
-          y = moveParams.horizontal.first!.y;
-
-          if (tileToTheLeft !== undefined && tileToTheLeft.type === '') {
+          if (tileToTheLeft.type === '') {
             x = moveParams.horizontal.first!.x - 1;
             console.warn('horizontal left');
             break;
           }
-          if (tileToTheRight !== undefined && tileToTheRight.type === '') {
+        } catch {}
+
+        try {
+          const tileToTheRight =
+            this.board[moveParams.horizontal.last!.y][moveParams.horizontal.last!.x + 1];
+          if (tileToTheRight.type === '') {
             x = moveParams.horizontal.last!.x + 1;
             console.warn('horizontal right');
             break;
           }
-        // @ts-expect-error
-        case 'vertical':
+        } catch {}
+
+      // @ts-expect-error
+      case 'vertical':
+          x = moveParams.vertical.first ? moveParams.vertical.first.x : -1;
+
+        try {
           const tileOnTop =
             this.board[moveParams.vertical.first!.y - 1][moveParams.vertical.first!.x];
-          const tileOnBottom =
-            this.board[moveParams.vertical.last!.y + 1][moveParams.vertical.last!.x];
-          x = moveParams.vertical.first!.x;
-
-          if (tileOnTop !== undefined && tileOnTop.type === '') {
+          if (tileOnTop.type === '') {
             y = moveParams.vertical.first!.y - 1;
             console.warn('vertical top');
             break;
           }
-          if (tileOnBottom !== undefined && tileOnBottom.type === '') {
+        } catch {}
+
+        try {
+          const tileOnBottom =
+            this.board[moveParams.vertical.last!.y + 1][moveParams.vertical.last!.x];
+          if (tileOnBottom.type === '') {
             y = moveParams.vertical.last!.y + 1;
             console.warn('vertical bottom');
             break;
           }
-        // @ts-expect-error
-        case 'diagonal1':
+        } catch {}
+
+      // @ts-expect-error
+      case 'diagonal1':
+        try {
           const begginingOfTiles1 =
             this.board[moveParams.diagonal1.first!.y - 1][moveParams.diagonal1.first!.x - 1];
-          const endOfTiles1 =
-            this.board[moveParams.diagonal1.last!.y + 1][moveParams.diagonal1.last!.x + 1];
-
-          if (
-            begginingOfTiles1 !== undefined &&
-            begginingOfTiles1.type === ''
-          ) {
+          if (begginingOfTiles1.type === '') {
             x = moveParams.diagonal1.first!.x - 1;
             y = moveParams.diagonal1.first!.y - 1;
             console.warn('diagonal1 start');
             break;
           }
-          if (endOfTiles1 !== undefined && endOfTiles1.type === '') {
+        } catch {}
+
+        try {
+          const endOfTiles1 =
+            this.board[moveParams.diagonal1.last!.y + 1][moveParams.diagonal1.last!.x + 1];
+          if (endOfTiles1.type === '') {
             x = moveParams.diagonal1.last!.x + 1;
             y = moveParams.diagonal1.last!.y + 1;
             console.warn('diagonal1 end');
             break;
           }
-        // @ts-expect-error
-        case 'diagonal2':
+        } catch {}
+
+      // @ts-expect-error
+      case 'diagonal2':
+        try {
           const begginingOfTiles2 =
             this.board[moveParams.diagonal2.first!.y + 1][moveParams.diagonal2.first!.x - 1];
-          const endOfTiles2 =
-            this.board[moveParams.diagonal2.last!.y - 1][moveParams.diagonal2.last!.x + 1];
-
-          if (
-            begginingOfTiles2 !== undefined &&
-            begginingOfTiles2.type === ''
-          ) {
+          if (begginingOfTiles2.type === '') {
             x = moveParams.diagonal2.first!.x - 1;
             y = moveParams.diagonal2.first!.y + 1;
             console.warn('diagonal2 start');
             break;
           }
-          if (endOfTiles2 !== undefined && endOfTiles2.type === '') {
+        } catch {}
+
+        try {
+          const endOfTiles2 =
+            this.board[moveParams.diagonal2.last!.y - 1][moveParams.diagonal2.last!.x + 1];
+          if (endOfTiles2.type === '') {
             x = moveParams.diagonal2.last!.x + 1;
             y = moveParams.diagonal2.last!.y - 1;
             console.warn('diagonal2 end');
             break;
           }
-        default:
-          // todo move code from catch here
-          throw "default"
-      }
-    } catch {
-      // lazy fix -> to refactor
-      while (true) {
-        if (i < 10) {
-          x = Math.floor(pMoveX - Math.random() * 3 + 2);
-          y = Math.floor(pMoveY - Math.random() * 3 + 2);
-        } else {
-          x = Math.floor(Math.random() * this.boardWidth);
-          y = Math.floor(Math.random() * this.boardHeight);
-        }
+        } catch {}
 
-        if (
-          x >= 0 &&
-          y >= 0 &&
-          x < this.boardWidth &&
-          y < this.boardHeight &&
-          this.board[y][x].type === ''
-        )
-          break;
-        i++;
-      }
+      default:
+        while (true) {
+          if (i < 10) {
+            x = Math.floor(pMoveX - Math.random() * 3 + 2);
+            y = Math.floor(pMoveY - Math.random() * 3 + 2);
+          } else {
+            x = Math.floor(Math.random() * this.boardWidth);
+            y = Math.floor(Math.random() * this.boardHeight);
+          }
+
+          if (
+            x >= 0 &&
+            y >= 0 &&
+            x < this.boardWidth &&
+            y < this.boardHeight &&
+            this.board[y][x].type === ''
+          )
+            break;
+          i++;
+        }
     }
 
     this.board[y][x] = { type: this.opponent.type, dontcheck: false };
@@ -215,10 +226,10 @@ export class AppComponent {
     let currentType: field['type'];
 
     let moveParams: moveParams = {
-      horizontal: { value: -1 },
-      vertical: { value: -1 },
-      diagonal1: { value: -1 },
-      diagonal2: { value: -1 },
+      horizontal: { value: 0 },
+      vertical: { value: 0 },
+      diagonal1: { value: 0 },
+      diagonal2: { value: 0 },
     };
 
     let i: number,
@@ -322,8 +333,14 @@ export class AppComponent {
       let x1 = x + 4 - i;
       let y1 = y + 4 - i;
 
-      if (x1 < 0 || y1 < 0 || x1 >= this.boardWidth || y1 >= this.boardHeight)
+      if (x1 < 0 || y1 < 0 || x1 >= this.boardWidth || y1 >= this.boardHeight) {
+        if (moveParams.diagonal1.value < count) {
+          moveParams.diagonal1.value = count;
+          moveParams.diagonal1.first = points[0];
+          moveParams.diagonal1.last = points[points.length - 1];
+        }
         continue;
+      }
 
       if (this.board[y1][x1].dontcheck) {
         if (count >= 4) break;
@@ -370,8 +387,14 @@ export class AppComponent {
       x1 = x + 4 - i;
       y1 = y + i - 4;
 
-      if (x1 < 0 || y1 < 0 || x1 >= this.boardWidth || y1 >= this.boardHeight)
+      if (x1 < 0 || y1 < 0 || x1 >= this.boardWidth || y1 >= this.boardHeight) {
+        if (moveParams.diagonal2.value < count) {
+          moveParams.diagonal2.value = count;
+          moveParams.diagonal2.first = points[0];
+          moveParams.diagonal2.last = points[points.length - 1];
+        }
         continue;
+      }
 
       if (this.board[y1][x1].dontcheck) {
         if (count >= 4) break;
