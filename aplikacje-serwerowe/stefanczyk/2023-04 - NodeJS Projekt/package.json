@@ -21,6 +21,7 @@
   "dependencies": {
     "@types/formidable": "^2.0.5",
     "formidable": "^2.1.1",
+    "hexoid": "^1.0.0",
     "sharp": "^0.32.1",
     "tracer": "^1.1.6"
   }

@@ -12,7 +12,8 @@ import formidable from "formidable";
 import { deleteFile, getFileBuffer } from "./fsOperations";
 import tagsStore, { tag } from "./tagsStore";
 import { access, bufferAndMime, returnMsg } from "./types";
-import { getMetadata } from "./photoOperations";
+import { applyFilter, getMetadata } from "./photoOperations";
+import sharp from "sharp";
 
 /**
  * IDstring is a string made of current date, dash and a random number made
@@ -73,6 +74,17 @@ class photoStore {
    */
   getAllPhotos() {
     return this.store;
+  }
+
+  /**
+   * Method which returns photos in a given album
+   * @param album album name
+   * @returns array of photos or empty array if given name doesn't exit
+   */
+  getPhotosInAlbum(album: string): photo[] {
+    // @ts-ignore
+    const arr = this.store.filter(photo => (photo as photo).album === album)
+    return arr
   }
 
   /**
@@ -176,7 +188,7 @@ class photoStore {
     };
 
     return {
-      photoId: key,
+      returnValue: key,
       message: "Photo was succesfully registered.",
     };
   }
@@ -256,7 +268,7 @@ class photoStore {
    * @param id id of the photo
    * @param history version of the file
    */
-  async getMetadata(id: IDstring, history?: number) {
+  async getMetadata(id: IDstring, history?: number): Promise<returnMsg | sharp.Metadata> {
     if (!this.store.hasOwnProperty(id)) return Object.assign({}, this.noAccErr);
 
     if(history === undefined)
@@ -268,6 +280,26 @@ class photoStore {
     return {
       error: true,
       message: "No file for this history index"
+    }
+  }
+
+  async applyFilter(id: IDstring, filter: string, filterArgs?: Object) {
+    if (!this.store.hasOwnProperty(id)) return Object.assign({}, this.noAccErr);
+
+    const obj = await applyFilter(this.store[id].storageId, filter, filterArgs);
+
+    if(obj.error) return obj;
+
+    this.store[id].history.push({
+      status: filter,
+      storageId: obj.returnValue!,
+      timestamp: Date.now(),
+    });
+    this.store[id].lastChange = this.store[id].history.length - 1;
+    this.store[id].storageId = obj.returnValue!;
+
+    return {
+      message: obj.message
     }
   }
 }

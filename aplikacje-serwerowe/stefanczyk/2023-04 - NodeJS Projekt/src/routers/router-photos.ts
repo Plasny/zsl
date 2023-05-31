@@ -4,7 +4,7 @@ import { check, getBody, returnJSON } from "./helperFunctions";
 import formidable from "formidable";
 import photoStore from "../models/photoStore";
 import { logger } from "../app";
-import type { bufferAndMime, returnMsg } from "../models/types";
+import type { applyFilter, bufferAndMime, returnMsg } from "../models/types";
 
 /**
  * Function with router for photos api
@@ -63,6 +63,18 @@ export default async function photosRouter(
       }
 
       returnJSON(res, obj)
+      break;
+
+    /// ---------- albums ----------
+    case check(req, /^\/api\/photos\/album/, "GET"):
+      const album = req.url.replace(/^\/api\/photos\/album\//, "");
+      returnJSON(res, photoStore.getPhotosInAlbum(album))
+      break;
+
+    /// ---------- filters ----------
+    case check(req, /^\/api\/photos\/filters/, "PATCH"):
+      body = await getBody(req);
+      returnJSON(res, await photoStore.applyFilter((body as applyFilter).photoId, (body as applyFilter).filter, (body as applyFilter).filterArgs))
       break;
 
     /// ---------- getfile ----------

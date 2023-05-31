@@ -1,0 +1,24 @@
+### add rotate filter to a photo
+PATCH http://localhost:5555/api/photos/filters
+
+{
+    "photoId": "li1n5pdh-ib03q",
+    "filter": "rotate",
+    "filterArgs": 270
+}
+
+### add negate filter to a photo
+PATCH http://localhost:5555/api/photos/filters
+
+{
+    "photoId": "li1n5pdh-ib03q",
+    "filter": "negate"
+}
+
+### flip a photo
+PATCH http://localhost:5555/api/photos/filters
+
+{
+    "photoId": "li1n5pdh-ib03q",
+    "filter": "flip"
+}
