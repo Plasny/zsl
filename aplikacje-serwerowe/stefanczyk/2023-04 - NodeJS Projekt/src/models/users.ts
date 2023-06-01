@@ -1,8 +1,10 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { returnMsg, jwtActions, jwtContents } from "./types";
+import { returnMsg, jwtActions, jwtContents, bufferAndMime } from "./types";
 import config from "./config";
 import { logger } from "../app";
+import path from "path";
+import { readFile } from "fs/promises";
 
 type User = {
   confirmed: boolean;
@@ -10,6 +12,10 @@ type User = {
   lastName: string;
   email: string;
   passwordHash: string;
+  profilePicture: {
+    path: string;
+    mime: string;
+  };
 };
 
 /**
@@ -21,6 +27,16 @@ export function verifyRequest(token: string): boolean {
   const decoded = jwt.verify(token, config.encryptionKey) as jwtContents;
   if (decoded.action === "verifyUser") return true;
   return false;
+}
+
+/**
+ * Function which retrives users email from jwt token
+ * @param token jwt token with user data
+ * @returns users email
+ */
+export function getUserFromToken(token: string): string {
+  const decoded = jwt.verify(token, config.encryptionKey) as jwtContents;
+  return decoded.email;
 }
 
 class userStore {
@@ -87,6 +103,10 @@ class userStore {
       lastName: surname,
       email: email,
       passwordHash: hash,
+      profilePicture: {
+        path: path.join(config.assets, "tempProfilePicture.jpg"),
+        mime: "image/jpeg"
+      },
     });
 
     logger.log(`User registered with email: ${email}`);
@@ -149,6 +169,128 @@ class userStore {
       message: "User logged in. Autorization token is in returnValue.",
       returnValue: await this.createUserToken(email, "verifyUser"),
     };
+  }
+
+  /**
+   * Method which retrives name, surname, email, etc. for a given email
+   * @param email users email
+   * @returns name, surname and email of the user or error message
+   */
+  retriveProfileData(
+    email: string
+  ): returnMsg | { firstName: string; lastName: string; email: string } {
+    if (!this.map.has(email))
+      return {
+        httpCode: 404,
+        message: "No such user.",
+      };
+
+    const user = this.map.get(email)!;
+
+    return {
+      firstName: user.name,
+      lastName: user.lastName,
+      email: user.email,
+    };
+  }
+
+  /**
+   * Method which retrives profile picture and returns it
+   * @param email users email
+   * @returns file data or error message
+   */
+  async retriveProfilePicture(email: string): Promise<returnMsg | bufferAndMime> {
+    if (!this.map.has(email))
+      return {
+        httpCode: 404,
+        message: "No such user."
+      };
+
+    const user = this.map.get(email)!;
+    let pic;
+
+    try {
+      pic =  await readFile(user.profilePicture.path);
+    } catch {
+      return {
+        error: true,
+        message: "Picture not found"
+      }
+    }
+
+    return {
+      mime: user.profilePicture.mime,
+      name: "profilePicture",
+      file: pic
+    }
+  }
+
+  /**
+   * Method which edits user data in the map
+   * @param token jwt token
+   * @param newName new name for the user
+   * @param newSurname new surname for the user
+   * @param newEmail new email for the user
+   * @returns ok or error message
+   */
+  changeData(
+    token: string,
+    newName?: string,
+    newSurname?: string,
+    newEmail?: string
+  ): returnMsg {
+    try {
+      const decoded = jwt.verify(token, config.encryptionKey) as jwtContents;
+
+      if (!this.map.has(decoded.email)) return Object.assign({}, this.wrongToken);
+
+      const user = this.map.get(decoded.email)!;
+      if (newName) user.name = newName;
+      if (newSurname) user.lastName = newSurname;
+      if (newEmail) {
+        user.email = newEmail;
+        this.map.set(newEmail, user);
+        this.map.delete(decoded.email);
+        logger.log(`User changed his email from ${decoded.email} to ${newEmail}`)
+        console.log(this.map)
+      } else {
+        this.map.set(decoded.email, user);
+      }
+
+      return {
+        message: "All changes saved."
+      }
+    } catch {
+      return Object.assign({}, this.wrongToken);
+    }
+  }
+
+  /**
+   * Method which sets new profile picture
+   * @param token jwt users token with his/her email
+   * @param mime miem type of the photo
+   * @param storageId where the file was saved
+   * @returns ok, error message
+   */
+  setProfilePicture(
+    token: string,
+    mime: string,
+    storageId: string
+  ): returnMsg {
+    try {
+      const decoded = jwt.verify(token, config.encryptionKey) as jwtContents;
+
+      if (!this.map.has(decoded.email)) return Object.assign({}, this.wrongToken);
+      const user = this.map.get(decoded.email)!;
+      user.profilePicture.mime = mime;
+      user.profilePicture.path = path.join(config.storageDir, storageId);
+
+      return {
+        message: "Profile picture set corectly"
+      }
+    } catch {
+      return Object.assign({}, this.wrongToken);
+    }
   }
 }
 

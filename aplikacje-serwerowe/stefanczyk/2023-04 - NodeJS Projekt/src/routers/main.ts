@@ -4,8 +4,12 @@ import photosRouter from "./router-photos";
 import tagsRouter from "./router-tags";
 import usersRouter from "./router-users";
 import { verifyRequest } from "../models/users";
+import config from "../models/config";
+import profilesRouter from "./router-profiles";
 
 function checkAccess(req: IncomingMessage): boolean {
+  if(config.noAuth) return true;
+
   if (req.headers.authorization === undefined) return false;
 
   const token = req.headers.authorization.replace("Bearer ", "");
@@ -40,6 +44,8 @@ export default async function router(
     await photosRouter(req, res);
   } else if (check(req, /^\/api\/tags/)) {
     await tagsRouter(req, res);
+  } else if (check(req, /^\/api\/profile/)) {
+    await profilesRouter(req, res);
   } else {
     res.writeHead(404);
     res.write("Page not found");

@@ -5,6 +5,7 @@ import formidable from "formidable";
 import photoStore from "../models/photoStore";
 import { logger } from "../app";
 import type { applyFilter, bufferAndMime, returnMsg } from "../models/types";
+import { getUserFromToken } from "../models/users";
 
 /**
  * Function with router for photos api
@@ -110,6 +111,8 @@ export default async function photosRouter(
 
     /// ---------- base ----------
     case check(req, /^\/api\/photos$/, "POST"):
+      const userId = getUserFromToken(req.headers.authorization!.replace("Bearer ", ""));
+
       form.parse(req, (err, fields, files) => {
         if (err) {
           logger.error(err);
@@ -120,7 +123,8 @@ export default async function photosRouter(
           res,
           photoStore.registerPhoto(
             files.file as formidable.File,
-            fields.album as string
+            fields.album as string,
+            userId
           )
         );
       });

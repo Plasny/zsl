@@ -1,0 +1,31 @@
+### retrive profile data
+GET http://localhost:5555/api/profile/abc@def.xyz
+Authorization: Bearer <token>
+
+### change user data
+PATCH http://localhost:5555/api/profile
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+    "newName": "Adrian",
+    "newSurname": "Nowak",
+    "newEmail": "xyz@def.xyz"
+}
+
+
+### get user profile picture
+GET http://localhost:5555/api/profile/picture/abc@def.xyz
+
+### set users profile picture
+POST http://localhost:5555/api/profile/picture
+Authorization: Bearer <token>
+Content-Type: multipart/form-data; boundary=x
+
+--x
+Content-Disposition: form-data; name="file"; filename="input.png"
+Content-Type: image/png
+
+< ./input.png
+
+--x--

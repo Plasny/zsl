@@ -25,6 +25,17 @@ type configType = {
    * Port on which to run the server
    */
   port: number;
+
+  /**
+   * Assets directory of the project
+   */
+  assets: string;
+
+  /**
+   * No authorization required - option for easier app development which 
+   * disables need to authorize with jwt
+   */
+  noAuth: boolean;
 };
 
 /**
@@ -77,11 +88,17 @@ function config(): configType {
 
   const port = parseInt(process.env.PORT ?? "5555");
 
+  const noAuth = parseInt(process.env.NO_AUTH ?? "0") === 1;
+
+  const assets = path.join(__dirname, '..', 'assets')
+
   return {
+    port: port,
+    encryptionKey: encryptionKey,
+    assets: assets,
     storageDir: storageDir,
     tagsList: tagsList,
-    encryptionKey: encryptionKey,
-    port: port,
+    noAuth: noAuth
   };
 }
 

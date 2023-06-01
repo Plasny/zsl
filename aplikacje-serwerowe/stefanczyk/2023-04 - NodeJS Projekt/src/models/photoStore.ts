@@ -35,7 +35,6 @@ type IDstring = string;
 
 type photo = {
   // _acc: access;
-  // _owner: string;
   _mimetype: string | null;
 
   album: string;
@@ -53,6 +52,7 @@ type photo = {
    */
   lastChange: number;
   originalName: string | null;
+  owner: string;
   storageId: string;
   tags: tag[];
 };
@@ -165,7 +165,7 @@ class photoStore {
    * @param album album in which photo is stored
    * @returns id of the inserted photo and a message
    */
-  registerPhoto(file: formidable.File, album: string): returnMsg {
+  registerPhoto(file: formidable.File, album: string, user: string): returnMsg {
     const key: IDstring = this.createId();
 
     this.store[key] = {
@@ -183,6 +183,7 @@ class photoStore {
       id: key,
       lastChange: 0,
       originalName: file.originalFilename,
+      owner: user,
       storageId: file.newFilename,
       tags: [],
     };
