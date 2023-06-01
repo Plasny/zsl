@@ -17,8 +17,13 @@ export function returnJSON(
   code: number = -1
 ) {
   if (code === -1) {
-    // check wheter object is an error message
-    if (object.hasOwnProperty('error')) {
+    if (
+      object.hasOwnProperty("httpCode") &&
+      (object as returnMsg).httpCode != undefined
+    ) {
+      code = (object as returnMsg).httpCode!;
+      delete (object as returnMsg).httpCode;
+    } else if (object.hasOwnProperty("error")) {
       code = 403;
       delete (object as returnMsg).error;
     } else code = 200;
@@ -34,7 +39,11 @@ export function returnJSON(
  * @param message String message
  * @param code HTTP status code to send
  */
-export function returnMessage(res: ServerResponse, message: string, code: number = 200) {
+export function returnMessage(
+  res: ServerResponse,
+  message: string,
+  code: number = 200
+) {
   res.writeHead(code, { "content-type": "application/json;charset=utf-8" });
   res.end(JSON.stringify({ message: message }));
 }

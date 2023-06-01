@@ -1,0 +1,20 @@
+### register user
+POST http://localhost:5555/api/users/register
+
+{
+    "name": "Adam",
+    "surname": "Nowak",
+    "email": "abc@def.xyz",
+    "password": "ZAQ!2wsx"
+}
+
+### confirm new user
+GET http://localhost:5555/api/users/confirm/<token>
+
+### login user
+POST http://localhost:5555/api/users/login
+
+{
+    "email": "abc@def.xyz",
+    "password": "ZAQ!2wsx"
+}

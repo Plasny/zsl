@@ -2,6 +2,17 @@ import { IncomingMessage, ServerResponse } from "http";
 import { check } from "./helperFunctions";
 import photosRouter from "./router-photos";
 import tagsRouter from "./router-tags";
+import usersRouter from "./router-users";
+import { verifyRequest } from "../models/users";
+
+function checkAccess(req: IncomingMessage): boolean {
+  if (req.headers.authorization === undefined) return false;
+
+  const token = req.headers.authorization.replace("Bearer ", "");
+  if (verifyRequest(token)) return true;
+
+  return false;
+}
 
 /**
  * Function with router which routes reqests to other routers
@@ -19,18 +30,19 @@ export default async function router(
     return;
   }
 
-  switch (true) {
-    case check(req, /^\/api\/photos/):
-      await photosRouter(req, res);
-      break;
-
-    case check(req, /^\/api\/tags/):
-      await tagsRouter(req, res);
-      break;
-
-    default:
-      res.writeHead(404);
-      res.write("Page not found");
-      res.end();
+  if (check(req, /^\/api\/users/)) {
+    await usersRouter(req, res);
+  } else if (!checkAccess(req)) {
+    res.writeHead(401);
+    res.write("You are unauthorized.");
+    res.end();
+  } else if (check(req, /^\/api\/photos/)) {
+    await photosRouter(req, res);
+  } else if (check(req, /^\/api\/tags/)) {
+    await tagsRouter(req, res);
+  } else {
+    res.writeHead(404);
+    res.write("Page not found");
+    res.end();
   }
 }
