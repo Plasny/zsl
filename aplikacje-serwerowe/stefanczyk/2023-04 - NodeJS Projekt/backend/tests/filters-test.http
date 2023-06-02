@@ -2,7 +2,7 @@
 PATCH http://localhost:5555/api/photos/filters
 
 {
-    "photoId": "li1n5pdh-ib03q",
+    "photoId": "<photoId>",
     "filter": "rotate",
     "filterArgs": 270
 }
@@ -11,7 +11,7 @@ PATCH http://localhost:5555/api/photos/filters
 PATCH http://localhost:5555/api/photos/filters
 
 {
-    "photoId": "li1n5pdh-ib03q",
+    "photoId": "<photoId>",
     "filter": "negate"
 }
 
@@ -19,6 +19,6 @@ PATCH http://localhost:5555/api/photos/filters
 PATCH http://localhost:5555/api/photos/filters
 
 {
-    "photoId": "li1n5pdh-ib03q",
+    "photoId": "<photoId>",
     "filter": "flip"
 }

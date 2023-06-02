@@ -1,0 +1,11 @@
+### get file of image
+http://localhost:5555/api/photos/img/<photoId>
+
+### get file of image with given history index (0 is oryginal file)
+http://localhost:5555/api/photos/img/<photoId>?history=<historyIndex>
+
+### get metadata of image
+http://localhost:5555/api/photos/metadata/<photoId>
+
+### get metadata of image with given history index (0 is oryginal file)
+http://localhost:5555/api/photos/metadata/<photoId>

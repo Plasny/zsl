@@ -1,5 +1,5 @@
 ### retrive profile data
-GET http://localhost:5555/api/profile/abc@def.xyz
+GET http://localhost:5555/api/profile/<email>
 Authorization: Bearer <token>
 
 ### change user data
@@ -15,7 +15,7 @@ Content-Type: application/json
 
 
 ### get user profile picture
-GET http://localhost:5555/api/profile/picture/abc@def.xyz
+GET http://localhost:5555/api/profile/picture/<email>
 
 ### set users profile picture
 POST http://localhost:5555/api/profile/picture

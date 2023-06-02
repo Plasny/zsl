@@ -5,7 +5,7 @@ GET http://localhost:5555/api/tags HTTP/1.1
 GET http://localhost:5555/api/tags/raw HTTP/1.1
 
 ### pobierz tag o id
-GET http://localhost:5555/api/tags/10 HTTP/1.1
+GET http://localhost:5555/api/tags/<tagId> HTTP/1.1
 
 ### dodanie tagu
 POST http://localhost:5555/api/tags HTTP/1.1
@@ -18,9 +18,9 @@ POST http://localhost:5555/api/tags HTTP/1.1
 PATCH http://localhost:5555/api/photos/tags HTTP/1.1
 
 {
-    "id": "lhal0a6d-8glm2",
-    "tags": ["#asdf", "#fdas"]
+    "id": "<photoId>",
+    "tags": ["#foo", "#bar"]
 }
 
 ### get tags for photo
-GET http://localhost:5555/api/photos/tags/lhal0a6d-8glm2 HTTP/1.1
+GET http://localhost:5555/api/photos/tags/<photoId> HTTP/1.1

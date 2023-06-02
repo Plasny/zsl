@@ -2,7 +2,7 @@
 GET http://localhost:5555/api/photos HTTP/1.1
 
 ### pobierz jedno zdjęcie o id
-GET http://localhost:5555/api/photos/lh8z9fgf-5o7r3 HTTP/1.1
+GET http://localhost:5555/api/photos/<photoId> HTTP/1.1
 
 ### wysłanie zdjęcia na serwer
 POST http://localhost:5555/api/photos HTTP/1.1
@@ -33,7 +33,7 @@ Content-Type: image/png
 --x
 Content-Disposition: form-data; name="id"
 
-lh8z9fgf-5o7r3
+\<photoId>
 --x
 Content-Disposition: form-data; name="status"
 
@@ -41,4 +41,4 @@ zmiana1
 --x--
 
 ### usunięcie istniejącego zdjęcia na serwerze
-DELETE http://localhost:5555/api/photos/lh8y2lrn-98ecy HTTP/1.1
+DELETE http://localhost:5555/api/photos/<photoId> HTTP/1.1
