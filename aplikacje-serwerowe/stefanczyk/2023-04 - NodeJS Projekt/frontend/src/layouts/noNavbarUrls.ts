@@ -1,1 +1,1 @@
-export const urls = ['/login', '/register', '/verify'];
+export const urls = ["/login", "/register", "/verify"];

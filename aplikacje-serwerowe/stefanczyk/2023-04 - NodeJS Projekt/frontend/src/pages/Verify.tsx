@@ -11,11 +11,11 @@ function Verify() {
     const token = searchParams.get("token");
     const res = await fetch("/api/users/confirm/" + token);
 
-    if(res.status != 200) {
-        setResponse(<p className="response">{(await res.json()).message}</p>)
+    if (res.status != 200) {
+      setResponse(<p className="response">{(await res.json()).message}</p>);
     } else {
-        setResponse(<></>)
-        navigate("/")
+      setResponse(<></>);
+      navigate("/login");
     }
   }
 

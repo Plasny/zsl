@@ -4,7 +4,7 @@ import "./Login.css";
 
 function Register() {
   const [response, setResponse] = useState(<></>);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   async function register(this: HTMLFormElement, e: FormEvent) {
     e.preventDefault();
@@ -16,8 +16,10 @@ function Register() {
       },
       body: JSON.stringify({
         name: (document.getElementById("name") as HTMLInputElement)!.value,
-        surname: (document.getElementById("surname") as HTMLInputElement)!.value,
-        password: (document.getElementById("password") as HTMLInputElement)!.value,
+        surname: (document.getElementById("surname") as HTMLInputElement)!
+          .value,
+        password: (document.getElementById("password") as HTMLInputElement)!
+          .value,
         email: (document.getElementById("email") as HTMLInputElement)!.value,
       }),
     });
@@ -29,7 +31,7 @@ function Register() {
       setResponse(<></>);
 
       const json = await res.json();
-      navigate("/verify?token=" + json.returnValue)
+      navigate("/verify?token=" + json.returnValue);
     }
   }
 
