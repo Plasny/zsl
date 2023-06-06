@@ -2,26 +2,27 @@ import { Link, useNavigate } from "react-router-dom";
 import { FormEvent, useState } from "react";
 import "./Login.css";
 import { useDispatch } from "react-redux";
-import { login as storeLogin } from '../stores/store';
+import { login as storeLogin } from "../store/userSlice";
 
 function Login() {
   const navigate = useNavigate();
   const [response, setResponse] = useState(<></>);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   function parseJWT(token: string) {
-      try {
-        return JSON.parse(atob(token.split(".")[1]));
-      } catch (e) {
-        return null;
-      }
+    try {
+      return JSON.parse(atob(token.split(".")[1]));
+    } catch (e) {
+      return null;
+    }
   }
 
   async function login(this: HTMLFormElement, e: FormEvent) {
     e.preventDefault();
 
     const email = (document.getElementById("email") as HTMLInputElement)!.value;
-    const pass = (document.getElementById("password") as HTMLInputElement)!.value;
+    const pass = (document.getElementById("password") as HTMLInputElement)!
+      .value;
     const res = await fetch("/api/users/login", {
       method: "POST",
       headers: {
@@ -45,15 +46,17 @@ function Login() {
       const imgUrl = await fetch("/api/profile/picture/" + email, {
         method: "GET",
         headers: {
-          "Authorization": "Bearer " + json.returnValue
-        }
-      }).then(res => res.blob())
-      .then(res => URL.createObjectURL(res))
-      .catch(err => console.log(err))
+          Authorization: "Bearer " + json.returnValue,
+        },
+      })
+        .then((res) => res.blob())
+        .then((res) => URL.createObjectURL(res))
+        .catch((err) => console.log(err));
 
-
-      dispatch(storeLogin({id: email, token: json.returnValue, pictureUrl: imgUrl}))
-      navigate('/');
+      dispatch(
+        storeLogin({ id: email, token: json.returnValue, pictureUrl: imgUrl })
+      );
+      navigate("/");
     }
   }
 
