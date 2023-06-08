@@ -1,10 +1,11 @@
 // @ts-ignore
 import { ReactComponent as Logo } from "../assets/command-line-pixel.svg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { urls } from "../layouts/noNavbarUrls";
+import { urls } from "../helpers/noNavbarUrls";
 import { useState, useRef, useLayoutEffect, useEffect, Ref } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/userSlice";
+import clickOutside from "../helpers/clickOutside";
 
 function NavLink(props: { path: string; name: string }) {
   const location = useLocation();
@@ -16,24 +17,6 @@ function NavLink(props: { path: string; name: string }) {
     );
 
   return <Link to={props.path}>{props.name}</Link>;
-}
-
-function clickOutside(ref: any, callback: () => void) {
-  useEffect(() => {
-    function handleClickOutside(e: Event) {
-      if (
-        ref.current &&
-        !(ref.current as HTMLDivElement).contains(e.target as Node)
-      ) {
-        setTimeout(callback, 0);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [ref]);
 }
 
 function Navbar() {

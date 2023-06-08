@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Verify from "./pages/Verify";
+import Feed from "./pages/Feed";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
         <main>
           <Routes>
             <Route caseSensitive path="/" element={<p>Root</p>} />
-            <Route caseSensitive path="/feed" element={<p>Feed</p>} />
+            <Route caseSensitive path="/feed" element={<Feed />} />
             <Route caseSensitive path="/profile" element={<p>Profile</p>} />
             <Route caseSensitive path="/login" element={<Login />} />
             <Route caseSensitive path="/register" element={<Register />} />

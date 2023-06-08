@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { urls } from "../layouts/noNavbarUrls";
+import { urls } from "../helpers/noNavbarUrls";
 
 function Footer() {
   const location = useLocation();
