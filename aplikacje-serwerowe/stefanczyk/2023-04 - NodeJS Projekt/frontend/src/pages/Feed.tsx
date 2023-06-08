@@ -46,7 +46,7 @@ function Feed() {
   }, [getPhoto]);
 
   useEffect(() => {
-      loadPosts();
+    loadPosts();
   }, []);
 
   return checkLogin(

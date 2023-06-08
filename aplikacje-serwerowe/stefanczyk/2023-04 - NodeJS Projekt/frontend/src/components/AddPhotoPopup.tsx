@@ -12,7 +12,7 @@ function AddPhotoPopup(props: {
   makeInvisible: ReactEventHandler;
   reloadAfterUpload: () => void;
 }) {
-  const user = useSelector(state => (state as storeType).user)
+  const user = useSelector((state) => (state as storeType).user);
   const popup = useRef(null);
   const fileInput = useRef(null);
   const defaultInput = (
@@ -57,19 +57,22 @@ function AddPhotoPopup(props: {
   };
 
   const addPhoto = async () => {
-    const formData = new FormData(document.getElementById('addPhotoForm')! as HTMLFormElement)
-    formData.delete('tags');
-    formData.append('album', 'default');
+    const formData = new FormData(
+      document.getElementById("addPhotoForm")! as HTMLFormElement
+    );
+    formData.delete("tags");
+    formData.append("album", "default");
 
-    fetch('/api/photos', {
+    fetch("/api/photos", {
       method: "POST",
       headers: {
-        'Authorization': 'Bearer ' + user.authToken,
+        Authorization: "Bearer " + user.authToken,
       },
-      body: formData
-    }).then(res => res.json())
-    .then(props.reloadAfterUpload)
-    .then(res => console.log(res))
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then(props.reloadAfterUpload)
+      .then((res) => console.log(res));
 
     setPreview(defaultInput);
   };

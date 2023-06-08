@@ -1,26 +1,26 @@
 .post {
-    margin: 0 3rem 1rem;
-    border: 2px solid var(--accent-color);
+  margin: 0 3rem 1rem;
+  border: 2px solid var(--accent-color);
 }
 
 .post img {
-    user-select: none;
-    /* idk??? */
-    margin-bottom: -9px;
+  user-select: none;
+  /* idk??? */
+  margin-bottom: -9px;
 }
 
 .post .postBottom {
-    width: 100%;
-    border-top: 2px solid var(--accent-color);
-    padding: 0.5rem 1rem;
+  width: 100%;
+  border-top: 2px solid var(--accent-color);
+  padding: 0.5rem 1rem;
 }
 
 .post .postBottom .author {
-    padding: 0 2px;
-    background-color: var(--accent-color);
-    color: var(--background-color);
+  padding: 0 2px;
+  background-color: var(--accent-color);
+  color: var(--background-color);
 }
- 
+
 .post .postBottom .grTitle {
-    margin-top: 0.5rem;
+  margin-top: 0.5rem;
 }
