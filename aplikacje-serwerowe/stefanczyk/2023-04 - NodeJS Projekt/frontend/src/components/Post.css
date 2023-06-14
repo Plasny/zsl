@@ -19,6 +19,7 @@
   padding: 0 2px;
   background-color: var(--accent-color);
   color: var(--background-color);
+  text-decoration: none;
 }
 
 .post .postBottom .grTitle {

@@ -21,6 +21,9 @@ function AddPhotoPopup(props: {
     </label>
   );
   const [photoPreview, setPreview] = useState(defaultInput);
+  const tagsRef = useRef(null);
+  const [tags, updateTags] = useState([] as string[]);
+  const descriptionRef = useRef(null);
 
   if (props.visible) {
     (popup.current as HTMLDialogElement | null)?.removeAttribute("open");
@@ -71,26 +74,77 @@ function AddPhotoPopup(props: {
       body: formData,
     })
       .then((res) => res.json())
-      .then(props.reloadAfterUpload)
-      .then((res) => console.log(res));
+      .then((res) => {
+        fetch("/api/photos/tags", {
+          method: "PATCH",
+          headers: {
+            Authorization: "Bearer " + user.authToken,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: res.returnValue!,
+            tags: tags,
+          }),
+        }).then(props.reloadAfterUpload);
+      });
 
     setPreview(defaultInput);
   };
 
+  const setTags = () => {
+    const el = tagsRef.current! as HTMLInputElement;
+    const rx = /^(\S+)\s/;
+    const arr = el.value.match(rx);
+
+    if (arr) {
+      const tag = arr[0].charAt(0) === "#" ? arr[0] : "#" + arr[0];
+      el.value = el.value.replace(rx, "");
+
+      if (!tags.includes(tag)) updateTags([...tags, tag]);
+
+      el.focus();
+    }
+  };
+
+  const backspaceHandle = (e: KeyboardEvent) => {
+    const el = tagsRef.current! as HTMLInputElement;
+
+    if (el.selectionStart === 0 && e.key === "Backspace") {
+      tags.pop();
+      updateTags([...tags]);
+    }
+  };
+
+  const delTag = (i: number) => {
+    console.log(i);
+    tags.splice(i, 1);
+    updateTags([...tags]);
+  };
+
+  let tagsEls: JSX.Element[] = [];
+  for (const i in tags) {
+    if (tags[i] !== "")
+      tagsEls.push(
+        <span className="tag" onClick={() => delTag(parseInt(i))}>
+          {tags[i]}
+        </span>
+      );
+  }
+
   return (
-    <dialog className="newPhoto" ref={popup} onClose={props.makeInvisible}>
+    <dialog className="newPhoto" ref={popup}>
       <div style={{ margin: "1rem" }}>
         <form method="dialog" onSubmit={addPhoto} id="addPhotoForm">
           <CloseBtn
             width="1.5rem"
             height="1.5rem"
             style={{ position: "absolute", right: 0, top: 0 }}
-            onClick={() => {
+            onClick={(e: Event) => {
               setPreview(defaultInput);
-              // @ts-ignore
-              popup.current.close();
-              // @ts-ignore
-              props.makeInvisible();
+              updateTags([]);
+              (descriptionRef.current! as HTMLInputElement).value = "";
+              (popup.current! as HTMLDialogElement).close();
+              (props.makeInvisible as Function)();
             }}
           />
 
@@ -110,17 +164,32 @@ function AddPhotoPopup(props: {
           {/* <label htmlFor="imageAlbum">Album</label>
           <input type="text" name="album" id="imageAlbum" /> */}
 
-          {/* // todo fix focus */}
-
           <label htmlFor="imageDescription">Description</label>
-          <input type="text" name="description" id="imageDescription" />
+          <input
+            className="input"
+            type="text"
+            name="description"
+            id="imageDescription"
+            ref={descriptionRef}
+          />
 
           <label htmlFor="imageTags">Tags</label>
-          <input type="text" name="tags" id="imageTags" />
+          <label className="input">
+            {tagsEls}
+            <input
+              className="tagsInput"
+              type="text"
+              name="tags"
+              id="imageTags"
+              ref={tagsRef}
+              onChange={setTags}
+              // @ts-ignore
+              onKeyDown={backspaceHandle}
+            />
+          </label>
 
           <button className="bigBtn">Dodaj</button>
         </form>
-        {/* <button onClick={() => (popup.current as HTMLDialogElement | null)?.close()}>Close</button> */}
       </div>
     </dialog>
   );

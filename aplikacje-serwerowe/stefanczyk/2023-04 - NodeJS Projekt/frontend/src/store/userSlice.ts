@@ -28,8 +28,11 @@ const userSlice = createSlice({
         (state.authToken = undefined),
         (state.pictureUrl = undefined);
     },
+    updateProfilePic: (state: userType, action) => {
+      state.pictureUrl = action.payload;
+    },
   },
 });
 
 export default userSlice;
-export const { login, logout } = userSlice.actions;
+export const { login, logout, updateProfilePic } = userSlice.actions;

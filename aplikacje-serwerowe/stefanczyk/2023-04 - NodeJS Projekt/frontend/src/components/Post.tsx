@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import type { photo } from "../helpers/photoType";
 import "./Post.css";
 
@@ -13,14 +14,24 @@ function Post(props: { data: photo; originalImg: string; greenImg: string }) {
 
   const img: string[] = [props.greenImg, props.originalImg];
 
+  const tags: JSX.Element[] = [];
+  for (const tag of props.data.tags) {
+    tags.push(<span className="tag">{tag.name}</span>);
+  }
+
   if (props.data.tags.length > 0) {
     tagsEl = (
       <>
         <div className="grTitle">
-          <span className="author">{props.data.owner}</span>:/{props.data.album}
-          $ cat tags
+          <Link className="author" to={"/profile/" + props.data.owner}>
+            {props.data.owner}
+          </Link>
+          :/{props.data.album}$ cat {props.data.id}/tags.txt
         </div>
-        <div className="tags">{props.data.tags.toString()}</div>
+        <div className="tags">
+          <span style={{ marginRight: "-0.2rem" }}>&gt; </span>
+          {tags}
+        </div>
       </>
     );
   }
@@ -29,13 +40,16 @@ function Post(props: { data: photo; originalImg: string; greenImg: string }) {
     <div className="post">
       <img src={img[currentStyle]} width="100%" onClick={flipStyle} />
       <div className="postBottom">
-        <div className="grTitle">
-          <span className="author">{props.data.owner}</span>:/{props.data.album}
+        {/* <div className="grTitle">
+          <Link className="author" to="/profile/{props.data.owner}">{props.data.owner}</Link>:/{props.data.album}
           $ open {props.data.originalName}
-        </div>
+        </div> */}
+        {tagsEl}
         <div className="grTitle">
-          <span className="author">{props.data.owner}</span>:/{props.data.album}
-          $ cat description.txt
+          <Link className="author" to={"/profile/" + props.data.owner}>
+            {props.data.owner}
+          </Link>
+          :/{props.data.album}$ cat {props.data.id}/description.txt
         </div>
         <div className="description">&gt; {props.data.description}</div>
       </div>

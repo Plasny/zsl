@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import "./Feed.css";
 import AddPhotoPopup from "../components/AddPhotoPopup";
 import { checkLogin } from "../components/CheckLogin";
 import { useSelector } from "react-redux";
@@ -7,6 +6,7 @@ import { storeType } from "../store/store";
 import Post from "../components/Post";
 import type { photo } from "../helpers/photoType";
 import getPhoto from "../helpers/getLocalImgUrl";
+import "./Feed.css";
 
 function Feed() {
   const [popupVisible, changePopupVisibility] = useState(false);
@@ -28,17 +28,19 @@ function Feed() {
 
     const json = (await res.json()) as { [key: string]: photo };
 
-    const postListLoading = Object.values(json).map(async (el) => {
-      const imgUrls = await getPhoto(el.id);
-      return (
-        <Post
-          key={el.id}
-          data={el}
-          originalImg={imgUrls.original}
-          greenImg={imgUrls.green}
-        />
-      );
-    });
+    const postListLoading = Object.values(json)
+      .reverse()
+      .map(async (el) => {
+        const imgUrls = await getPhoto(el.id);
+        return (
+          <Post
+            key={el.id}
+            data={el}
+            originalImg={imgUrls.original}
+            greenImg={imgUrls.green}
+          />
+        );
+      });
 
     const postList = await Promise.all(postListLoading);
 

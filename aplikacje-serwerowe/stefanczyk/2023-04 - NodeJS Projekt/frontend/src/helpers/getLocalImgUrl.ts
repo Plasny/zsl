@@ -2,11 +2,12 @@ import appStore from "../store/store";
 
 async function pixelate(
   img: HTMLImageElement,
-  pixelation: number,
+  pixelationRatio: number,
   green?: boolean
 ): Promise<string> {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d")!;
+  const pixelation = Math.round(img.height / pixelationRatio);
   let url: string;
 
   canvas.height = img.height;
@@ -54,7 +55,7 @@ async function pixelate(
   return url;
 }
 
-export default async function getPhoto(id: string) {
+export default async function getPhoto(id: string | Blob) {
   const store = appStore.getState();
   const token = store.user.authToken;
   const greenImg = new Image();
@@ -64,15 +65,30 @@ export default async function getPhoto(id: string) {
   };
   let imgBlob: Blob;
 
-  try {
-    imgBlob = await fetch("/api/photos/img/" + id, {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }).then((res) => res.blob());
-  } catch (err) {
-    console.warn(err);
+  if (typeof id === "string") {
+    try {
+      imgBlob = await fetch("/api/photos/img/" + id, {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }).then((res) => res.blob());
+    } catch (err) {
+      console.warn(err);
+      return imgUrl;
+    }
+  } else if (id instanceof Blob) {
+    imgBlob = id;
+
+    if (imgBlob.type === "image/svg+xml") {
+      console.log("svg format is not supported by this function");
+      return {
+        original: URL.createObjectURL(imgBlob),
+        green: URL.createObjectURL(imgBlob),
+      };
+    }
+  } else {
+    console.warn("sth went wrong during photo loading");
     return imgUrl;
   }
 
@@ -80,7 +96,7 @@ export default async function getPhoto(id: string) {
 
   greenImg.src = imgUrl.original;
   imgUrl.green = await new Promise((resolve) => {
-    greenImg.onload = () => resolve(pixelate(greenImg, 7, true));
+    greenImg.onload = () => resolve(pixelate(greenImg, 80, true));
   });
 
   return imgUrl;

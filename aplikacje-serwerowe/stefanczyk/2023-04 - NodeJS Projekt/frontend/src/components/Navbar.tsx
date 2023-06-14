@@ -6,6 +6,7 @@ import { useState, useRef, useLayoutEffect, useEffect, Ref } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/userSlice";
 import clickOutside from "../helpers/clickOutside";
+import { storeType } from "../store/store";
 
 function NavLink(props: { path: string; name: string }) {
   const location = useLocation();
@@ -22,8 +23,7 @@ function NavLink(props: { path: string; name: string }) {
 function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
-  // @ts-ignore
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => (state as storeType).user);
   const dispatch = useDispatch();
   const [displayMenu, setMenu] = useState(false);
   const [menuWidth, setMenuWidth] = useState(0);
@@ -75,10 +75,10 @@ function Navbar() {
   if (displayMenu)
     menuEl = (
       <div className="profileMenu" style={{ width: menuWidth }} ref={menuRef}>
-        <Link to="/settings">Edycja profilu</Link>
+        <Link to="/settings">Ustawienia</Link>
         <div
           onClick={() => {
-            navigator.clipboard.writeText(user.authToken);
+            navigator.clipboard.writeText(user.authToken!);
             setCopyTokenText("Token został skopiowany :)");
             setTimeout(() => setCopyTokenText(defaultTokenText), 1000);
           }}

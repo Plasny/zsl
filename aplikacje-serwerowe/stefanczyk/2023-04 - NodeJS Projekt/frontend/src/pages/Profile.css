@@ -1,0 +1,75 @@
+.profileTop {
+  position: sticky;
+  top: 1rem;
+  width: 24rem;
+  /* height: 30rem; */
+  height: fit-content;
+  border: 2px solid var(--accent-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem 3rem;
+}
+
+.profileTop > img {
+  border: 2px solid var(--accent-color);
+  width: 70%;
+  margin-top: 1rem;
+}
+
+.profileTop .name {
+  margin: 1rem 0 0.5rem;
+  font-size: 2rem;
+  line-height: 2rem;
+}
+
+.profileTop .description {
+  width: 70%;
+  margin-bottom: 1rem;
+  word-wrap: break-word;
+}
+
+.profileTop ~ .feed {
+  margin-top: 1rem;
+}
+
+.profileTop .imgUpload {
+  margin-top: 1rem;
+  display: block;
+}
+
+.profileTop label {
+  width: 70%;
+  margin-top: 0.5rem;
+}
+
+.profileTop input[type="text"] {
+  width: 70%;
+  border: 2px solid var(--accent-color);
+  background-color: var(--background-color);
+  padding: 0 0.5rem;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 1.2rem;
+}
+
+.profileTop textarea {
+  width: 70%;
+  border: 2px solid var(--accent-color);
+  background-color: var(--background-color);
+  padding: 0.5rem 0.5rem;
+  height: 6rem;
+  line-height: 1.4rem;
+  font-size: 1.2rem;
+}
+
+.profileTop button {
+  margin-top: 1rem;
+  background-color: var(--accent-color);
+  color: var(--background-color);
+  width: 70%;
+  height: 2rem;
+  border: none;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}

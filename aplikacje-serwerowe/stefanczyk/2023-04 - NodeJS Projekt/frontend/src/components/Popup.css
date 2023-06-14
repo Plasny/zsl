@@ -24,11 +24,11 @@ dialog.newPhoto form label {
   margin-top: 0.5rem;
 }
 
-dialog.newPhoto input {
+dialog.newPhoto .input {
   display: block;
   height: 1.5rem;
   width: 100%;
-  padding: 0 0.5rem;
+  padding: 0 0.2rem;
   font-size: 1.2rem;
   background-color: inherit;
   color: var(--accent-color);
@@ -36,13 +36,35 @@ dialog.newPhoto input {
   margin: 0.25rem 0;
   width: 15rem;
   overflow-x: hidden;
+  display: flex;
+}
+
+span.tag {
+  margin: 0.2rem;
+  padding: 0 0.1rem;
+  background-color: var(--accent-color);
+  color: var(--background-color);
+  font-size: 1rem;
+  line-height: 1rem;
+  width: max-content;
+  user-select: none;
+}
+
+.tagsInput {
+  all: unset;
+  padding-left: 0.2rem;
+  display: block;
+  background-color: inherit;
+  color: inherit;
+  height: 100%;
+  width: 100%;
 }
 
 dialog.newPhoto input[type="file"] {
   display: none;
 }
 
-dialog.newPhoto .imgUpload {
+.imgUpload {
   margin: 0.25rem 0;
   width: 15rem;
   min-height: 15rem;
