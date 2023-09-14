@@ -1,0 +1,20 @@
+{% extends "bootstrap/base.html" %}
+
+{% block scripts %}
+    {{ super() }}
+{% endblock %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block navbar %}
+    {% include "includes/navbar.html.j2" %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h3 class="h3">Panel Administratora - witaj {{ userName }}!</h3>
+        <a href="{{ url_for('logout') }}">Wyloguj</a>
+    </div>
+{% endblock %}

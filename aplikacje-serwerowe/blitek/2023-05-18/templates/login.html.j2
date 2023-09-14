@@ -1,0 +1,45 @@
+{% extends "bootstrap/base.html" %}
+
+{% block scripts %}
+    {{ super() }}
+{% endblock %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block navbar %}
+    {% include "includes/navbar.html.j2" %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h3 class="h3 my-2">Flask login - logowanie</h3>
+        <div class="row my-2">
+            <div class="col-lg-12">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{category}}" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-lg-4 offset-lg-4">
+                <form method="POST">
+                    {{ loginForm.hidden_tag() }}
+                    {{ loginForm.userLogin.label(class="form-label") }}
+                    {{ loginForm.userLogin(class="form-control") }}
+                    {{ loginForm.userPass.label(class="form-label") }}
+                    {{ loginForm.userPass(class="form-control") }}
+                    {{ loginForm.submit(class="btn btn-secondary mt-3 float-end") }}
+                </form>
+                Nie masz jeszcze konta? <a href="{{ url_for('register') }}">Zarejestruj się</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
