@@ -1,0 +1,14 @@
+.item {
+    display: inline-block;
+    width: 12rem;
+    height: 8rem;
+    margin: 1rem;
+    background-color: white;
+    padding: 1rem;
+}
+
+.item button {
+    margin-left: 4rem;
+    margin-top: 2rem;
+    width: 6rem;
+}

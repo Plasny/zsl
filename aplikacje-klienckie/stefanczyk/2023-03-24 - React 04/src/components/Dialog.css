@@ -1,0 +1,14 @@
+dialog {
+    text-align: center;
+    padding: 1.5rem;
+}
+
+dialog > p {
+    margin-top: 1.5rem;
+}
+
+dialog > form > button {
+    width: 4rem;
+    line-height: 1.5rem;
+    margin: 0.5rem;
+}

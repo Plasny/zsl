@@ -1,0 +1,27 @@
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+nav {
+  width: 100vw;
+  height: 2rem;
+  background-color: blueviolet;
+  display: flex;
+}
+
+nav a {
+  display: block;
+  line-height: 2rem;
+  color: white;
+  margin: 0 1rem;
+  text-decoration: none;
+}
+
+main {
+  flex-grow: 1;
+  text-align: center;
+  color: gray;
+  font-size: 5rem;
+}

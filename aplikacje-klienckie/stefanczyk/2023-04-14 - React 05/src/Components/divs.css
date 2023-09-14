@@ -1,0 +1,27 @@
+.box {
+    width: 10rem;
+    height: 10rem;
+    background-color: lightpink;
+    color: white;
+    font-size: 2rem;
+    line-height: 10rem;
+    text-align: center;
+    margin: 1rem;
+    user-select: none;
+}
+
+.box-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+h2 {
+    margin: 1rem;
+    font-size: 2rem;
+    text-align: center;
+}
+ul {
+    font-size: 1.5rem;
+    text-align: center;
+}
