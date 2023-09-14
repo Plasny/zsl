@@ -72,6 +72,12 @@ export default async function photosRouter(
       returnJSON(res, photoStore.getPhotosInAlbum(album))
       break;
 
+    /// ---------- user ----------
+    case check(req, /^\/api\/photos\/user/, "GET"):
+      const user = req.url.replace(/^\/api\/photos\/user\//, "");
+      returnJSON(res, photoStore.getUsersPhotos(user))
+      break;
+
     /// ---------- filters ----------
     case check(req, /^\/api\/photos\/filters/, "PATCH"):
       body = await getBody(req);
@@ -124,7 +130,8 @@ export default async function photosRouter(
           photoStore.registerPhoto(
             files.file as formidable.File,
             fields.album as string,
-            userId
+            userId,
+            fields.description as string
           )
         );
       });

@@ -38,6 +38,7 @@ type photo = {
   _mimetype: string | null;
 
   album: string;
+  description: string;
   history: [
     {
       status: string;
@@ -82,8 +83,17 @@ class photoStore {
    * @returns array of photos or empty array if given name doesn't exit
    */
   getPhotosInAlbum(album: string): photo[] {
-    // @ts-ignore
-    const arr = this.store.filter(photo => (photo as photo).album === album)
+    const arr = Object.values(this.store).filter(photo => photo.album === album)
+    return arr
+  }
+
+  /**
+   * Method which returns photos of a given user
+   * @param album user id
+   * @returns array of photos or empty array if user doesn't exit
+   */
+  getUsersPhotos(user: string): photo[] {
+    const arr = Object.values(this.store).filter(photo => photo.owner === user)
     return arr
   }
 
@@ -165,7 +175,7 @@ class photoStore {
    * @param album album in which photo is stored
    * @returns id of the inserted photo and a message
    */
-  registerPhoto(file: formidable.File, album: string, user: string): returnMsg {
+  registerPhoto(file: formidable.File, album: string, user: string, description: string): returnMsg {
     const key: IDstring = this.createId();
 
     this.store[key] = {
@@ -173,6 +183,7 @@ class photoStore {
       // _owner: "",
       _mimetype: file.mimetype,
       album: album,
+      description: description,
       history: [
         {
           status: "original",

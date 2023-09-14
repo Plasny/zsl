@@ -7,9 +7,17 @@ import Post from "../components/Post";
 import type { photo } from "../helpers/photoType";
 import getPhoto from "../helpers/getLocalImgUrl";
 import "./Feed.css";
+import PhotoEditor from "../components/PhotoEditor";
+
+export type imgDataLite = {
+  id: string;
+  url: string;
+};
 
 function Feed() {
   const [popupVisible, changePopupVisibility] = useState(false);
+  const [editorVisible, changeEditorVisibility] = useState(false);
+  const [lastImgData, setImgData] = useState({ url: "", id: "" } as imgDataLite);
   const user = useSelector((state) => (state as storeType).user);
   const [posts, setPosts] = useState([
     <p style={{ textAlign: "center" }} key={0}>
@@ -69,8 +77,24 @@ function Feed() {
       </div>
       <AddPhotoPopup
         visible={popupVisible}
-        makeInvisible={() => changePopupVisibility(false)}
+        makeInvisible={(imgData?: imgDataLite) => {
+          changePopupVisibility(false);
+          if (imgData) {
+            changeEditorVisibility(true);
+            setImgData(imgData)
+          }
+        }}
         reloadAfterUpload={loadPosts}
+      />
+      <PhotoEditor
+        imgUrl={lastImgData.url}
+        photoId={lastImgData.id}
+        visible={editorVisible}
+        callback={() => {
+          changeEditorVisibility(false);
+          setImgData({ url: "", id: "" });
+          loadPosts()
+        }}
       />
     </>
   );

@@ -18,6 +18,11 @@ Content-Type: image/png
 Content-Disposition: form-data; name="album"
 
 nazwa_albumu
+
+--x
+Content-Disposition: form-data; name="description"
+
+opis
 --x--
 
 ### update zdjęcia na serwerze

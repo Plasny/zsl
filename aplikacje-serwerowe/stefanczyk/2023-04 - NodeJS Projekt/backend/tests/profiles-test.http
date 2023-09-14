@@ -10,12 +10,14 @@ Content-Type: application/json
 {
     "newName": "Adrian",
     "newSurname": "Nowak",
-    "newEmail": "xyz@def.xyz"
+    "newEmail": "xyz@def.xyz",
+    "newAboutMe": "description"
 }
 
 
 ### get user profile picture
 GET http://localhost:5555/api/profile/picture/<email>
+Authorization: Bearer <token>
 
 ### set users profile picture
 POST http://localhost:5555/api/profile/picture

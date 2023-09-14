@@ -70,9 +70,9 @@ export default async function profilesRouter(
 
     case check(req, /^\/api\/profile$/, "PATCH"): {
       const token = req.headers.authorization!.replace("Bearer ", "");
-      const body = await getBody(req) as {newName: string, newSurname: string, newEmail: string}
+      const body = await getBody(req) as {newName: string, newSurname: string, newEmail: string, newAboutMe: string}
       console.log(body)
-      returnJSON(res, users.changeData(token, body.newName, body.newSurname, body.newEmail));
+      returnJSON(res, users.changeData(token, body.newName, body.newSurname, body.newEmail, body.newAboutMe));
       break;
     }
 

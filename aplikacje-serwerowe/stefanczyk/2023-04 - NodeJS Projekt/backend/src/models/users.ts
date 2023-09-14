@@ -16,6 +16,7 @@ type User = {
     path: string;
     mime: string;
   };
+  aboutMe: string;
 };
 
 /**
@@ -24,9 +25,13 @@ type User = {
  * @returns whether you can access or not
  */
 export function verifyRequest(token: string): boolean {
-  const decoded = jwt.verify(token, config.encryptionKey) as jwtContents;
-  if (decoded.action === "verifyUser") return true;
-  return false;
+  try {
+    const decoded = jwt.verify(token, config.encryptionKey) as jwtContents;
+    if (decoded.action === "verifyUser") return true;
+    return false;
+  } catch {
+    return false;
+  }
 }
 
 /**
@@ -35,8 +40,13 @@ export function verifyRequest(token: string): boolean {
  * @returns users email
  */
 export function getUserFromToken(token: string): string {
-  const decoded = jwt.verify(token, config.encryptionKey) as jwtContents;
-  return decoded.email;
+  try {
+    const decoded = jwt.verify(token, config.encryptionKey) as jwtContents;
+    return decoded.email;
+  } catch(err) {
+    logger.warn('wrong jwt', err);
+    return ''
+  }
 }
 
 class userStore {
@@ -104,9 +114,10 @@ class userStore {
       email: email,
       passwordHash: hash,
       profilePicture: {
-        path: path.join(config.assets, "tempProfilePicture.jpg"),
-        mime: "image/jpeg"
+        path: path.join(config.assets, "tempProfilePicture.svg"),
+        mime: "image/svg+xml"
       },
+      aboutMe: ""
     });
 
     logger.log(`User registered with email: ${email}`);
@@ -178,7 +189,7 @@ class userStore {
    */
   retriveProfileData(
     email: string
-  ): returnMsg | { firstName: string; lastName: string; email: string } {
+  ): returnMsg | { firstName: string; lastName: string; email: string, aboutMe: string } {
     if (!this.map.has(email))
       return {
         httpCode: 404,
@@ -191,6 +202,7 @@ class userStore {
       firstName: user.name,
       lastName: user.lastName,
       email: user.email,
+      aboutMe: user.aboutMe
     };
   }
 
@@ -237,7 +249,8 @@ class userStore {
     token: string,
     newName?: string,
     newSurname?: string,
-    newEmail?: string
+    newEmail?: string,
+    newAboutMe?: string,
   ): returnMsg {
     try {
       const decoded = jwt.verify(token, config.encryptionKey) as jwtContents;
@@ -247,6 +260,7 @@ class userStore {
       const user = this.map.get(decoded.email)!;
       if (newName) user.name = newName;
       if (newSurname) user.lastName = newSurname;
+      if(newAboutMe) user.aboutMe = newAboutMe;
       if (newEmail) {
         user.email = newEmail;
         this.map.set(newEmail, user);

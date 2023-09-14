@@ -6,10 +6,11 @@ import { useRef, ReactEventHandler, useEffect, useState } from "react";
 import "./Popup.css";
 import { useSelector } from "react-redux";
 import { storeType } from "../store/store";
+import { imgDataLite } from "../pages/Feed";
 
 function AddPhotoPopup(props: {
   visible: boolean;
-  makeInvisible: ReactEventHandler;
+  makeInvisible: (imgData?: imgDataLite) => void;
   reloadAfterUpload: () => void;
 }) {
   const user = useSelector((state) => (state as storeType).user);
@@ -24,39 +25,45 @@ function AddPhotoPopup(props: {
   const tagsRef = useRef(null);
   const [tags, updateTags] = useState([] as string[]);
   const descriptionRef = useRef(null);
+  const [imgUrl, setImgUrl] = useState("");
 
   if (props.visible) {
     (popup.current as HTMLDialogElement | null)?.removeAttribute("open");
     (popup.current as HTMLDialogElement | null)?.showModal();
   }
 
-  const updateInput = () => {
-    // @ts-ignore
-    if (fileInput.current && fileInput.current.files[0]) {
+  useEffect(() => {
+    if (imgUrl !== "") {
       setPreview(
-        <div className="imgUpload">
-          <img
-            // @ts-ignore
-            src={URL.createObjectURL(fileInput.current.files[0])}
-            style={{ width: "100%" }}
-            alt="Uploaded image"
-          />
-          <div
-            style={{
-              borderTop: "2px solid var(--accent-color)",
-              width: "100%",
-              textAlign: "center",
-            }}
-          >
-            {/* @ts-ignore */}
-            {fileInput.current.files[0].name}
-          </div>
-        </div>
+        <>
+          <label htmlFor="imageInput" className="imgUpload">
+            <img src={imgUrl} style={{ width: "100%" }} alt="Uploaded image" />
+            <div
+              style={{
+                borderTop: "2px solid var(--accent-color)",
+                width: "100%",
+                textAlign: "center",
+              }}
+            >
+              {/* @ts-ignore */}
+              {fileInput.current.files[0].name}
+            </div>
+          </label>
+        </>
       );
-      return;
     }
+  }, [imgUrl]);
 
+  const closeAndClear = (photoId?: string) => {
     setPreview(defaultInput);
+    updateTags([]);
+    (descriptionRef.current! as HTMLInputElement).value = "";
+    (fileInput.current! as HTMLInputElement).value = "";
+    (popup.current! as HTMLDialogElement).close();
+    if(photoId)
+      props.makeInvisible({url: imgUrl, id: photoId});
+    else
+      props.makeInvisible();
   };
 
   const addPhoto = async () => {
@@ -66,15 +73,19 @@ function AddPhotoPopup(props: {
     formData.delete("tags");
     formData.append("album", "default");
 
-    fetch("/api/photos", {
+    const promises = [];
+    const res = await fetch("/api/photos", {
       method: "POST",
       headers: {
         Authorization: "Bearer " + user.authToken,
       },
       body: formData,
-    })
-      .then((res) => res.json())
-      .then((res) => {
+    }).then((res) => res.json());
+
+    const photoId = res.returnValue!
+
+    if (tags.length > 0)
+      promises.push(
         fetch("/api/photos/tags", {
           method: "PATCH",
           headers: {
@@ -82,14 +93,33 @@ function AddPhotoPopup(props: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            id: res.returnValue!,
+            id: photoId,
             tags: tags,
           }),
-        }).then(props.reloadAfterUpload);
-      });
+        })
+      );
+
+    Promise.all(promises).then(props.reloadAfterUpload);
+    closeAndClear(photoId);
+  };
+
+
+  const updateInput = () => {
+    if (
+      fileInput.current &&
+      (fileInput.current! as HTMLInputElement).files![0]
+    ) {
+      setImgUrl(
+        URL.createObjectURL((fileInput.current! as HTMLInputElement).files![0])
+      );
+      return;
+    }
 
     setPreview(defaultInput);
+    setImgUrl("");
   };
+
+  /// <---------- tags ----------<
 
   const setTags = () => {
     const el = tagsRef.current! as HTMLInputElement;
@@ -102,7 +132,7 @@ function AddPhotoPopup(props: {
 
       if (!tags.includes(tag)) updateTags([...tags, tag]);
 
-      el.focus();
+      setTimeout(() => el.focus(), 0);
     }
   };
 
@@ -112,11 +142,12 @@ function AddPhotoPopup(props: {
     if (el.selectionStart === 0 && e.key === "Backspace") {
       tags.pop();
       updateTags([...tags]);
+
+      setTimeout(() => el.focus(), 0);
     }
   };
 
   const delTag = (i: number) => {
-    console.log(i);
     tags.splice(i, 1);
     updateTags([...tags]);
   };
@@ -131,67 +162,68 @@ function AddPhotoPopup(props: {
       );
   }
 
+  /// >---------- tags ---------->
+
   return (
-    <dialog className="newPhoto" ref={popup}>
-      <div style={{ margin: "1rem" }}>
-        <form method="dialog" onSubmit={addPhoto} id="addPhotoForm">
-          <CloseBtn
-            width="1.5rem"
-            height="1.5rem"
-            style={{ position: "absolute", right: 0, top: 0 }}
-            onClick={(e: Event) => {
-              setPreview(defaultInput);
-              updateTags([]);
-              (descriptionRef.current! as HTMLInputElement).value = "";
-              (popup.current! as HTMLDialogElement).close();
-              (props.makeInvisible as Function)();
-            }}
-          />
-
-          <p>Dodaj zdjęcie</p>
-
-          <label htmlFor="imageInput">Zdjęcie</label>
-          <input
-            type="file"
-            name="file"
-            id="imageInput"
-            ref={fileInput}
-            onChange={updateInput}
-          />
-
-          {photoPreview}
-
-          {/* <label htmlFor="imageAlbum">Album</label>
-          <input type="text" name="album" id="imageAlbum" /> */}
-
-          <label htmlFor="imageDescription">Description</label>
-          <input
-            className="input"
-            type="text"
-            name="description"
-            id="imageDescription"
-            ref={descriptionRef}
-          />
-
-          <label htmlFor="imageTags">Tags</label>
-          <label className="input">
-            {tagsEls}
-            <input
-              className="tagsInput"
-              type="text"
-              name="tags"
-              id="imageTags"
-              ref={tagsRef}
-              onChange={setTags}
-              // @ts-ignore
-              onKeyDown={backspaceHandle}
+      <dialog
+        className="newPhoto"
+        ref={popup}
+        onClose={() => closeAndClear()}
+      >
+        <div style={{ margin: "1rem" }}>
+          <form method="dialog" onSubmit={addPhoto} id="addPhotoForm">
+            <CloseBtn
+              width="1.5rem"
+              height="1.5rem"
+              style={{ position: "absolute", right: 0, top: 0 }}
+              onClick={() => closeAndClear()}
             />
-          </label>
 
-          <button className="bigBtn">Dodaj</button>
-        </form>
-      </div>
-    </dialog>
+            <p>Dodaj zdjęcie</p>
+
+            <label htmlFor="imageInput">Zdjęcie</label>
+            <input
+              type="file"
+              name="file"
+              id="imageInput"
+              ref={fileInput}
+              onChange={updateInput}
+              required
+            />
+
+            {photoPreview}
+
+            {/* <label htmlFor="imageAlbum">Album</label>
+            <input type="text" name="album" id="imageAlbum" /> */}
+
+            <label htmlFor="imageDescription">Description</label>
+            <input
+              className="input"
+              type="text"
+              name="description"
+              id="imageDescription"
+              ref={descriptionRef}
+            />
+
+            <label htmlFor="imageTags">Tags</label>
+            <label className="input">
+              {tagsEls}
+              <input
+                className="tagsInput"
+                type="text"
+                name="tags"
+                id="imageTags"
+                ref={tagsRef}
+                onChange={setTags}
+                // @ts-ignore
+                onKeyDown={backspaceHandle}
+              />
+            </label>
+
+            <button className="bigBtn">Dodaj</button>
+          </form>
+        </div>
+      </dialog>
   );
 }
 
