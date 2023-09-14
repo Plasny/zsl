@@ -43,6 +43,12 @@ export class AppComponent {
   boardWidth: number = 20;
   board: field[][] = [];
   lastInserted: point = { x: -1, y: -1 };
+  lastCheck: moveParams = {
+      horizontal: { value: 0 },
+      vertical: { value: 0 },
+      diagonal1: { value: 0 },
+      diagonal2: { value: 0 },
+    };
 
   player: player = { type: 'O', points: 0 };
   opponent: player = { type: 'X', points: 0 };
@@ -84,7 +90,7 @@ export class AppComponent {
     let key: string | boolean;
     let x: number;
     let y: number;
-    let i = 1;
+    let i = 0;
 
     if ((key = !Object.values(moveParams).every((v) => v.value === 0))) {
       key = Object.keys(moveParams).reduce((a, b) =>
@@ -101,7 +107,9 @@ export class AppComponent {
 
         try {
           const tileToTheLeft =
-            this.board[moveParams.horizontal.first!.y][moveParams.horizontal.first!.x - 1];
+            this.board[moveParams.horizontal.first!.y][
+              moveParams.horizontal.first!.x - 1
+            ];
           if (tileToTheLeft.type === '') {
             x = moveParams.horizontal.first!.x - 1;
             console.warn('horizontal left');
@@ -111,7 +119,9 @@ export class AppComponent {
 
         try {
           const tileToTheRight =
-            this.board[moveParams.horizontal.last!.y][moveParams.horizontal.last!.x + 1];
+            this.board[moveParams.horizontal.last!.y][
+              moveParams.horizontal.last!.x + 1
+            ];
           if (tileToTheRight.type === '') {
             x = moveParams.horizontal.last!.x + 1;
             console.warn('horizontal right');
@@ -121,11 +131,13 @@ export class AppComponent {
 
       // @ts-expect-error
       case 'vertical':
-          x = moveParams.vertical.first ? moveParams.vertical.first.x : -1;
+        x = moveParams.vertical.first ? moveParams.vertical.first.x : -1;
 
         try {
           const tileOnTop =
-            this.board[moveParams.vertical.first!.y - 1][moveParams.vertical.first!.x];
+            this.board[moveParams.vertical.first!.y - 1][
+              moveParams.vertical.first!.x
+            ];
           if (tileOnTop.type === '') {
             y = moveParams.vertical.first!.y - 1;
             console.warn('vertical top');
@@ -135,7 +147,9 @@ export class AppComponent {
 
         try {
           const tileOnBottom =
-            this.board[moveParams.vertical.last!.y + 1][moveParams.vertical.last!.x];
+            this.board[moveParams.vertical.last!.y + 1][
+              moveParams.vertical.last!.x
+            ];
           if (tileOnBottom.type === '') {
             y = moveParams.vertical.last!.y + 1;
             console.warn('vertical bottom');
@@ -147,7 +161,9 @@ export class AppComponent {
       case 'diagonal1':
         try {
           const begginingOfTiles1 =
-            this.board[moveParams.diagonal1.first!.y - 1][moveParams.diagonal1.first!.x - 1];
+            this.board[moveParams.diagonal1.first!.y - 1][
+              moveParams.diagonal1.first!.x - 1
+            ];
           if (begginingOfTiles1.type === '') {
             x = moveParams.diagonal1.first!.x - 1;
             y = moveParams.diagonal1.first!.y - 1;
@@ -158,7 +174,9 @@ export class AppComponent {
 
         try {
           const endOfTiles1 =
-            this.board[moveParams.diagonal1.last!.y + 1][moveParams.diagonal1.last!.x + 1];
+            this.board[moveParams.diagonal1.last!.y + 1][
+              moveParams.diagonal1.last!.x + 1
+            ];
           if (endOfTiles1.type === '') {
             x = moveParams.diagonal1.last!.x + 1;
             y = moveParams.diagonal1.last!.y + 1;
@@ -171,7 +189,9 @@ export class AppComponent {
       case 'diagonal2':
         try {
           const begginingOfTiles2 =
-            this.board[moveParams.diagonal2.first!.y + 1][moveParams.diagonal2.first!.x - 1];
+            this.board[moveParams.diagonal2.first!.y + 1][
+              moveParams.diagonal2.first!.x - 1
+            ];
           if (begginingOfTiles2.type === '') {
             x = moveParams.diagonal2.first!.x - 1;
             y = moveParams.diagonal2.first!.y + 1;
@@ -182,7 +202,9 @@ export class AppComponent {
 
         try {
           const endOfTiles2 =
-            this.board[moveParams.diagonal2.last!.y - 1][moveParams.diagonal2.last!.x + 1];
+            this.board[moveParams.diagonal2.last!.y - 1][
+              moveParams.diagonal2.last!.x + 1
+            ];
           if (endOfTiles2.type === '') {
             x = moveParams.diagonal2.last!.x + 1;
             y = moveParams.diagonal2.last!.y - 1;
@@ -193,8 +215,14 @@ export class AppComponent {
 
       default:
         while (true) {
-          if (i < 10) {
-            x = Math.floor(pMoveX - Math.random() * 3 + 2);
+          if (i < 1) {
+            x = this.lastInserted.x - 1;
+            y = this.lastInserted.y;
+          } else if (i < 2) {
+            x = this.lastInserted.x + 1;
+            y = this.lastInserted.y;
+          } else if(i < 10) {
+            x = Math.floor(pMoveX- Math.random() * 3 + 2);
             y = Math.floor(pMoveY - Math.random() * 3 + 2);
           } else {
             x = Math.floor(Math.random() * this.boardWidth);

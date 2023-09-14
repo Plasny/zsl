@@ -1,6 +1,10 @@
 /**
  * Module with games logic
  * @module game
+ * 
+ * to fix:
+ *   - zbijanie na krzyz
+ *   - odbijanie kiedy przybije do prawej strony
  */
 
 import { keysPressed } from "./input";
@@ -425,7 +429,7 @@ export class Game implements board {
       }
     }
 
-    if (keysPressed.get("e")) {
+    if (keysPressed.get("e") || keysPressed.get("Shift")) {
       let x = this.pillPosition[0].x;
       let y = this.pillPosition[0].y;
 
