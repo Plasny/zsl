@@ -1,0 +1,57 @@
+.images {
+    width: 440px;
+}
+
+.images img {
+    display: inline-block;
+    margin: 10px;
+}
+
+table.czasopisma {
+    border-collapse: collapse;
+    margin: 0.2rem;
+}
+
+table.czasopisma td,
+table.czasopisma th {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.btn {
+    all: unset;
+
+    display: inline-block;
+    font-size: 1rem;
+    line-height: 1rem;
+    margin: 0.5rem 0.2rem;
+    padding: 0.2rem;
+    background-color: white;
+    border: black 1px solid;
+    color: black;
+    cursor: pointer;
+    user-select: none;
+}
+
+.selectedBtn,
+.btn:hover {
+    background-color: red;
+    color: white;
+}
+
+div.clock {
+    height: 2.4rem;
+    line-height: 2.4rem;
+    position: sticky;
+    top: 0;
+    float: right;
+    width: 10rem;
+    z-index: 1;
+}
+
+nav {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background-color: white;
+}

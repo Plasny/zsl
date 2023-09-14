@@ -1,0 +1,47 @@
+<main *ngIf="view === 'ok'">
+    <h1>{{title}}</h1>
+
+    <nav>
+        <a class="btn" routerLink="/czasopisma">&Leftarrow;</a>
+        <a *ngFor="let year of years" [ngClass]="{'selectedBtn': year === selectedYear}"
+            class="btn" routerLink="../{{year}}">{{year}}</a>
+        <a class="btn" [ngClass]="{'selectedBtn': 'Wszystkie' === selectedYear}"
+            routerLink="../Wszystkie">Wszystkie</a>
+    </nav>
+
+    <table class="czasopisma">
+        <thead>
+            <tr>
+                <th>strona tytułowa</th>
+                <th>plik</th>
+                <th>pismo</th>
+                <th>darczyńcy</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let gazetka of czasopisma">
+                <td><img src={{gazetka.miniaturka}} alt={{gazetka.nazwa}} /></td>
+                <td>
+                    format: <strong>{{gazetka.format}}</strong><br>
+                    stron: <strong>{{gazetka.stron}}</strong><br>
+                    plik: <a href={{gazetka.plik}}>tutaj</a><br>
+                </td>
+                <td>
+                    nazwa: <strong>{{gazetka.nazwa}}</strong><br>
+                    numer: <strong>{{gazetka.numer}}</strong><br>
+                    wydawca: <strong>{{gazetka.wydawca}}</strong><br>
+                </td>
+                <td>
+                    skan: <strong>{{gazetka.skan}}</strong><br>
+                    przetworzenie: <strong>{{gazetka.przetworzenie}}</strong><br>
+                    podesłał: <strong>{{gazetka.podeslal}}</strong><br>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+
+<main *ngIf="view === 'err'">
+    <h1>Nieprawidłowy tytuł lub rok czasopisma</h1>
+    <p>Za chwilę nastąpi przekierowanie na stronę główną</p>
+</main>

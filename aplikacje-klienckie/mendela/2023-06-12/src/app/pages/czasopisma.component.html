@@ -1,0 +1,22 @@
+<main *ngIf="view === 'magazineList'">
+    <div class="images">
+        <a routerLink="/czasopisma/{{ czasopismo.klik }}" *ngFor="let czasopismo of imgList">
+            <img src="{{ czasopismo.src }}" alt="{{ czasopismo.klik }}" />
+        </a>
+    </div>
+</main>
+
+<main *ngIf="view === 'magazinesYears'">
+    <h1>{{ title }}</h1>
+
+    <nav>
+        <a class="btn" routerLink="/czasopisma">&Leftarrow;</a>
+        <a *ngFor="let year of years" class="btn" routerLink="./{{year}}">{{year}}</a>
+        <a class="btn" routerLink="./Wszystkie">Wszystkie</a>
+    </nav>
+</main>
+
+<main *ngIf="view === 'err'">
+    <h1>Nieprawidłowy tytuł czasopisma</h1>
+    <p>Za chwilę nastąpi przekierowanie</p>
+</main>
