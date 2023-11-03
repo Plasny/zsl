@@ -1,4 +1,4 @@
 export default settings = {
-    server: "host"
+    server: "http://host:port"
 }
 
