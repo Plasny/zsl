@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Admin panel</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="js/admin.js"></script>
+</head>
+
+<body>
+    <div class="flex">
+        <nav>
+            <h1><a href="/">Cars app</a></h1>
+            <a href="/">Add</a>
+            <a href="/cars.html">List</a>
+            <a href="/admin.html">Admin</a>
+            <a href="/search.html">Search</a>
+        </nav>
+
+        <div class="main" style="height: 80vh; padding: 1rem;">
+            <h2 style="margin-bottom: 0.5rem;">Quick actions</h2>
+            <button onclick="generateRandomCars('/cars.html')">Generate random database</button>
+        </div>
+    </div>
+
+</body>
+
+</html>

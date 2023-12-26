@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Search</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
+    <script defer src="js/search.js"></script>
+    <script src="js/admin.js"></script>
+
+    <style>
+        .a-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .a-col button {
+            text-align: center;
+            display: block;
+            width: 15rem;
+            height: 3rem;
+            margin-top: 1rem;
+            font-size: 1rem;
+        }
+
+        .a-col input,
+        .a-col select {
+            text-align: center;
+            width: 15rem;
+            margin-top: 1rem;
+            height: 2rem;
+            font-size: 1rem;
+        }
+
+        .out {
+            padding-bottom: 1rem;
+            width: 100%;
+            border-bottom: 1px solid black;
+        }
+
+        .out ul {
+            text-align: center;
+            columns: 3;
+            list-style: none;
+            width: 15rem;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex" style="width: 100vw; height: 100vh;">
+        <nav>
+            <h1><a href="/">Cars app</a></h1>
+            <a href="/">Add</a>
+            <a href="/cars.html">List</a>
+            <a href="/admin.html">Admin</a>
+            <a href="/search.html">Search</a>
+        </nav>
+
+        <div style="display: flex; width: 100%; flex-grow: 1;">
+            <div class="a-col" style="flex-grow: 1; max-height: 100vh; top: 0; position: sticky; border-right: 2px solid black;">
+                <button onclick="generateRandomCars().then(load)">Generate random database</button>
+                <div class="out"></div>
+                <button id="invoice-all">Invoice for all cars</button>
+                <div class="out">
+                    <ul id="invoice-all-list"></ul>
+                </div>
+                <button id="invoice-year">Invoice for cars in a given year</button>
+                <select id="select-year"></select>
+                <div class="out">
+                    <ul id="invoice-year-list"></ul>
+                </div>
+                <button id="invoice-price">Invoice for cars in a given price range</button>
+                <div style="display: flex; width: 15rem; gap: 10%;">
+                    <input style="width:45%" type="number" min="0" value="0" id="min-price">
+                    <input style="width:45%" type="number" min="0" value="0" id="max-price">
+                </div>
+                <div class="out">
+                    <ul id="invoice-price-list"></ul>
+                </div>
+            </div>
+            <div class="a-col" style="flex-grow: 3;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nu.</th>
+                            <!-- <th>UUID</th> -->
+                            <th>Model</th>
+                            <th>Year</th>
+                            <th>Airbags</th>
+                            <th>Color</th>
+                            <th>Sell-by date</th>
+                            <th>Price</th>
+                            <th>Tax</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

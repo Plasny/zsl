@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Car list</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
+    <script defer src="js/cars.js"></script>
+</head>
+
+<body>
+    <div class="flex">
+        <nav>
+            <h1><a href="/">Cars app</a></h1>
+            <a href="/">Add</a>
+            <a href="/cars.html">List</a>
+            <a href="/admin.html">Admin</a>
+            <a href="/search.html">Search</a>
+        </nav>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nu.</th>
+                    <th>UUID</th>
+                    <th>Model</th>
+                    <th>Year</th>
+                    <th>Airbags</th>
+                    <th>Color</th>
+                </tr>
+            </thead>
+            <tbody id="table">
+            </tbody>
+        </table>
+    </div>
+
+    <dialog id="update-dialog">
+        <label style="margin-bottom: 0.5rem;">Model: <input id="car-model" /></label>
+        <label>Year of production: <select id="car-year" style="flex-grow: 1;">
+            </select></label>
+
+        <div style="margin-top: 1rem; width: 100%; justify-content: right; display: flex;">
+            <button type="button" id="dialog-close" style="margin-right: 0.5rem;">Cancel</button>
+            <button type="button" id="dialog-update">Update</button>
+        </div>
+    </dialog>
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Upload</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
+    <script defer src="js/upload.js"></script>
+</head>
+
+<body>
+    <div class="flex">
+        <nav>
+            <h1><a href="/">Cars app</a></h1>
+            <a href="/">Add</a>
+            <a href="/cars.html">List</a>
+            <a href="/admin.html">Admin</a>
+            <a href="/search.html">Search</a>
+        </nav>
+
+        <div class="main">
+            <form method="post" action="/api/images" enctype="multipart/form-data">
+                <div id="dropzone">
+                    <p>Drop images here</p>
+                </div>
+                <input type="file" name="img" id="fileUpload" accept="image/*" multiple />
+                <input type="hidden" name="car_uuid" id="carUUID" />
+                <button type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

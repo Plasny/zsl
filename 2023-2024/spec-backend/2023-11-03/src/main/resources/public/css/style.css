@@ -1,0 +1,190 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.flex {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+nav {
+    width: 100%;
+    min-height: 7vh;
+    display: flex;
+    align-items: center;
+    color: #07020D;
+    background-color: #5DB7DE;
+}
+
+h1 {
+    margin-left: 1rem;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+nav a,
+nav a:hover,
+nav a:visited {
+    all: unset;
+    cursor: pointer;
+    margin-right: 1rem;
+}
+
+.main {
+    margin-top: 2rem;
+    min-width: 40rem;
+    border-radius: 1rem;
+    border: 2px solid black;
+}
+
+label {
+    display: flex;
+    align-items: center;
+    margin-top: 0.2rem;
+}
+
+.in {
+    margin-bottom: 1rem;
+}
+
+.add select,
+.add input {
+    height: 1.5rem;
+    min-width: 1.5rem;
+    margin-left: 1rem;
+    margin-right: 0.5rem;
+}
+
+.btn:hover,
+button:hover {
+    background: blue;
+    color: white;
+}
+
+.btn,
+button {
+    all: unset;
+    display: block;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 2px solid blue;
+    color: blue;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+table {
+    border-collapse: collapse;
+    margin-top: 2rem;
+    height: fit-content;
+}
+
+td, th {
+    text-align: center;
+    border: 1px solid black;
+    min-width: 5vw;
+    padding: 0.5rem;
+}
+
+.color-box {
+    display: inline-block; 
+    width: 2rem; 
+    height: 2rem; 
+    border-radius: 0.2rem;
+}
+
+dialog {
+    padding: 1rem;
+    border-radius: 0.2rem;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+#dropzone {
+    margin: 1rem;
+    height: 30vh;
+    border-radius: 10px;
+    border: 2px dashed black;
+    color: darkgray;
+    user-select: none;
+    cursor: pointer;
+    overflow-y: auto;
+    padding-top: 0.5rem;
+    width: 700px;
+    /* transition: transform 0.5s ease-in-out; */
+}
+
+#dropzone p {
+    text-align: center;
+    font-size: 2.5rem;
+    line-height: 28vh;
+}
+
+#dropzone ~ input[type=file] {
+    display: none;
+}
+
+#dropzone ~ button {
+    width: 50%;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 1rem;
+}
+
+.drop-hover {
+    border: 2px solid green!;
+    background-color: lightgray;
+    /* transform: scale(1.05, 1.05); */
+}
+
+.uploaded-file {
+    display: inline-block;
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0.5rem;
+}
+
+.uploaded-file button:hover, 
+.uploaded-file button {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: none;
+    color: white;
+    background: transparent;
+    transform: translate(1rem, -1rem);
+}
+
+#imgcontainer img,
+.uploaded-file img {
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+#imgcontainer {
+    width: 700px;
+    padding: 0 1rem;
+}
+#imgcontainer img {
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+}
