@@ -1,0 +1,109 @@
+### get all users
+GET http://localhost:4567/api/users
+Accept: application/json
+
+> {%
+    client.test("Test status code", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+    client.test("Response content-type is json", function() {
+        var type = response.contentType.mimeType;
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'");
+    });
+%}
+
+### add test user
+POST http://localhost:4567/api/users
+
+{
+   "id": "test",
+   "firstName": "aaa",
+   "lastName": "bbb",
+   "email": "test@test.test"
+}
+
+> {%
+    client.test("Test status code", function() {
+        client.assert(response.status === 201, "Response status is not 201");
+    });
+%}
+
+
+### get test user 
+GET http://localhost:4567/api/users/test
+Accept: application/json
+
+> {%
+    client.test("Test status code", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+    client.test("Response content-type is json", function() {
+        var type = response.contentType.mimeType;
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'");
+    });
+%}
+
+### update test user 
+PUT http://localhost:4567/api/users
+
+{
+   "id": "test",
+   "firstName": "bbb",
+   "lastName": "aaa",
+   "email": "test@test.test"
+}
+
+> {%
+    client.test("Test status code", function() {
+        client.assert(response.status === 201, "Response status is not 201");
+    });
+%}
+
+### get updated user
+GET http://localhost:4567/api/users/test
+
+> {%
+    client.test("Test status code", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+    client.test("Response content-type is json", function() {
+        var type = response.contentType.mimeType;
+        client.assert(type === "application/json", "Expected 'application/json' but received '" + type + "'");
+    });
+%}
+
+### check if user exists
+OPTIONS http://localhost:4567/api/users/test
+
+> {%
+    client.test("Test status code", function() {
+        client.assert(response.status === 200, "Response status is not 204");
+    });
+%}
+
+### delete test user 
+DELETE http://localhost:4567/api/users/test
+
+> {%
+    client.test("Test status code", function() {
+        client.assert(response.status === 204, "Response status is not 204");
+    });
+%}
+
+### get user which doesn't exist
+GET http://localhost:4567/api/users/test
+
+> {%
+    client.test("Test status code", function() {
+        client.assert(response.status === 404, "Response status is not 404");
+    });
+%}
+
+### check if user exists
+OPTIONS http://localhost:4567/api/users/test
+
+> {%
+    client.test("Test status code", function() {
+        client.assert(response.status === 204, "Response status is not 204");
+    });
+%}
