@@ -1,0 +1,39 @@
+### upload image
+POST http://localhost:7777/api/photos
+Accept: application/json
+Content-Type: multipart/form-data; boundary=part
+
+--part
+Content-Disposition: form-data; name="file"; filename="pixel.png"
+Content-Type: image/png
+
+< ./pixel.png
+--part--
+
+### get list of  photos in upload directory 
+GET http://localhost:7777/api/photos
+Accept: application/json
+
+### get photo with id = 1
+GET http://localhost:7777/api/photos/1
+Accept: application/json
+
+### update name of photo with id = 1
+PUT http://localhost:7777/api/photos/1
+Accept: application/json
+
+{
+    "name": "small.png"
+}
+
+### get photo with name = small.png
+GET http://localhost:7777/api/photos/photo/small.png
+Accept: application/json
+
+### get photo stream with id = 1
+GET http://localhost:7777/api/photos/data/1
+Accept: application/octet-stream
+
+### delete photo with id = 1
+DELETE http://localhost:7777/api/photos/1
+Accept: application/json
