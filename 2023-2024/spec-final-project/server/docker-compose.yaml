@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:16-alpine
+    hostname: db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+      - TZ="Europe/Warsaw"
+    ports:
+      - '5432:5432'
+
+  # db-ui:
+  #   image: dpage/pgadmin4
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: tmp@tmp.tmp
+  #     PGADMIN_DEFAULT_PASSWORD: tmp 
+  #   ports:
+  #     - '5001:80'
+  #   restart: unless-stopped

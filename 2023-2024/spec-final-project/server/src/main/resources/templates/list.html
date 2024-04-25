@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>VoiceMemos</title>
+        <style>
+            body {
+                font-family: monospace;
+                width: 100vw;
+                display: flex;
+                justify-content: center;
+                overflow-x: hidden;
+            }
+            table {
+                border-spacing: 0.5rem;
+            }
+        </style>
+        <script type="module">
+            async function run() {
+                const token = localStorage.getItem("token")
+                if (token == null) {
+                    window.location = "/login"
+                    return
+                }
+
+                const res = await fetch("/api/memos", {
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    },
+                })
+                
+                if (res.status == 403) {
+                    window.location = "/login"
+                    return
+                }
+
+
+                const body = await res.json()
+
+                body.forEach(el => {
+                    const tr = document.createElement("tr")
+
+                    const idEl = document.createElement("td")
+                    idEl.innerText = el.id
+                    tr.append(idEl)
+
+                    const date = new Date(el.timestamp)
+                    /*
+                    const timestampEl = document.createElement("td")
+                    timestampEl.innerText = date.toISOString().replaceAll(/([A-Z])/g, " ").replace(/\.\d\d\d/,"")
+                    tr.append(timestampEl)
+                    */
+
+                    const dateEl = document.createElement("td")
+                    dateEl.innerText = date.toISOString().split("T")[0]
+                    tr.append(dateEl)
+
+                    const timeEl = document.createElement("td")
+                    timeEl.innerText = date.toISOString().split("T")[1].replace(/\.\d{3}Z/, "")
+                    tr.append(timeEl)
+
+                    const durationEl = document.createElement("td")
+                    durationEl.innerText = (el.duration / 1000) + "s"
+                    tr.append(durationEl)
+
+                    const audioEl = document.createElement("td")
+                    const audioButton = document.createElement("button")
+                    audioButton.onclick = () => {
+                        fetch("/api/memos/" + el.id + "/audio", {
+                            headers: {
+                                "Authorization": "Bearer " + token
+                            },
+                        })
+                            .then(res => res.blob())
+                            .then(data => {
+                                const a = document.createElement("a")
+                                a.href = window.URL.createObjectURL(data)
+                                a.download = "audio-" + el.timestamp + ".wav"
+                                a.click()
+                            })
+                    }
+                    audioButton.innerText = "Download"
+                    audioEl.append(audioButton)
+                    tr.append(audioEl)
+
+                    const delEl = document.createElement("td")
+                    const delButton = document.createElement("button")
+                    delButton.onclick = () => {
+                        fetch("/api/memos/" + el.id, {
+                            method: "delete",
+                            headers: {
+                                "Authorization": "Bearer " + token
+                            },
+                        })
+                        tr.remove()
+                    }
+                    delButton.innerText = "Delete"
+                    delEl.append(delButton)
+                    tr.append(delEl)
+
+                    list.append(tr)
+                })
+            }
+
+            run()
+        </script>
+    </head>
+    <body>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>date</th>
+                    <th>time</th>
+                    <th>duration</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="list">
+            </tbody>
+        </table>
+    </body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>UPLOAD</title>
+    </head>
+    <body>
+        <form method="post" action="/api/memos" enctype="multipart/form-data">
+            <input type="file" name="audio">
+            <input type="number" name="timestamp">
+            <input type="number" name="duration">
+            <input type="hidden" name="location" value="false">
+            <button>SUBMIT</button>
+        </form>
+    
+    </body>
+</html>

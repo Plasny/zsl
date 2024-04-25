@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+option java_package = "one.plasny.voicememos.protobufs.config";
+option java_multiple_files = true;
+
+message Config {
+    string server_addr = 1;
+    string username = 2;
+    string api_token = 3;
+    string openai_api_key = 4;
+    string mapbox_api_key = 5;
+}
