@@ -9,11 +9,11 @@ if the location permission is given and Mapbox api key is entered.
 
 Android app demo:
 
-![Android app demo](./.demo/voicememos_android.mp4)
+<video src="https://github.com/Plasny/zsl/assets/37457159/fd22fcf2-59c6-47e7-af9c-53a1dea53439"></video>
 
 Backup server demo:
 
-![backup server demo](./.demo/voicememos_backup.mp4)
+<video src="https://github.com/Plasny/zsl/assets/37457159/2dc10c2d-ff0a-4aa8-9d72-17d081583732"></video>
 
 ## Backstory
 
